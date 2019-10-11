@@ -4,7 +4,10 @@ import com.rose.common.data.base.PageList;
 import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
 import com.rose.common.repository.RedisRepositoryCustom;
-import com.rose.common.util.*;
+import com.rose.common.util.JsonUtil;
+import com.rose.common.util.Md5Util;
+import com.rose.common.util.RedisKeyUtil;
+import com.rose.common.util.ValueHolder;
 import com.rose.data.constant.SystemConstant;
 import com.rose.data.entity.TbRoleGroup;
 import com.rose.data.entity.TbSysUser;
@@ -162,5 +165,14 @@ public class UserServiceImpl implements UserService {
 
     public void userRedisInfoSave(String redisKey, UserRedisVo userRedis) {
         redisRepositoryCustom.saveMinutes(redisKey, JsonUtil.objectToJson(userRedis), SystemConstant.TOKEN_SAVE_TIME);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateUserNickName(Long id, String userNickName) {
+        int c = sysUserRepository.updateNickName(id, userNickName);
+        if (c <= 0) {
+            throw new BusinessException(ResponseResultCode.OPERT_ERROR);
+        }
     }
 }

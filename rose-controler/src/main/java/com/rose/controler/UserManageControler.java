@@ -81,4 +81,9 @@ public class UserManageControler {
     public TbSysUser getDetail(@RequestParam Long id) throws Exception {
         return userService.getDetail(id);
     }
+
+    @PostMapping(value= "/updateUserNickName")
+    public void updateUserNickName(@RequestParam Long id, @RequestParam(defaultValue = "") String userNickName) {
+        userService.updateUserNickName(id, userNickName);
+    }
 }

@@ -23,6 +23,10 @@ public class TbSysUser extends BaseDataIdLong implements Serializable {
     @Column(name = "upwd", columnDefinition = "varchar(255) binary COMMENT '密码'")
     private String upwd;
 
+    // 昵称
+    @Column(name = "nick_name", columnDefinition = "varchar(255) COMMENT '昵称'")
+    private String nickName;
+
     // 角色组id
     @Column(name = "role_group_id", columnDefinition = "Int(20) COMMENT '角色组id'")
     private Long roleGroupId;

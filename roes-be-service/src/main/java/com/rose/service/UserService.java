@@ -33,4 +33,6 @@ public interface UserService {
     void updatePasswodSelf(String userOldPassword, String userNewPassword) throws Exception;
 
     void userRedisInfoSave(String redisKey, UserRedisVo userRedis);
+
+    void updateUserNickName(Long id, String userNickName);
 }

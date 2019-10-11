@@ -34,4 +34,8 @@ public interface SysUserRepository extends CrudRepository<TbSysUser, Long> {
 
     @Query(value = "select * from tb_sys_user where role_group_id = :roleGroupId", nativeQuery = true)
     List<TbSysUser> findByRoleGroupId(@Param(value = "roleGroupId") Long roleGroupId);
+
+    @Modifying
+    @Query(value = "update tb_sys_user set nick_name = :nickName where id = :id", nativeQuery = true)
+    int updateNickName(@Param(value = "id") Long id, @Param(value = "nickName") String nickName);
 }
