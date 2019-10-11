@@ -17,5 +17,4 @@ public class HikariConf {
 	public DataSource dataSource() {
 		return new HikariDataSource();
 	}
-
 }
