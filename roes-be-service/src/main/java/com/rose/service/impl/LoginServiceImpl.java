@@ -68,7 +68,15 @@ public class LoginServiceImpl implements LoginService {
             throw new BusinessException("用户所属角色组已被冻结！");
         }
         // 3、更新redis用户信息，更新用户token、用户状态
-        UserRedisVo userRedis = new UserRedisVo(IdUtil.getID() + IdUtil.getID());
+        UserRedisVo userRedis = redisRepositoryCustom.getClassObj(RedisKeyUtil.getRedisUserInfoKey(sysUser.getId()), UserRedisVo.class);
+        String token = IdUtil.getID() + IdUtil.getID();
+        if (userRedis == null) {
+            userRedis = new UserRedisVo(token);
+        } else {
+            if (StringUtil.isEmpty(userRedis.getToken())) {
+                userRedis.setToken(token);
+            }
+        }
         userService.userRedisInfoSave(RedisKeyUtil.getRedisUserInfoKey(sysUser.getId()), userRedis);
         // 4、删除redis验证码
         redisRepositoryCustom.delete(SystemConstant.LOGIN_CODE_PREFIX + user.getKey());
