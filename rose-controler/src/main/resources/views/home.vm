@@ -260,9 +260,9 @@
                         menuChildId = '#' + childMenuId;
                         $('#contentIframe').attr('src', href);
                         navHeaderHtml = navHeaderHtml + childMenuName;
-                        menuMainHtml = menuMainHtml + "<li class='active' name='menuLiChild' id='" + childMenuId + "'><a href='" + href + "' target='contentIframe' onclick=\"" + onclickHtml + "\"><i class='fa " + childMenuIcon + "'></i>" + childMenuName + "</a></li>";
+                        menuMainHtml = menuMainHtml + "<li class='active' name='menuLiChild' id='" + childMenuId + "'><a href='" + href + "' target='contentIframe' onclick=\"" + onclickHtml + "\">&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa " + childMenuIcon + "'></i>" + childMenuName + "</a></li>";
                     } else {
-                        menuMainHtml = menuMainHtml + "<li name='menuLiChild' id='" + childMenuId + "'><a href='" + href + "' target='contentIframe' onclick=\"" + onclickHtml + "\"><i class='fa " + childMenuIcon + "'></i>" + childMenuName + "</a></li>";
+                        menuMainHtml = menuMainHtml + "<li name='menuLiChild' id='" + childMenuId + "'><a href='" + href + "' target='contentIframe' onclick=\"" + onclickHtml + "\">&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa " + childMenuIcon + "'></i>" + childMenuName + "</a></li>";
                     }
                 });
                 menuMainHtml = menuMainHtml + "</ul>";

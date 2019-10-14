@@ -89,7 +89,6 @@
             var params = {"menuName":menuName, "iconCls":iconCls, "menuState":menuState, "sort":sort,"dirLevel":dirLevel,"parentId":parentId,"url":url,"id":id};
             var result = ajaxSynchPostJson("user/menuManage/save", params);
             if (result.code == '200') {
-                alertSuccess();
                 if (isParent == 1) {
                     searchMenu();
                 } else {
@@ -99,6 +98,7 @@
                 $('#manager_edit').dialog('close');
                 $('#manager_listChild_add').dialog('close');
                 $('#manager_listChild_edit').dialog('close');
+                alertSuccess();
             } else {
                 alertWarn(result.msg);
             }
