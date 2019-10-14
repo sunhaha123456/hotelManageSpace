@@ -47,7 +47,7 @@ public class MenuRepositoryCustomImpl extends BaseRepositoryImpl implements Menu
         sql.append(" SELECT m.id, m.menu_name menuName, m.icon_cls iconCls, m.url, m.parent_id parentId, m.dir_level dirLevel ");
         sql.append(" FROM tb_role_group rg JOIN tb_menu_role_group_releation rgr ON rg.id = rgr.role_group_id ");
         sql.append(" AND rg.id = ? AND rg.role_state = 0 ");
-        sql.append(" JOIN tb_menu m ON rgr.menu_id = m.id AND m.menu_state = 0 order by m.sort desc ");
+        sql.append(" JOIN tb_menu m ON rgr.menu_id = m.id order by m.sort desc ");
         return queryList(sql.toString(), TbMenu.class, new Object[]{roleId});
     }
 
