@@ -215,7 +215,7 @@
                     $('#menuIconChildEdit').val(iconCls);
                     $('#menuUrlChildEdit').val(url);
                     $('#menuSortChildEdit').numberbox('setValue', sort);
-                    $("input:radio[name=menuStateChildEdit][value=" + menuState + "]").attr("checked",true);
+                    $("input:radio[name=menuStateChildEdit][value=" + menuState + "]").prop("checked",true);
                     $('#manager_listChild_edit').dialog('open');
                 } else {
                     alertWarn(result.msg);
