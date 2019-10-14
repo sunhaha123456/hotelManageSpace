@@ -15,17 +15,17 @@ import java.util.List;
 @Table(name = "tb_menu")
 public class TbMenu extends BaseDataIdLong implements Comparable<TbMenu> {
 
-    @Column(name = "menu_name", columnDefinition = "varchar(255) binary COMMENT '菜单名称'")
+    @Column(name = "menu_name", columnDefinition = "varchar(255) COMMENT '菜单名称'")
     private String menuName;
 
     // easyui中的菜单名称
     @Transient
     private String text;
 
-    @Column(name = "icon_cls", columnDefinition = "varchar(255) binary COMMENT '菜单图标'")
+    @Column(name = "icon_cls", columnDefinition = "varchar(255) COMMENT '菜单图标'")
     private String iconCls;
 
-    @Column(name = "url", columnDefinition = "varchar(255) binary COMMENT '跳转链接'")
+    @Column(name = "url", columnDefinition = "varchar(255) COMMENT '跳转链接'")
     private String url;
 
     // 0：无上级目录

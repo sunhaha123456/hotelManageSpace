@@ -15,11 +15,11 @@ import java.io.Serializable;
 public class TbRoleGroup extends BaseDataIdLong implements Serializable {
 
     // 角色组名
-    @Column(name = "role_name", columnDefinition = "varchar(255) binary COMMENT '角色名称'")
+    @Column(name = "role_name", columnDefinition = "varchar(255) COMMENT '角色名称'")
     private String roleName;
 
     // 角色组备注
-    @Column(name = "role_remark", columnDefinition = "varchar(255) binary COMMENT '角色备注'")
+    @Column(name = "role_remark", columnDefinition = "varchar(255) COMMENT '角色备注'")
     private String roleRemark;
 
     // 0：正常 1：冻结
