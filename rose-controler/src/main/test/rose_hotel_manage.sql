@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2019-10-14 19:09:41
+Date: 2019-10-15 13:52:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,12 +40,12 @@ INSERT INTO `tb_menu` VALUES ('1', '2018-06-23 18:11:17', '2019-01-31 15:30:12',
 INSERT INTO `tb_menu` VALUES ('2', '2018-06-23 18:11:17', '2019-01-31 15:31:26', '2', 'fa-circle-o', '用户管理', '0', '1', '3', 'user/userManage/toUserManage');
 INSERT INTO `tb_menu` VALUES ('3', '2018-06-23 18:11:17', '2019-01-31 15:31:32', '2', 'fa-circle-o', '角色管理', '0', '1', '2', 'user/roleManage/toRoleManage');
 INSERT INTO `tb_menu` VALUES ('4', '2018-06-23 18:11:17', '2019-01-31 15:31:37', '2', 'fa-circle-o', '菜单管理', '0', '1', '1', 'user/menuManage/toMenuManage');
-INSERT INTO `tb_menu` VALUES ('5', '2018-11-09 14:31:04', '2019-10-14 19:07:15', '1', 'fa-folder', '分析统计', '0', '0', '3', null);
+INSERT INTO `tb_menu` VALUES ('5', '2018-11-09 14:31:04', '2019-10-15 13:51:37', '1', 'fa-folder', '分析统计', '0', '0', '2', null);
 INSERT INTO `tb_menu` VALUES ('6', '2018-11-09 14:48:29', '2019-10-14 19:06:57', '2', 'fa-circle-o', '汇总分析', '0', '5', '1', 'user/uploadDemo/toUploadDemo');
-INSERT INTO `tb_menu` VALUES ('7', '2019-10-14 19:07:32', '2019-10-14 19:09:15', '1', 'fa-folder', '酒店管理', '0', '0', '2', null);
-INSERT INTO `tb_menu` VALUES ('8', '2019-10-14 19:07:52', '2019-10-14 19:07:52', '2', 'fa-circle-o', '房型管理', '0', '7', '3', 'xxx');
-INSERT INTO `tb_menu` VALUES ('9', '2019-10-14 19:08:05', '2019-10-14 19:08:05', '2', 'fa-circle-o', '房间管理', '0', '7', '2', 'xxx');
-INSERT INTO `tb_menu` VALUES ('10', '2019-10-14 19:08:17', '2019-10-14 19:08:17', '2', 'fa-circle-o', '订单管理', '0', '7', '1', 'xxx');
+INSERT INTO `tb_menu` VALUES ('7', '2019-10-14 19:07:32', '2019-10-15 13:51:26', '1', 'fa-folder', '酒店管理', '0', '0', '3', null);
+INSERT INTO `tb_menu` VALUES ('8', '2019-10-14 19:07:52', '2019-10-15 13:51:57', '2', 'fa-circle-o', '入住管理', '0', '7', '3', 'xxx');
+INSERT INTO `tb_menu` VALUES ('9', '2019-10-14 19:08:05', '2019-10-15 13:52:07', '2', 'fa-circle-o', '房间管理', '0', '7', '2', 'xxx');
+INSERT INTO `tb_menu` VALUES ('10', '2019-10-14 19:08:17', '2019-10-15 13:52:16', '2', 'fa-circle-o', '营收计算', '0', '7', '1', 'xxx');
 
 -- ----------------------------
 -- Table structure for tb_menu_role_group_releation
