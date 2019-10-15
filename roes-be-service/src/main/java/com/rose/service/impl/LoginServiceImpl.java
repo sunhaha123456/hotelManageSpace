@@ -80,6 +80,8 @@ public class LoginServiceImpl implements LoginService {
         userService.userRedisInfoSave(RedisKeyUtil.getRedisUserInfoKey(sysUser.getId()), userRedis);
         // 4、删除redis验证码
         redisRepositoryCustom.delete(SystemConstant.LOGIN_CODE_PREFIX + user.getKey());
+        valueHolder.setUserIdHolder(sysUser.getId());
+        user.setUpwd(""); // 屏蔽日志记录中的密码
         Map<String, Object> res = new HashMap();
         res.put("token", userRedis.getToken());
         res.put("userId", sysUser.getId());
