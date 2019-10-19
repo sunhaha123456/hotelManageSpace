@@ -11,24 +11,20 @@
     <script th:src="@{/static/easyui/easy.common.js}"></script>
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
-        function addMenuParentShow() {
+        function addHotelShow() {
             $('#manager_add').dialog('open');
             $('#roleNameAdd').focus();
         }
-        function editMenuParentShow() {
+        function editHotelShow() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/menuManage/getDetail", {"id": id});
+                var result = ajaxSynchGet("user/roleManage/getDetail", {"id":id});
                 if (result.code == '200') {
-                    var menuName = result.data.menuName;
-                    var iconCls = result.data.iconCls;
-                    var sort = result.data.sort;
-                    var menuState = result.data.menuState;
-                    $('#menuNameParentEdit').val(menuName);
-                    $('#menuIconParentEdit').val(iconCls);
-                    $('#menuSortParentEdit').numberbox('setValue', sort);
-                    $("input:radio[name=menuStateParentEdit][value=" + menuState + "]").attr("checked",true);
+                    var roleName = result.data.roleName;
+                    var roleRemark = result.data.roleRemark;
+                    $('#hotelNameEdit').val(roleName);
+                    $('#hotelRemarkEdit').val(roleRemark);
                     $('#manager_edit').dialog('open');
                 } else {
                     alertWarn(result.msg);
@@ -37,14 +33,19 @@
                 alertWarn("请先选择记录！");
             }
         }
-        function listChild() {
+        function distriRoleMenuShow() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/menuManage/getChild", {"id": id});
+                var result = ajaxSynchGet("user/roleManage/getMenuTreeByRoleId", {"id":id});
                 if (result.code == '200') {
-                    $('#manager_listChild_datagrid').datagrid('loadData', result.data);
-                    $('#manager_listChild').dialog('open');
+                    $('#roleMenuTree').tree({
+                        lines : true,
+                        multiple : true,
+                        checkbox : true,
+                        data : result.data
+                    });
+                    $('#manager_distriRoleMenu').dialog('open');
                 } else {
                     alertWarn(result.msg);
                 }
@@ -52,65 +53,73 @@
                 alertWarn("请先选择记录！");
             }
         }
-        function addMenuParentCommit() {
+        function addHotelCommit() {
             if ($('#manager_add').form('validate')) {
-                var menuName = $('#menuNameParentAdd').val();
-                var iconCls = $('#menuIconParentAdd').val();
-                var menuState = $("input[name='menuStateParentAdd']:checked").val();
-                var sort = $('#menuSortParentAdd').val();
-                var dirLevel = 1;
-                var parentId = 0;
-                var url = null;
-                var id = null;
-                var manager = '#manager_add';
-                var isParent = 1;
-                save(menuName, iconCls, menuState, sort, dirLevel, parentId, null, id, manager, isParent);
+                var hotelName = $('#hotelNameAdd').val();
+                var hotelRemark = $('#hotelRemarkAdd').val();
+                var result = ajaxSynchGet("user/roleManage/add", {"roleName":roleName, "roleRemark":roleRemark});
+                if (result.code == '200') {
+                    alertSuccess();
+                    $('#manager_add').dialog('close');
+                    searchHotel();
+                } else {
+                    alertWarn(result.msg);
+                }
             }
         }
-        function editMenuParentCommit() {
+        function editHotelCommit() {
             if ($('#manager_edit').form('validate')) {
                 var rows = $('#manager').datagrid('getSelections');
                 if (rows.length > 0) {
-                    var menuName = $('#menuNameParentEdit').val();
-                    var iconCls = $('#menuIconParentEdit').val();
-                    var menuState = $("input[name='menuStateParentEdit']:checked").val();
-                    var sort = $('#menuSortParentEdit').val();
-                    var dirLevel = 1;
-                    var parentId = 0;
-                    var url = null;
                     var id = rows[0].id;
-                    var manager = '#manager_edit';
-                    var isParent = 1;
-                    save(menuName, iconCls, menuState, sort, dirLevel, parentId, null, id, manager, isParent);
+                    var hotelName = $('#hotelNameEdit').val();
+                    var hotelRemark = $('#hotelRemarkEdit').val();
+                    var result = ajaxSynchGet("user/roleManage/update", {"id":id, "roleName": roleName, "roleRemark": roleRemark})
+                    if (result.code == '200') {
+                        alertSuccess();
+                        $('#manager_edit').dialog('close');
+                        searchHotel();
+                    }
                 }
             }
         }
-        function save(menuName, iconCls, menuState, sort, dirLevel, parentId, url, id, manager, isParent) {
-            var params = {"menuName":menuName, "iconCls":iconCls, "menuState":menuState, "sort":sort,"dirLevel":dirLevel,"parentId":parentId,"url":url,"id":id};
-            var result = ajaxSynchPostJson("user/menuManage/save", params);
-            if (result.code == '200') {
-                if (isParent == 1) {
-                    searchMenu();
-                } else {
-                    listChild();
+        function distriRoleMenuCommit() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var roleGroupId = rows[0].id;
+                var nodeArr = $('#roleMenuTree').tree('getChecked', ['indeterminate', 'checked']);
+                var idArr =  [];
+                nodeArr.forEach(function(value, index, array){
+                    idArr.push(value.id);
+                });
+                var result = ajaxSynchPostJson("user/roleManage/menuSave", {"roleGroupId":roleGroupId, "menuIds":idArr});
+                if (result.code == '200') {
+                    $('#manager_distriRoleMenu').dialog('close');
                 }
-                $('#manager_add').dialog('close');
-                $('#manager_edit').dialog('close');
-                $('#manager_listChild_add').dialog('close');
-                $('#manager_listChild_edit').dialog('close');
-                alertSuccess();
-            } else {
-                alertWarn(result.msg);
+                alertInfo(result.msg);
             }
         }
-        function searchMenu() {
-            var params = {"uname": $('#unameSearch').val(), "page":1, "rows":10};
-            var result = ajaxSynchPostJson("user/menuManage/searchRoot", params);
-            if (result.code == '200') {
-                dataGridPageInit();
-                $('#manager').datagrid('loadData', result.data);
+        function opertHotelState(state) {
+            var showMsg = '';
+            if (state == 0) {
+                showMsg = '您确定上架该酒店吗？';
             } else {
-                alertWarn(result.msg);
+                showMsg = '您确定下架该酒店吗？';
+            }
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                $.messager.confirm('确定操作', showMsg, function (flag) {
+                    if (flag) {
+                        var id = rows[0].id;
+                        $('#manager').datagrid('loading');
+                        var result = ajaxSynchGet("user/roleManage/opert", {"id": id, "state": state});
+                        $('#manager').datagrid('loaded');
+                        searchHotel();
+                        alertInfo(result.msg);
+                    }
+                });
+            } else {
+                alertWarn("请先选择记录！");
             }
         }
         function dataGridInit() {
@@ -120,7 +129,7 @@
                 striped : true,
                 rownumbers : true,
                 border : false,
-                pagination : true,
+                pagination : false,
                 singleSelect:true,
                 toolbar : '#manager_tool',
                 columns : [[
@@ -130,17 +139,12 @@
                         hidden : true
                     },
                     {
-                        field : 'menuName',
-                        title : '菜单名',
+                        field : 'hotelName',
+                        title : '酒店名称',
                         width : 100,
                     },
                     {
-                        field : 'iconCls',
-                        title : '图标',
-                        width : 100,
-                    },
-                    {
-                        field : 'menuState',
+                        field : 'roleState',
                         title : '状态',
                         width : 100,
                         formatter: function(value,row,index){
@@ -150,10 +154,10 @@
                                 return "冻结";
                             }
                         }
-                    },
+                    },                        
                     {
-                        field : 'sort',
-                        title : '排序',
+                        field : 'remark',
+                        title : '备注',
                         width : 100,
                     },
                     {
@@ -164,86 +168,15 @@
                 ]]
             });
         }
-        function dataGridPageInit() {
-            var p = $('#manager').datagrid('getPager');
-            $(p).pagination({
-                pageNumber : 1,
-                pageSize : 10,
-                pageList : [10, 20, 30, 40, 50],
-                onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/menuManage/searchRoot", {"page":pageNumber, "rows":pageSize});
-                    if (result.code == '200') {
-                        $('#manager').datagrid('loadData', result.data);
-                    }
-                },
-            });
-        }
-        function addMenuChildShow() {
-            $('#manager_listChild_add').dialog('open');
-            $('#menuNameChildAdd').focus();
-        }
-        function addMenuChildCommit() {
-            var rows = $('#manager').datagrid('getSelections');
-            if (rows.length > 0) {
-                if ($('#manager_listChild_add').form('validate')) {
-                    var menuName = $('#menuNameChildAdd').val();
-                    var iconCls = $('#menuIconChildAdd').val();
-                    var menuState = $("input[name='menuStateChildAdd']:checked").val();
-                    var sort = $('#menuSortChildAdd').val();
-                    var dirLevel = 2;
-                    var parentId = rows[0].id;
-                    var url = $('#menuUrlChildAdd').val();
-                    var id = null;
-                    var manager = '#manager_listChild_add';
-                    var isParent = 0;
-                    save(menuName, iconCls, menuState, sort, dirLevel, parentId, url, id, manager, isParent);
-                }
-            }
-        }
-        function editMenuChildShow() {
-            var rows = $('#manager_listChild_datagrid').datagrid('getSelections');
-            if (rows.length > 0) {
-                var id = rows[0].id;
-                var result = ajaxSynchGet("user/menuManage/getDetail", {"id": id});
-                if (result.code == '200') {
-                    var menuName = result.data.menuName;
-                    var iconCls = result.data.iconCls;
-                    var url = result.data.url;
-                    var sort = result.data.sort;
-                    var menuState = result.data.menuState;
-                    $('#menuNameChildEdit').val(menuName);
-                    $('#menuIconChildEdit').val(iconCls);
-                    $('#menuUrlChildEdit').val(url);
-                    $('#menuSortChildEdit').numberbox('setValue', sort);
-                    $("input:radio[name=menuStateChildEdit][value=" + menuState + "]").prop("checked",true);
-                    $('#manager_listChild_edit').dialog('open');
-                } else {
-                    alertWarn(result.msg);
-                }
-            } else {
-                alertWarn("请先选择记录！");
-            }
-        }
-        function editMenuChildCommit() {
-            if ($('#manager_listChild_edit').form('validate')) {
-                var rows = $('#manager_listChild_datagrid').datagrid('getSelections');
-                if (rows.length > 0) {
-                    var menuName = $('#menuNameChildEdit').val();
-                    var iconCls = $('#menuIconChildEdit').val();
-                    var menuState = $("input[name='menuStateChildEdit']:checked").val();
-                    var sort = $('#menuSortChildEdit').val();
-                    var dirLevel = 2;
-                    var url = $('#menuUrlChildEdit').val();
-                    var id = rows[0].id;
-                    var manager = '#manager_listChild_edit';
-                    var isParent = 0;
-                    save(menuName, iconCls, menuState, sort, dirLevel, null, null, id, manager, isParent);
-                }
+        function searchHotel() {
+            var result = ajaxSynchGet("user/roleManage/list", {"roleState": 2});
+            if (result.code == '200') {
+                $('#manager').datagrid('loadData', result.data);
             }
         }
         $(function () {
             dataGridInit();
-            searchMenu();
+            searchHotel();
         });
     </script>
 </head>
@@ -251,10 +184,19 @@
 <table id="manager">
     <div id="manager_tool">
         <div style="margin-bottom:5px;">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addMenuParentShow()">新增</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editMenuParentShow()">编辑</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="listChild()">查看二级菜单</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addHotelShow()">新增</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editHotelShow()">编辑</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="distriRoleMenuShow()">关联用户</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="opertHotelState(1)">下架</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="opertHotelState(0)">上架</a>
         </div>
+
+        <!--/*
+        <div style="padding:0 0 0 7px;color:#333;">
+            角色名：<input type="text" class="textbox" id="unameSearch" style="width:110px" />
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchHotel()">查询</a>
+        </div>
+        */-->
     </div>
 </table>
 
@@ -267,7 +209,7 @@
 					text : '提交',
 					iconCls : 'icon-add-green',
 					handler : function () {
-                    addMenuParentCommit();
+                    addHotelCommit();
 					}
 				},{
 					text:'关闭',
@@ -276,10 +218,8 @@
                     $('#manager_add').dialog('close');
 					}
 				}]">
-    <p>菜单名：<input id="menuNameParentAdd" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入菜单名',invalidMessage:'菜单名长度至少为1位'" type="text" style="width:200px;" /></p>
-    <p>图&nbsp;&nbsp;&nbsp;标：<input id="menuIconParentAdd" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入图标',invalidMessage:'图标长度至少为1位'" type="text" style="width:200px;" /></p>
-    <p>状&nbsp;&nbsp;&nbsp;态：<input name="menuStateParentAdd" type="radio" value="0" checked="checked">正常</input><input name="menuStateParentAdd" type="radio" value="1">冻结</input></p>
-    <p>排&nbsp;&nbsp;&nbsp;序：<input id="menuSortParentAdd" class="easyui-numberbox" data-options="required:true,min:0,precision:0,validType:'length[1,100]',missingMessage:'请输入排序',invalidMessage:'菜单名长度至少为1位'" type="text" style="width:200px;" /></p>
+    <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入酒店名称',invalidMessage:'酒店名称长度至少为1位'," type="text" id="hotelNameAdd" style="width:200px;" /></p>
+    <p>备&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkAdd" style="width:200px; border: 1px solid #95B8E7" /></p>
 </form>
 
 <form id="manager_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
@@ -291,7 +231,7 @@
 					text : '提交',
 					iconCls : 'icon-add-green',
 					handler : function () {
-                    editMenuParentCommit();
+                    editHotelCommit();
 					}
 				},{
 					text:'关闭',
@@ -300,87 +240,29 @@
                     $('#manager_edit').dialog('close');
 					}
 				}]">
-    <p>菜单名：<input id="menuNameParentEdit" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入菜单名',invalidMessage:'菜单名长度至少为1位'" type="text" style="width:200px;" /></p>
-    <p>图&nbsp;&nbsp;&nbsp;标：<input id="menuIconParentEdit" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入图标',invalidMessage:'图标长度至少为1位'" type="text" style="width:200px;" /></p>
-    <p>状&nbsp;&nbsp;&nbsp;态：<input name="menuStateParentEdit" type="radio" value="0">正常</input><input name="menuStateParentEdit" type="radio" value="1">冻结</input></p>
-    <p>排&nbsp;&nbsp;&nbsp;序：<input id="menuSortParentEdit" class="easyui-numberbox" data-options="required:true,min:0,precision:0,validType:'length[1,100]',missingMessage:'请输入排序',invalidMessage:'菜单名长度至少为1位'" type="text" style="width:200px;" /></p>
+    <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入角色名',invalidMessage:'角色名长度至少为1位'," type="text" id="hotelNameEdit" style="width:200px;" /></p>
+    <p>备&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkEdit" style="width:200px;" /></p>
 </form>
 
-<div id="manager_listChild" class="easyui-window" style="background-color:#F4F4F4;" data-options="top:150,width:1100,title:'查看',modal:true,closed:true,iconCls:'icon-user-add',cache:false,collapsible:false,minimizable:false,maximizable:false,toolbar:'manager_listChild_tool'">
-    <div id="manager_listChild_tool">
-        <div style="margin-bottom:5px;">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addMenuChildShow()">新增</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editMenuChildShow()">编辑</a>
-        </div>
-    </div>
-    <table id="manager_listChild_datagrid" class="easyui-datagrid" data-options="fit:false,fitColumns:true,striped:true,rownumbers:true,border:false,singleSelect:true,pagination:false">
-        <thead>
-        <tr>
-            <th data-options="field:'id',hidden:true" />
-            <th data-options="field:'menuName',width:80">菜单名</th>
-            <th data-options="field:'iconCls',width:50">菜单图标</th>
-            <th data-options="field:'url',width:100">跳转链接</th>
-            <th data-options="field:'menuState',width:50,
-                formatter: function(value,row,index){
-                    if (value == 0){
-                        return '正常';
-                    } else {
-                        return '冻结';
-                    }
-                }">状态</th>
-            <th data-options="field:'sort',width:50">排序</th>
-            <th data-options="field:'createDate',width:100">创建时间</th>
-        </tr>
-        </thead>
-    </table>
-    <form id="manager_listChild_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-          data-options="top:150,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+<form id="manager_distriRoleMenu" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:150,width:320,title:'关联用户',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
-            $('#manager_listChild_add').form('reset');
+            $('#manager_distriRoleMenu').form('reset');
        },
 		buttons:[{
 					text : '提交',
 					iconCls : 'icon-add-green',
 					handler : function () {
-                    addMenuChildCommit();
+                    distriRoleMenuCommit();
 					}
 				},{
 					text:'关闭',
 					iconCls : 'icon-redo',
 					handler:function(){
-                    $('#manager_listChild_add').dialog('close');
+                    $('#manager_distriRoleMenu').dialog('close');
 					}
 				}]">
-        <p>菜单名：<input id="menuNameChildAdd" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入菜单名',invalidMessage:'菜单名长度至少为1位'" type="text" style="width:200px;" /></p>
-        <p>图&nbsp;&nbsp;&nbsp;标：<input id="menuIconChildAdd" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入图标',invalidMessage:'图标长度至少为1位'" type="text" style="width:200px;" /></p>
-        <p>链&nbsp;&nbsp;&nbsp;接：<input id="menuUrlChildAdd" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入跳转链接',invalidMessage:'跳转链接长度至少为1位'" type="text" style="width:200px;" /></p>
-        <p>状&nbsp;&nbsp;&nbsp;态：<input name="menuStateChildAdd" type="radio" value="0" checked="checked">正常</input><input name="menuStateParentAdd" type="radio" value="1">冻结</input></p>
-        <p>排&nbsp;&nbsp;&nbsp;序：<input id="menuSortChildAdd" class="easyui-numberbox" data-options="required:true,min:0,precision:0,validType:'length[1,100]',missingMessage:'请输入排序',invalidMessage:'菜单名长度至少为1位'" type="text" style="width:200px;" /></p>
-    </form>
-    <form id="manager_listChild_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-          data-options="top:150,width:320,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
-       onClose:function () {
-            $('#manager_listChild_edit').form('reset');
-       },
-		buttons:[{
-					text : '提交',
-					iconCls : 'icon-add-green',
-					handler : function () {
-                    editMenuChildCommit();
-					}
-				},{
-					text:'关闭',
-					iconCls : 'icon-redo',
-					handler:function(){
-                    $('#manager_listChild_edit').dialog('close');
-					}
-				}]">
-        <p>菜单名：<input id="menuNameChildEdit" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入菜单名',invalidMessage:'菜单名长度至少为1位'" type="text" style="width:200px;" /></p>
-        <p>图&nbsp;&nbsp;&nbsp;标：<input id="menuIconChildEdit" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入图标',invalidMessage:'图标长度至少为1位'" type="text" style="width:200px;" /></p>
-        <p>链&nbsp;&nbsp;&nbsp;接：<input id="menuUrlChildEdit" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入跳转链接',invalidMessage:'跳转链接长度至少为1位'" type="text" style="width:200px;" /></p>
-        <p>状&nbsp;&nbsp;&nbsp;态：<input name="menuStateChildEdit" type="radio" value="0" checked="checked">正常</input><input name="menuStateChildEdit" type="radio" value="1">冻结</input></p>
-        <p>排&nbsp;&nbsp;&nbsp;序：<input id="menuSortChildEdit" class="easyui-numberbox" data-options="required:true,min:0,precision:0,validType:'length[1,100]',missingMessage:'请输入排序',invalidMessage:'菜单名长度至少为1位'" type="text" style="width:200px;" /></p>
-    </form>
-</div>
+    <ul id="roleMenuTree"/>
+</form>
 </body>
 </html>
