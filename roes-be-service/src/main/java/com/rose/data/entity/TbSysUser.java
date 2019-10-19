@@ -31,6 +31,10 @@ public class TbSysUser extends BaseDataIdLong implements Serializable {
     @Column(name = "role_group_id", columnDefinition = "Int(20) COMMENT '角色组id'")
     private Long roleGroupId;
 
+    // 酒店id
+    @Column(name = "hotel_id", columnDefinition = "Int(20) COMMENT '酒店id'")
+    private Long hotelId;
+
     // 0：正常 1：冻结 2：注销
     @Column(name = "user_state", columnDefinition = "Int(1) default 0 COMMENT '用户状态'")
     private Integer userState;
