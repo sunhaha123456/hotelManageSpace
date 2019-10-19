@@ -47,13 +47,9 @@ public class TbHotelRoomDetail extends BaseDataIdLong {
     @Column(name = "sell_price", columnDefinition = "Int(10) default 1 COMMENT '销售价'")
     private Integer sellPrice;
 
-    // 成本价，单元：元
-    @Column(name = "cost_price", columnDefinition = "Int(10) default 1 COMMENT '成本价'")
-    private Integer costPrice;
-
-    // 价格描述
-    @Column(name = "price_desc", columnDefinition = "varchar(500) COMMENT '价格描述'")
-    private String priceDesc;
+    // 销售价描述
+    @Column(name = "sell_price_desc", columnDefinition = "varchar(500) COMMENT '销售价描述'")
+    private String sellPriceDesc;
 
     // 房间整体描述
     @Column(name = "room_overall_desc", columnDefinition = "varchar(500) COMMENT '房间整体描述'")
