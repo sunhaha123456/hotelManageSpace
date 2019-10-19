@@ -237,7 +237,7 @@
                     var id = rows[0].id;
                     var manager = '#manager_listChild_edit';
                     var isParent = 0;
-                    save(menuName, iconCls, menuState, sort, dirLevel, null, null, id, manager, isParent);
+                    save(menuName, iconCls, menuState, sort, dirLevel, null, url, id, manager, isParent);
                 }
             }
         }

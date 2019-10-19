@@ -152,6 +152,7 @@ public class MenuServiceImpl implements MenuService {
                 throw new BusinessException("菜单名已已存在！");
             }
             menu.setMenuName(param.getMenuName());
+            menu.setUrl(param.getUrl());
             menu.setIconCls(param.getIconCls());
             menu.setMenuState(param.getMenuState());
             menu.setSort(param.getSort());
