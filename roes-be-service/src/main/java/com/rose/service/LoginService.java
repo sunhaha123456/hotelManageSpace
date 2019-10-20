@@ -30,4 +30,6 @@ public interface LoginService {
      * @return true：通过校验，false：未通过校验
      */
     boolean tokenValidate(HttpServletRequest request);
+
+    String getHomePageShowUname();
 }

@@ -138,4 +138,25 @@ public class LoginServiceImpl implements LoginService {
         valueHolder.setUserIdHolder(Long.valueOf(userId));
         return true;
     }
+
+    @Override
+    public String getHomePageShowUname() {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null) {
+            log.error("getHomePageShowUname，异常，userId：{}，查无对应用户！", valueHolder.getUserIdHolder());
+            throw new BusinessException(ResponseResultCode.SERVER_ERROR);
+        }
+        if (StringUtil.isNotEmpty(user.getNickName())) {
+            return user.getNickName();
+        }
+        if (user.getHotelId() == null) {
+            return user.getUname();
+        }
+        TbHotelDetail hotel = hotelDetailRepository.findOne(user.getHotelId());
+        if (hotel == null) {
+            log.error("getHomePageShowUname，异常，hotelId：{}，查无对应酒店！", user.getHotelId());
+            throw new BusinessException(ResponseResultCode.SERVER_ERROR);
+        }
+        return hotel.getHotelName() + "  " + user.getUname();
+    }
 }

@@ -2,11 +2,8 @@ package com.rose.controler;
 
 import com.rose.common.repository.RedisRepositoryCustom;
 import com.rose.common.util.RedisKeyUtil;
-import com.rose.common.util.StringUtil;
 import com.rose.common.util.ValueHolder;
-import com.rose.data.entity.TbSysUser;
 import com.rose.data.to.request.UserLoginRequest;
-import com.rose.repository.SysUserRepository;
 import com.rose.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,8 +27,6 @@ public class LoginControler {
     @Inject
     private LoginService loginService;
     @Inject
-    private SysUserRepository sysUserRepository;
-    @Inject
     private RedisRepositoryCustom redisRepositoryCustom;
     @Inject
     private ValueHolder valueHolder;
@@ -44,18 +39,8 @@ public class LoginControler {
     @GetMapping(value = "/toSuccess")
     public String toSuccess(HttpServletRequest request) throws Exception {
         if (loginService.tokenValidate(request)) {
-            String unameShowInfo = "";
-            TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
-            if (user != null) { // nickName不为空时，优先显示nickName，nickName为空时，才显示uname
-                if (StringUtil.isEmpty(user.getNickName())) {
-                    if (StringUtil.isNotEmpty(user.getUname())) {
-                        unameShowInfo = user.getUname();
-                    }
-                } else {
-                    unameShowInfo = user.getNickName();
-                }
-            }
-            request.setAttribute("uname", unameShowInfo);
+            String uname = loginService.getHomePageShowUname();
+            request.setAttribute("uname", uname);
             return "home";
         }
         return "login";
