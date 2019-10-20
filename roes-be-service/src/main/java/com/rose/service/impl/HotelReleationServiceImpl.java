@@ -44,6 +44,11 @@ public class HotelReleationServiceImpl implements HotelReleationService {
         return hotelDetailRepositoryCustom.list(param.getPage(), param.getRows());
     }
 
+    @Override
+    public Object listAll() {
+        return hotelDetailRepository.findAll();
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void save(TbHotelDetail param) {
@@ -91,10 +96,5 @@ public class HotelReleationServiceImpl implements HotelReleationService {
             List<TbSysUser> userList = sysUserRepository.findByHotelId(id);
             redisRepositoryCustom.deleteUserKeys(userList);
         }
-    }
-
-    @Override
-    public List<TbSysUser> listUserByHotelId(Long hotelId) {
-        return sysUserRepository.findByHotelId(hotelId);
     }
 }

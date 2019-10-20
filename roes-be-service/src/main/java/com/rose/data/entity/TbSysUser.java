@@ -42,4 +42,8 @@ public class TbSysUser extends BaseDataIdLong implements Serializable {
     // 角色名
     @Transient
     private String roleGroupName;
+
+    // 关联酒店
+    @Transient
+    private String hotelName;
 }

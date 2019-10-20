@@ -19,7 +19,7 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/hotelReleation/getDetail", {"id":id});
+                var result = ajaxSynchGet("user/hotel/getDetail", {"id":id});
                 if (result.code == '200') {
                     var hotelName = result.data.hotelName;
                     var remark = result.data.remark;
@@ -33,31 +33,11 @@
                 alertWarn("请先选择记录！");
             }
         }
-        function distriRoleMenuShow() {
-            var rows = $('#manager').datagrid('getSelections');
-            if (rows.length > 0) {
-                var id = rows[0].id;
-                var result = ajaxSynchGet("user/roleManage/getMenuTreeByRoleId", {"id":id});
-                if (result.code == '200') {
-                    $('#roleMenuTree').tree({
-                        lines : true,
-                        multiple : true,
-                        checkbox : true,
-                        data : result.data
-                    });
-                    $('#manager_distriRoleMenu').dialog('open');
-                } else {
-                    alertWarn(result.msg);
-                }
-            } else {
-                alertWarn("请先选择记录！");
-            }
-        }
         function addHotelCommit() {
             if ($('#manager_add').form('validate')) {
                 var hotelName = $('#hotelNameAdd').val();
                 var hotelRemark = $('#hotelRemarkAdd').val();
-                var result = ajaxSynchPostJson("user/hotelReleation/save", {"hotelName":hotelName, "remark":hotelRemark});
+                var result = ajaxSynchPostJson("user/hotel/save", {"hotelName":hotelName, "remark":hotelRemark});
                 if (result.code == '200') {
                     alertSuccess();
                     $('#manager_add').dialog('close');
@@ -74,29 +54,13 @@
                     var id = rows[0].id;
                     var hotelName = $('#hotelNameEdit').val();
                     var hotelRemark = $('#hotelRemarkEdit').val();
-                    var result = ajaxSynchGet("user/hotelReleation/save", {"id":id, "hotelName": hotelName, "remark": hotelRemark})
+                    var result = ajaxSynchGet("user/hotel/save", {"id":id, "hotelName": hotelName, "remark": hotelRemark})
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
                         searchHotel();
                     }
                 }
-            }
-        }
-        function distriRoleMenuCommit() {
-            var rows = $('#manager').datagrid('getSelections');
-            if (rows.length > 0) {
-                var roleGroupId = rows[0].id;
-                var nodeArr = $('#roleMenuTree').tree('getChecked', ['indeterminate', 'checked']);
-                var idArr =  [];
-                nodeArr.forEach(function(value, index, array){
-                    idArr.push(value.id);
-                });
-                var result = ajaxSynchPostJson("user/roleManage/menuSave", {"roleGroupId":roleGroupId, "menuIds":idArr});
-                if (result.code == '200') {
-                    $('#manager_distriRoleMenu').dialog('close');
-                }
-                alertInfo(result.msg);
             }
         }
         function opertHotelState(state) {
@@ -112,7 +76,7 @@
                     if (flag) {
                         var id = rows[0].id;
                         $('#manager').datagrid('loading');
-                        var result = ajaxSynchGet("user/hotelReleation/opert", {"id": id, "state": state});
+                        var result = ajaxSynchGet("user/hotel/opert", {"id": id, "state": state});
                         $('#manager').datagrid('loaded');
                         searchHotel();
                         alertInfo(result.msg);
@@ -169,7 +133,7 @@
             });
         }
         function searchHotel() {
-            var result = ajaxSynchPostJson("user/hotelReleation/search", null);
+            var result = ajaxSynchPostJson("user/hotel/search", {"page":1, "rows":10});
             if (result.code == '200') {
                 $('#manager').datagrid('loadData', result.data);
             }
@@ -186,7 +150,6 @@
         <div style="margin-bottom:5px;">
             <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addHotelShow()">新增</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editHotelShow()">编辑</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="distriRoleMenuShow()">关联用户</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="opertHotelState(1)">下架</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="opertHotelState(0)">上架</a>
         </div>
@@ -219,7 +182,7 @@
 					}
 				}]">
     <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入酒店名称',invalidMessage:'酒店名称长度至少为1位'," type="text" id="hotelNameAdd" style="width:200px;" /></p>
-    <p>备&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkAdd" style="width:200px; border: 1px solid #95B8E7" /></p>
+    <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkAdd" style="width:200px; border: 1px solid #95B8E7" /></p>
 </form>
 
 <form id="manager_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
@@ -242,27 +205,6 @@
 				}]">
     <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入酒店名称',invalidMessage:'酒店名称长度至少为1位'," type="text" id="hotelNameEdit" style="width:200px;" /></p>
     <p>备&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkEdit" style="width:200px;" /></p>
-</form>
-
-<form id="manager_distriRoleMenu" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:150,width:320,title:'关联用户',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
-       onClose:function () {
-            $('#manager_distriRoleMenu').form('reset');
-       },
-		buttons:[{
-					text : '提交',
-					iconCls : 'icon-add-green',
-					handler : function () {
-                    distriRoleMenuCommit();
-					}
-				},{
-					text:'关闭',
-					iconCls : 'icon-redo',
-					handler:function(){
-                    $('#manager_distriRoleMenu').dialog('close');
-					}
-				}]">
-    <ul id="roleMenuTree"/>
 </form>
 </body>
 </html>

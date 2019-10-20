@@ -6,13 +6,11 @@ import com.rose.common.exception.BusinessException;
 import com.rose.common.util.StringUtil;
 import com.rose.data.base.PageParam;
 import com.rose.data.entity.TbHotelDetail;
-import com.rose.data.entity.TbSysUser;
 import com.rose.service.HotelReleationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * 功能：酒店关联 controller
@@ -21,8 +19,8 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/user/hotelReleation")
-public class HotelReleationControler {
+@RequestMapping("/user/hotel")
+public class HotelControler {
 
     @Inject
 	private HotelReleationService hotelReleationService;
@@ -35,6 +33,11 @@ public class HotelReleationControler {
     @PostMapping(value= "/search")
     public PageList<TbHotelDetail> search(@RequestBody PageParam param) throws Exception {
         return hotelReleationService.search(param);
+    }
+
+    @GetMapping(value= "/listAll")
+    public Object listAll() {
+        return hotelReleationService.listAll();
     }
 
     @PostMapping(value= "/save")
@@ -54,10 +57,5 @@ public class HotelReleationControler {
     @GetMapping(value= "/opert")
     public void opert(@RequestParam Long id, @RequestParam Integer state) {
         hotelReleationService.opert(id, state);
-    }
-
-    @GetMapping(value= "/listUserByHotelId")
-    public List<TbSysUser> listUserByHotelId(@RequestParam Long hotelId) throws Exception {
-        return hotelReleationService.listUserByHotelId(hotelId);
     }
 }

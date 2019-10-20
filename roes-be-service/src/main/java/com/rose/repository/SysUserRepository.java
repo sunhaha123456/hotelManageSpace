@@ -41,4 +41,8 @@ public interface SysUserRepository extends CrudRepository<TbSysUser, Long> {
 
     @Query(value = "select * from tb_sys_user where hotel_id = :hotelId", nativeQuery = true)
     List<TbSysUser> findByHotelId(@Param(value = "hotelId") Long hotelId);
+
+    @Modifying
+    @Query(value = "update tb_sys_user set hotel_id = :hotelId where id = :id", nativeQuery = true)
+    int updateHotelId(@Param(value = "id") Long id, @Param(value = "hotelId") Long hotelId);
 }

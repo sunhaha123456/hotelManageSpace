@@ -86,4 +86,9 @@ public class UserManageControler {
     public void updateUserNickName(@RequestParam Long id, @RequestParam(defaultValue = "") String userNickName) {
         userService.updateUserNickName(id, userNickName);
     }
+
+    @GetMapping(value= "/updateReleationHotelId")
+    public void updateReleationHotelId(@RequestParam Long id, @RequestParam Long hotelId) throws Exception {
+        userService.updateReleationHotelId(id, hotelId);
+    }
 }

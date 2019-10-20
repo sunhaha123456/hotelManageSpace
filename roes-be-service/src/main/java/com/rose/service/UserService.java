@@ -26,6 +26,8 @@ public interface UserService {
 
     void updateRole(Long id, Long roleId);
 
+    void updateReleationHotelId(Long id, Long hotelId);
+
     TbSysUser getDetail(Long id);
 
     void updatePasswodAdmin(Long id, String userNewPassword) throws Exception;

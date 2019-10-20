@@ -49,7 +49,7 @@ INSERT INTO `tb_menu` VALUES ('10', '2019-10-14 19:08:17', '2019-10-19 12:51:16'
 INSERT INTO `tb_menu` VALUES ('11', '2019-10-19 12:55:15', '2019-10-19 12:55:15', '1', 'fa-folder', '人力管理', '0', '0', '2', null);
 INSERT INTO `tb_menu` VALUES ('12', '2019-10-19 12:56:01', '2019-10-19 12:56:01', '2', 'fa-circle-o', '员工录入', '0', '11', '2', 'xxx');
 INSERT INTO `tb_menu` VALUES ('13', '2019-10-19 12:56:35', '2019-10-19 12:56:35', '2', 'fa-circle-o', '薪资发放', '0', '11', '1', 'xxx');
-INSERT INTO `tb_menu` VALUES ('14', '2019-10-19 12:57:21', '2019-10-19 12:57:21', '2', 'fa-circle-o', '酒店关联', '0', '1', '1', 'xxx');
+INSERT INTO `tb_menu` VALUES ('14', '2019-10-19 12:57:21', '2019-10-19 12:57:21', '2', 'fa-circle-o', '酒店管理', '0', '1', '1', 'xxx');
 
 -- ----------------------------
 -- Table structure for tb_menu_role_group_releation

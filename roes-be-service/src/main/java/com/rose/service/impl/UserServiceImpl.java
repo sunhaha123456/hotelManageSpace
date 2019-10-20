@@ -9,11 +9,13 @@ import com.rose.common.util.Md5Util;
 import com.rose.common.util.RedisKeyUtil;
 import com.rose.common.util.ValueHolder;
 import com.rose.data.constant.SystemConstant;
+import com.rose.data.entity.TbHotelDetail;
 import com.rose.data.entity.TbRoleGroup;
 import com.rose.data.entity.TbSysUser;
 import com.rose.data.to.request.UserAddRequest;
 import com.rose.data.to.request.UserSearchRequest;
 import com.rose.data.to.vo.UserRedisVo;
+import com.rose.repository.HotelDetailRepository;
 import com.rose.repository.RoleGroupRepository;
 import com.rose.repository.SysUserRepository;
 import com.rose.repository.SysUserRepositoryCustom;
@@ -36,6 +38,8 @@ public class UserServiceImpl implements UserService {
     private SysUserRepository sysUserRepository;
     @Inject
     private RoleGroupRepository roleGroupRepository;
+    @Inject
+    private HotelDetailRepository hotelDetailRepository;
     @Inject
     private RedisRepositoryCustom redisRepositoryCustom;
     @Inject
@@ -120,6 +124,20 @@ public class UserServiceImpl implements UserService {
         if (c <= 0) {
             throw new BusinessException(ResponseResultCode.OPERT_ERROR);
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateReleationHotelId(Long id, Long hotelId) {
+        TbSysUser user = sysUserRepository.findOne(id);
+        if (user == null) {
+            throw new BusinessException("该用户不存在！");
+        }
+        TbHotelDetail hotel = hotelDetailRepository.findOne(hotelId);
+        if (hotel == null) {
+            throw new BusinessException("该酒店不存在！");
+        }
+        sysUserRepository.updateHotelId(id, hotelId);
     }
 
     @Override

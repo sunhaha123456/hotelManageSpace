@@ -43,8 +43,8 @@ public class JumpControler {
      * 功能：跳转酒店关联页面
      * @return
      */
-    @GetMapping(value = "/user/menuManage/toHotelReleation")
+    @GetMapping(value = "/user/menuManage/toHotelManage")
     public String toHotelReleation() {
-        return "menu/hotelReleation";
+        return "menu/hotelManage";
     }
 }
