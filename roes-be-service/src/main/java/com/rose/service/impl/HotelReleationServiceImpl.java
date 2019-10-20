@@ -89,7 +89,7 @@ public class HotelReleationServiceImpl implements HotelReleationService {
             }
             hotelDetailRepository.updateStateById(id, 0);
         } else { // 下架
-            if (hotel.getHotelState() == 0) {
+            if (hotel.getHotelState() == 1) {
                 throw new BusinessException("该酒店原已处于下架状态！");
             }
             hotelDetailRepository.updateStateById(id, 1);

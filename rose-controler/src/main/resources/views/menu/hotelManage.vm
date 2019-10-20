@@ -54,11 +54,13 @@
                     var id = rows[0].id;
                     var hotelName = $('#hotelNameEdit').val();
                     var hotelRemark = $('#hotelRemarkEdit').val();
-                    var result = ajaxSynchGet("user/hotel/save", {"id":id, "hotelName": hotelName, "remark": hotelRemark})
+                    var result = ajaxSynchPostJson("user/hotel/save", {"id":id, "hotelName": hotelName, "remark": hotelRemark})
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
                         searchHotel();
+                    } else {
+                        alertWarn(result.msg);
                     }
                 }
             }
@@ -204,7 +206,7 @@
 					}
 				}]">
     <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入酒店名称',invalidMessage:'酒店名称长度至少为1位'," type="text" id="hotelNameEdit" style="width:200px;" /></p>
-    <p>备&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkEdit" style="width:200px;" /></p>
+    <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkEdit" style="width:200px;" /></p>
 </form>
 </body>
 </html>

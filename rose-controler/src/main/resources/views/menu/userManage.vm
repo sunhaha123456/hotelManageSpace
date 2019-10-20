@@ -64,9 +64,10 @@
                 var id = rows[0].id;
                 var result = ajaxSynchGet("user/userManage/getDetail", {"id":id});
                 if (result.code == '200') {
-                    var uname = result.data.uname;
                     var hotelId = result.data.hotelId;
-                    $('#distriHotel').combobox('setValue', hotelId);
+                    if (hotelId != null) {
+                        $('#distriHotel').combobox('setValue', hotelId);
+                    }
                     $('#manager_distriUserHotel').dialog('open');
                 } else {
                     alertWarn(result.msg);
@@ -267,13 +268,12 @@
         function webPageInit() {
             var result = ajaxSynchGet("user/roleManage/list", {"roleState": 0});
             if (result.code == '200') {
-                $('#authAdd').combobox('loadData',result.data);
-                $('#authDistriAuth').combobox('loadData',result.data);
+                $('#authAdd').combobox('loadData', result.data);
+                $('#authDistriAuth').combobox('loadData', result.data);
             }
-            var result = ajaxSynchGet("user/roleManage/list", {"roleState": 0});
+            var result = ajaxSynchGet("user/hotel/listAll", null);
             if (result.code == '200') {
-                $('#authAdd').combobox('loadData',result.data);
-                $('#authDistriAuth').combobox('loadData',result.data);
+                $('#distriHotel').combobox('loadData', result.data);
             }
         }
 
