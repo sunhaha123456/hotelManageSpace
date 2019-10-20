@@ -138,7 +138,7 @@ public class MenuServiceImpl implements MenuService {
         if (param.getId() == null) {
             long c = menuRepository.countByMenuName(param.getMenuName(), param.getDirLevel(), param.getParentId());
             if (0 < c) {
-                throw new BusinessException("菜单名已已存在！");
+                throw new BusinessException("菜单名已存在！");
             }
             param.setCreateDate(new Date());
             menuRepository.save(param);
@@ -149,7 +149,7 @@ public class MenuServiceImpl implements MenuService {
             }
             long c = menuRepository.countByMenuName(menu.getMenuName(), menu.getId(), menu.getDirLevel(), menu.getParentId());
             if (0 < c) {
-                throw new BusinessException("菜单名已已存在！");
+                throw new BusinessException("菜单名已存在！");
             }
             menu.setMenuName(param.getMenuName());
             menu.setUrl(param.getUrl());

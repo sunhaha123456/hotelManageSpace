@@ -5,10 +5,12 @@ import com.rose.common.exception.BusinessException;
 import com.rose.common.repository.RedisRepositoryCustom;
 import com.rose.common.util.*;
 import com.rose.data.constant.SystemConstant;
+import com.rose.data.entity.TbHotelDetail;
 import com.rose.data.entity.TbRoleGroup;
 import com.rose.data.entity.TbSysUser;
 import com.rose.data.to.request.UserLoginRequest;
 import com.rose.data.to.vo.UserRedisVo;
+import com.rose.repository.HotelDetailRepository;
 import com.rose.repository.RoleGroupRepository;
 import com.rose.repository.SysUserRepository;
 import com.rose.service.LoginService;
@@ -30,6 +32,8 @@ public class LoginServiceImpl implements LoginService {
     private SysUserRepository sysUserRepository;
     @Inject
     private RoleGroupRepository roleGroupRepository;
+    @Inject
+    private HotelDetailRepository hotelDetailRepository;
     @Inject
     private RedisRepositoryCustom redisRepositoryCustom;
     @Inject
@@ -66,6 +70,12 @@ public class LoginServiceImpl implements LoginService {
         }
         if (role.getRoleState() != 0) {
             throw new BusinessException("用户所属角色组已被冻结！");
+        }
+        if (sysUser.getHotelId() != null) {
+            TbHotelDetail hotel = hotelDetailRepository.findOne(sysUser.getHotelId());
+            if (hotel == null || hotel.getHotelState() == 1) {
+                throw new BusinessException("用户所属酒店已被下架！");
+            }
         }
         // 3、更新redis用户信息，更新用户token、用户状态
         UserRedisVo userRedis = redisRepositoryCustom.getClassObj(RedisKeyUtil.getRedisUserInfoKey(sysUser.getId()), UserRedisVo.class);

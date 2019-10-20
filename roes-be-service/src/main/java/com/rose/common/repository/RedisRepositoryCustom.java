@@ -1,5 +1,7 @@
 package com.rose.common.repository;
 
+import com.rose.data.entity.TbSysUser;
+
 import java.util.List;
 
 /**
@@ -39,4 +41,6 @@ public interface RedisRepositoryCustom {
     void delete(String key);
 
     void deleteKeys(List<String> keyList);
+
+    void deleteUserKeys(List<TbSysUser> userList);
 }

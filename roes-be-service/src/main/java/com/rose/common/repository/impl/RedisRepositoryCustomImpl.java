@@ -2,11 +2,14 @@ package com.rose.common.repository.impl;
 
 import com.rose.common.repository.RedisRepositoryCustom;
 import com.rose.common.util.JsonUtil;
+import com.rose.common.util.RedisKeyUtil;
+import com.rose.data.entity.TbSysUser;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -61,5 +64,16 @@ public class RedisRepositoryCustomImpl implements RedisRepositoryCustom {
     @Override
     public void deleteKeys(List<String> keyList) {
         template.delete(keyList);
+    }
+
+    @Override
+    public void deleteUserKeys(List<TbSysUser> userList) {
+        if (userList != null && userList.size() > 0) {
+            List<String> keyList = new ArrayList<>();
+            for (TbSysUser user : userList) {
+                keyList.add(RedisKeyUtil.getRedisUserInfoKey(user.getId()));
+            }
+            deleteKeys(keyList);
+        }
     }
 }

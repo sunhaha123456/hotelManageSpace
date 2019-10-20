@@ -19,12 +19,12 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/roleManage/getDetail", {"id":id});
+                var result = ajaxSynchGet("user/hotelReleation/getDetail", {"id":id});
                 if (result.code == '200') {
-                    var roleName = result.data.roleName;
-                    var roleRemark = result.data.roleRemark;
-                    $('#hotelNameEdit').val(roleName);
-                    $('#hotelRemarkEdit').val(roleRemark);
+                    var hotelName = result.data.hotelName;
+                    var remark = result.data.remark;
+                    $('#hotelNameEdit').val(hotelName);
+                    $('#hotelRemarkEdit').val(remark);
                     $('#manager_edit').dialog('open');
                 } else {
                     alertWarn(result.msg);
@@ -57,7 +57,7 @@
             if ($('#manager_add').form('validate')) {
                 var hotelName = $('#hotelNameAdd').val();
                 var hotelRemark = $('#hotelRemarkAdd').val();
-                var result = ajaxSynchGet("user/roleManage/add", {"roleName":roleName, "roleRemark":roleRemark});
+                var result = ajaxSynchPostJson("user/hotelReleation/save", {"hotelName":hotelName, "remark":hotelRemark});
                 if (result.code == '200') {
                     alertSuccess();
                     $('#manager_add').dialog('close');
@@ -74,7 +74,7 @@
                     var id = rows[0].id;
                     var hotelName = $('#hotelNameEdit').val();
                     var hotelRemark = $('#hotelRemarkEdit').val();
-                    var result = ajaxSynchGet("user/roleManage/update", {"id":id, "roleName": roleName, "roleRemark": roleRemark})
+                    var result = ajaxSynchGet("user/hotelReleation/save", {"id":id, "hotelName": hotelName, "remark": hotelRemark})
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
@@ -112,7 +112,7 @@
                     if (flag) {
                         var id = rows[0].id;
                         $('#manager').datagrid('loading');
-                        var result = ajaxSynchGet("user/roleManage/opert", {"id": id, "state": state});
+                        var result = ajaxSynchGet("user/hotelReleation/opert", {"id": id, "state": state});
                         $('#manager').datagrid('loaded');
                         searchHotel();
                         alertInfo(result.msg);
@@ -144,14 +144,14 @@
                         width : 100,
                     },
                     {
-                        field : 'roleState',
+                        field : 'hotelState',
                         title : '状态',
                         width : 100,
                         formatter: function(value,row,index){
                             if (value == 0){
-                                return "正常";
+                                return "上架";
                             } else {
-                                return "冻结";
+                                return "下架";
                             }
                         }
                     },                        
@@ -169,7 +169,7 @@
             });
         }
         function searchHotel() {
-            var result = ajaxSynchGet("user/roleManage/list", {"roleState": 2});
+            var result = ajaxSynchPostJson("user/hotelReleation/search", null);
             if (result.code == '200') {
                 $('#manager').datagrid('loadData', result.data);
             }
@@ -240,7 +240,7 @@
                     $('#manager_edit').dialog('close');
 					}
 				}]">
-    <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入角色名',invalidMessage:'角色名长度至少为1位'," type="text" id="hotelNameEdit" style="width:200px;" /></p>
+    <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入酒店名称',invalidMessage:'酒店名称长度至少为1位'," type="text" id="hotelNameEdit" style="width:200px;" /></p>
     <p>备&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkEdit" style="width:200px;" /></p>
 </form>
 

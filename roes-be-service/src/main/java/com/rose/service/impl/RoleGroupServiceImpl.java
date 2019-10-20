@@ -3,7 +3,6 @@ package com.rose.service.impl;
 import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
 import com.rose.common.repository.RedisRepositoryCustom;
-import com.rose.common.util.RedisKeyUtil;
 import com.rose.data.entity.TbRoleGroup;
 import com.rose.data.entity.TbSysUser;
 import com.rose.repository.RoleGroupRepository;
@@ -14,10 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -92,13 +89,7 @@ public class RoleGroupServiceImpl implements RoleGroupService {
             throw new BusinessException(ResponseResultCode.OPERT_ERROR);
         }
         List<TbSysUser> userList = sysUserRepository.findByRoleGroupId(id);
-        if (userList != null && userList.size() > 0) {
-            List<String> keyList = new ArrayList<>();
-            for (TbSysUser user : userList) {
-                keyList.add(RedisKeyUtil.getRedisUserInfoKey(user.getId()));
-            }
-            redisRepositoryCustom.deleteKeys(keyList);
-        }
+        redisRepositoryCustom.deleteUserKeys(userList);
     }
 
     @Override
