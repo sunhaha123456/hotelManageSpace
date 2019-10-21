@@ -47,4 +47,13 @@ public class JumpControler {
     public String toHotelReleation() {
         return "menu/hotelManage";
     }
+
+    /**
+     * 功能：跳转酒店房间类别页面
+     * @return
+     */
+    @GetMapping(value = "/user/menuManage/toHotelRoomTypeManage")
+    public String toHotelRoomTypeManage() {
+        return "menu/hotelRoomType";
+    }
 }

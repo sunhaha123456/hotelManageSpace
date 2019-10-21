@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/static/easyui/themes/easy.common.css}"></link>
+    <script th:inline="javascript">
+        var contextPath = [[@{/}]];
+        var interceptorToken = [[${token}]];
+        var interceptorUserId = [[${userId}]];
+    </script>
+    <script th:src="@{/static/easyui/easy.common.js}"></script>
+    <script th:src="@{/static/myFun.js}"></script>
+    <script th:inline="javascript">
+        function addHotelShow() {
+            $('#manager_add').dialog('open');
+            $('#roleNameAdd').focus();
+        }
+        function editHotelShow() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchGet("user/hotel/getDetail", {"id":id});
+                if (result.code == '200') {
+                    var hotelName = result.data.hotelName;
+                    var remark = result.data.remark;
+                    $('#hotelNameEdit').val(hotelName);
+                    $('#hotelRemarkEdit').val(remark);
+                    $('#manager_edit').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+        function addHotelCommit() {
+            if ($('#manager_add').form('validate')) {
+                var hotelName = $('#hotelNameAdd').val();
+                var hotelRemark = $('#hotelRemarkAdd').val();
+                var result = ajaxSynchPostJson("user/hotel/save", {"hotelName":hotelName, "remark":hotelRemark});
+                if (result.code == '200') {
+                    alertSuccess();
+                    $('#manager_add').dialog('close');
+                    searchHotel();
+                } else {
+                    alertWarn(result.msg);
+                }
+            }
+        }
+        function editHotelCommit() {
+            if ($('#manager_edit').form('validate')) {
+                var rows = $('#manager').datagrid('getSelections');
+                if (rows.length > 0) {
+                    var id = rows[0].id;
+                    var hotelName = $('#hotelNameEdit').val();
+                    var hotelRemark = $('#hotelRemarkEdit').val();
+                    var result = ajaxSynchPostJson("user/hotel/save", {"id":id, "hotelName": hotelName, "remark": hotelRemark})
+                    if (result.code == '200') {
+                        alertSuccess();
+                        $('#manager_edit').dialog('close');
+                        searchHotel();
+                    } else {
+                        alertWarn(result.msg);
+                    }
+                }
+            }
+        }
+        function opertHotelState(state) {
+            var showMsg = '';
+            if (state == 0) {
+                showMsg = '您确定上架该酒店吗？';
+            } else {
+                showMsg = '您确定下架该酒店吗？';
+            }
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                $.messager.confirm('确定操作', showMsg, function (flag) {
+                    if (flag) {
+                        var id = rows[0].id;
+                        $('#manager').datagrid('loading');
+                        var result = ajaxSynchGet("user/hotel/opert", {"id": id, "state": state});
+                        $('#manager').datagrid('loaded');
+                        searchHotel();
+                        alertInfo(result.msg);
+                    }
+                });
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+        function dataGridInit() {
+            $('#manager').datagrid({
+                fit : true,
+                fitColumns : true,
+                striped : true,
+                rownumbers : true,
+                border : false,
+                pagination : false,
+                singleSelect:true,
+                toolbar : '#manager_tool',
+                columns : [[
+                    {
+                        field : 'id',
+                        width : 100,
+                        hidden : true
+                    },
+                    {
+                        field : 'hotelName',
+                        title : '酒店名称',
+                        width : 100,
+                    },
+                    {
+                        field : 'hotelState',
+                        title : '状态',
+                        width : 100,
+                        formatter: function(value,row,index){
+                            if (value == 0){
+                                return "上架";
+                            } else {
+                                return "下架";
+                            }
+                        }
+                    },                        
+                    {
+                        field : 'remark',
+                        title : '备注',
+                        width : 100,
+                    },
+                    {
+                        field : 'createDate',
+                        title : '创建日期',
+                        width : 100,
+                    }
+                ]]
+            });
+        }
+        function searchHotel() {
+            var result = ajaxSynchPostJson("user/hotel/search", {"page":1, "rows":10});
+            if (result.code == '200') {
+                $('#manager').datagrid('loadData', result.data);
+            }
+        }
+        $(function () {
+            dataGridInit();
+            searchHotel();
+        });
+    </script>
+</head>
+<body>
+<table id="manager">
+    <div id="manager_tool">
+        <div style="margin-bottom:5px;">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addHotelShow()">新增</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editHotelShow()">编辑</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="opertHotelState(1)">下架</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="opertHotelState(0)">上架</a>
+        </div>
+
+        <!--/*
+        <div style="padding:0 0 0 7px;color:#333;">
+            角色名：<input type="text" class="textbox" id="unameSearch" style="width:110px" />
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchHotel()">查询</a>
+        </div>
+        */-->
+    </div>
+</table>
+
+<form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:150,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+       onClose:function () {
+            $('#manager_add').form('reset');
+       },
+		buttons:[{
+					text : '提交',
+					iconCls : 'icon-add-green',
+					handler : function () {
+                    addHotelCommit();
+					}
+				},{
+					text:'关闭',
+					iconCls : 'icon-redo',
+					handler:function(){
+                    $('#manager_add').dialog('close');
+					}
+				}]">
+    <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入酒店名称',invalidMessage:'酒店名称长度至少为1位'," type="text" id="hotelNameAdd" style="width:200px;" /></p>
+    <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkAdd" style="width:200px; border: 1px solid #95B8E7" /></p>
+</form>
+
+<form id="manager_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:150,width:320,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+       onClose:function () {
+            $('#manager_edit').form('reset');
+       },
+		buttons:[{
+					text : '提交',
+					iconCls : 'icon-add-green',
+					handler : function () {
+                    editHotelCommit();
+					}
+				},{
+					text:'关闭',
+					iconCls : 'icon-redo',
+					handler:function(){
+                    $('#manager_edit').dialog('close');
+					}
+				}]">
+    <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入酒店名称',invalidMessage:'酒店名称长度至少为1位'," type="text" id="hotelNameEdit" style="width:200px;" /></p>
+    <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkEdit" style="width:200px;" /></p>
+</form>
+</body>
+</html>
