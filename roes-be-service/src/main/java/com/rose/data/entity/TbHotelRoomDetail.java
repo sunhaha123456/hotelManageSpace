@@ -6,8 +6,6 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.List;
 
 /**
  * 描述：酒店房间详情
@@ -19,21 +17,25 @@ import java.util.List;
 @Table(name = "tb_hotel_room_detail")
 public class TbHotelRoomDetail extends BaseDataIdLong {
 
+    // 酒店id
+    @Column(name = "hotel_id", columnDefinition = "Int(20) COMMENT '酒店id'")
+    private Long hotelId;
+
     // 房间编号
     @Column(name = "room_no", columnDefinition = "varchar(255) COMMENT '房间编号'")
     private String roomNo;
 
-    // 房间面积
-    @Column(name = "room_area_measure", columnDefinition = "varchar(255) COMMENT '房间面积'")
-    private String roomAreaMeasure ;
+    // 房间状态
+    // 0：房间不可入住，指房间目前不具备入住条件
+    // 1：房间无人入住，指房间可以入住，并且还未有人入住
+    // 2：房间还未住满，指房间已有人入住，但仍可继续入住
+    // 3：房间已经住满
+    @Column(name = "room_state", columnDefinition = "Int(10) default 0 COMMENT '房间状态'")
+    private Integer roomState;
 
-    // 有无窗户 0：无，1：有
+    // 有无窗户 0：无，1：有窗户，但不能看到海，2：有窗户，且能看到海
     @Column(name = "room_window_flag", columnDefinition = "Int(10) default 0 COMMENT '有无窗户'")
     private Integer roomWindowFlag;
-
-    // 当有窗户时，房间窗户是否能看到海 0：看不到，1：能看到
-    @Column(name = "room_window_see_sea_flag", columnDefinition = "Int(10) default 0 COMMENT '当有窗户时，房间窗户是否能看到海'")
-    private Integer roomWindowSeeSeaFlag;
 
     // 有无独立卫生间 0：无，1：有
     @Column(name = "room_wc_flag", columnDefinition = "Int(10) default 1 COMMENT '有无独立卫生间'")
