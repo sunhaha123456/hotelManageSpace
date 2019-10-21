@@ -9,7 +9,7 @@ import com.rose.data.entity.TbSysUser;
 import com.rose.repository.HotelDetailRepository;
 import com.rose.repository.HotelDetailRepositoryCustom;
 import com.rose.repository.SysUserRepository;
-import com.rose.service.HotelReleationService;
+import com.rose.service.HotelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class HotelReleationServiceImpl implements HotelReleationService {
+public class HotelServiceImpl implements HotelService {
 
     @Inject
     private HotelDetailRepository hotelDetailRepository;

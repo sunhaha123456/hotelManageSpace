@@ -5,11 +5,11 @@ import com.rose.data.base.PageParam;
 import com.rose.data.entity.TbHotelDetail;
 
 /**
- * 功能：酒店关联 service
+ * 功能：酒店 service
  * @author sunpeng
  * @date 2019
  */
-public interface HotelReleationService {
+public interface HotelService {
 
     TbHotelDetail getDetail(Long id);
 
