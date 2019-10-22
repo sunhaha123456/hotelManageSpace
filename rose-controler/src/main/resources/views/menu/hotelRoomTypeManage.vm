@@ -12,14 +12,19 @@
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
         function addHotelRoomTypeShow() {
-            $('#manager_add').dialog('open');
-            $('#hotelRoomTypeNameAdd').focus();
+            var hotelId = $('#hotelList').combobox('getValue');
+            if (hotelId == null || hotelId == '') {
+                alertWarn("请先选择酒店！");
+            } else {
+                $('#manager_add').dialog('open');
+                $('#hotelRoomTypeNameAdd').focus();
+            }
         }
         function editHotelRoomTypeShow() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/hotel/getDetail", {"id":id});
+                var result = ajaxSynchGet("user/hotelRoomType/getDetail", {"id":id});
                 if (result.code == '200') {
                     var hotelRoomTypeName = result.data.roomTypeName;
                     var hotelRoomTypeRemark = result.data.remark;
@@ -35,9 +40,10 @@
         }
         function addHotelRoomTypeCommit() {
             if ($('#manager_add').form('validate')) {
+                var hotelId = $('#hotelList').combobox('getValue');
                 var roomTypeName = $('#hotelRoomTypeNameAdd').val();
                 var remark = $('#hotelRoomTypeRemarkAdd').val();
-                var result = ajaxSynchPostJson("user/hotel/save", {"roomTypeName":roomTypeName, "remark":remark});
+                var result = ajaxSynchPostJson("user/hotelRoomType/save", {"hotelId":hotelId, "roomTypeName":roomTypeName, "remark":remark});
                 if (result.code == '200') {
                     alertSuccess();
                     $('#manager_add').dialog('close');
@@ -54,7 +60,7 @@
                     var id = rows[0].id;
                     var hotelRoomTypeName = $('#hotelRoomTypeNameEdit').val();
                     var hotelRoomTypeRemark = $('#hotelRoomTypeRemarkEdit').val();
-                    var result = ajaxSynchPostJson("user/hotel/save", {"id":id, "roomTypeName": hotelRoomTypeName, "remark": hotelRoomTypeRemark})
+                    var result = ajaxSynchPostJson("user/hotelRoomType/save", {"id":id, "roomTypeName": hotelRoomTypeName, "remark": hotelRoomTypeRemark})
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
@@ -72,7 +78,7 @@
                     if (flag) {
                         var id = rows[0].id;
                         $('#manager').datagrid('loading');
-                        var result = ajaxSynchGet("user/hotel/opert", {"id": id});
+                        var result = ajaxSynchGet("user/hotelRoomType/delete", {"id": id});
                         $('#manager').datagrid('loaded');
                         searchHotelRoomType();
                         alertInfo(result.msg);

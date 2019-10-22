@@ -1,6 +1,9 @@
 package com.rose.controler;
 
 import com.rose.common.data.base.PageList;
+import com.rose.common.data.response.ResponseResultCode;
+import com.rose.common.exception.BusinessException;
+import com.rose.common.util.StringUtil;
 import com.rose.data.entity.TbHotelRoomType;
 import com.rose.data.to.request.HotelRoomTypeSearchRequest;
 import com.rose.service.HotelRoomTypeService;
@@ -30,5 +33,18 @@ public class HotelRoomTypeControler {
     @PostMapping(value= "/search")
     public PageList<TbHotelRoomType> search(@RequestBody HotelRoomTypeSearchRequest param) throws Exception {
         return hotelRoomTypeService.search(param);
+    }
+
+    @PostMapping(value= "/save")
+    public void save(@RequestBody TbHotelRoomType param) {
+        if (param == null || param.getHotelId() == null || StringUtil.isEmpty(param.getRoomTypeName())) {
+            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+        }
+        hotelRoomTypeService.save(param);
+    }
+
+    @GetMapping(value= "/delete")
+    public void delete(@RequestParam Long id) {
+        hotelRoomTypeService.delete(id);
     }
 }

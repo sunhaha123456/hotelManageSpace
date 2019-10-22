@@ -14,4 +14,8 @@ public interface HotelRoomTypeService {
     TbHotelRoomType getDetail(Long id);
 
     PageList<TbHotelRoomType> search(HotelRoomTypeSearchRequest param) throws Exception;
+
+    void save(TbHotelRoomType param);
+
+    void delete(Long id);
 }
