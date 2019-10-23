@@ -49,11 +49,11 @@ public class JumpControler {
     }
 
     /**
-     * 功能：跳转酒店房间类别页面
+     * 功能：跳转运营的酒店房间类别页面
      * @return
      */
-    @GetMapping(value = "/user/menuManage/toHotelRoomTypeManage")
+    @GetMapping(value = "/user/menuManage/toOperationHotelRoomTypeManage")
     public String toHotelRoomTypeManage() {
-        return "menu/hotelRoomType";
+        return "menu/operationHotelRoomTypeManage";
     }
 }
