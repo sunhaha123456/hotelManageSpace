@@ -43,7 +43,7 @@
                 var hotelId = $('#hotelList').combobox('getValue');
                 var roomTypeName = $('#hotelRoomTypeNameAdd').val();
                 var remark = $('#hotelRoomTypeRemarkAdd').val();
-                var result = ajaxSynchPostJson("user/hotelRoomType/save", {"hotelId":hotelId, "roomTypeName":roomTypeName, "remark":remark});
+                var result = ajaxSynchPostJson("user/hotelRoomType/operationSave", {"hotelId":hotelId, "roomTypeName":roomTypeName, "remark":remark});
                 if (result.code == '200') {
                     alertSuccess();
                     $('#manager_add').dialog('close');
@@ -60,7 +60,7 @@
                     var id = rows[0].id;
                     var hotelRoomTypeName = $('#hotelRoomTypeNameEdit').val();
                     var hotelRoomTypeRemark = $('#hotelRoomTypeRemarkEdit').val();
-                    var result = ajaxSynchPostJson("user/hotelRoomType/save", {"id":id, "roomTypeName": hotelRoomTypeName, "remark": hotelRoomTypeRemark})
+                    var result = ajaxSynchPostJson("user/hotelRoomType/operationSave", {"id":id, "roomTypeName": hotelRoomTypeName, "remark": hotelRoomTypeRemark})
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
@@ -78,7 +78,7 @@
                     if (flag) {
                         var id = rows[0].id;
                         $('#manager').datagrid('loading');
-                        var result = ajaxSynchGet("user/hotelRoomType/delete", {"id": id});
+                        var result = ajaxSynchGet("user/hotelRoomType/operationDelete", {"id": id});
                         $('#manager').datagrid('loaded');
                         searchHotelRoomType();
                         alertInfo(result.msg);

@@ -35,7 +35,8 @@ public class HotelRoomTypeControler {
         return hotelRoomTypeService.search(param);
     }
 
-    @PostMapping(value= "/save")
+    // 功能：运营人员保存或修改房间类别
+    @PostMapping(value= "/operationSave")
     public void save(@RequestBody TbHotelRoomType param) {
         if (param == null || param.getHotelId() == null || StringUtil.isEmpty(param.getRoomTypeName())) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
@@ -43,7 +44,8 @@ public class HotelRoomTypeControler {
         hotelRoomTypeService.save(param);
     }
 
-    @GetMapping(value= "/delete")
+    // 功能：运营人员删除房间类别
+    @GetMapping(value= "/operationDelete")
     public void delete(@RequestParam Long id) {
         hotelRoomTypeService.delete(id);
     }
