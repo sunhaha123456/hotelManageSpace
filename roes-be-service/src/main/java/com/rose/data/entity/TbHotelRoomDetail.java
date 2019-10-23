@@ -6,6 +6,7 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * 描述：酒店房间详情
@@ -49,12 +50,16 @@ public class TbHotelRoomDetail extends BaseDataIdLong {
     private Integer bedNum;
 
     // 销售价，单位：元
-    @Column(name = "sell_price", columnDefinition = "Int(10) default 1 COMMENT '销售价'")
-    private Integer sellPrice;
+    @Column(name = "sell_price")
+    private BigDecimal sellPrice;
 
     // 销售价描述
-    @Column(name = "sell_price_desc", columnDefinition = "varchar(500) COMMENT '销售价描述'")
+    @Column(name = "sell_price_desc", columnDefinition = "varchar(255) COMMENT '销售价描述'")
     private String sellPriceDesc;
+
+    // 退房规则描述
+    @Column(name = "check_out_desc", columnDefinition = "varchar(500) COMMENT '退房规则描述'")
+    private String checkOutDesc;
 
     // 房间整体描述
     @Column(name = "room_overall_desc", columnDefinition = "varchar(500) COMMENT '房间整体描述'")
