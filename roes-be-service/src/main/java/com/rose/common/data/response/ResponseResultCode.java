@@ -19,7 +19,8 @@ public enum ResponseResultCode {
 	LOGIN_FIRST(40006, "登录信息已失效，请重新登录！"),
 	USER_STATE_ERROR(40007, "用户状态不正常！"),
 	OPERT_ERROR(40008, "操作失败！"),
-	USER_OLD_PASSWORD_ERROR(40009, "用户密码错误！");
+	USER_OLD_PASSWORD_ERROR(40009, "用户密码错误！"),
+	NO_AUTH_ERROR(40010, "无操作权限！");
 
 	private Integer code;
 	

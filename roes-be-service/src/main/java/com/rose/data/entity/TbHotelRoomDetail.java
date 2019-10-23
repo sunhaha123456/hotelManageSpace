@@ -6,6 +6,7 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 
 /**
@@ -36,6 +37,10 @@ public class TbHotelRoomDetail extends BaseDataIdLong {
 
     @Column(name = "room_type_id", columnDefinition = "Int(20) COMMENT '房间种类id'")
     private Long roomTypeId;
+
+    // 房间类别名称
+    @Transient
+    private String roomTypeName;
 
     // 有无窗户 0：无，1：有窗户，但不能看到海，2：有窗户，且能看到海
     @Column(name = "room_window_flag", columnDefinition = "Int(10) default 0 COMMENT '有无窗户'")
