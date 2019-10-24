@@ -27,14 +27,15 @@ public class TbHotelRoomDetail extends BaseDataIdLong {
     @Column(name = "room_no", columnDefinition = "varchar(255) COMMENT '房间编号'")
     private String roomNo;
 
-    // 房间状态
-    // 0：房间不可入住，指房间目前不具备入住条件
-    // 1：房间无人入住，指房间可以入住，并且还未有人入住
-    // 2：房间还未住满，指房间已有人入住，但仍可继续入住
-    // 3：房间已经住满
-    @Column(name = "room_state", columnDefinition = "Int(10) default 0 COMMENT '房间状态'")
-    private Integer roomState;
+    // 房间所在楼层
+    @Column(name = "room_floor_num", columnDefinition = "Int(10) default 0 COMMENT '房间所在楼层'")
+    private Integer roomFloorNum;
 
+    // 房间上下架状态 0：上架 1：下架
+    @Column(name = "room_upshelf_state", columnDefinition = "Int(10) default 0 COMMENT '房间上下架状态'")
+    private Integer roomUpshelfState;
+
+    // 房间种类id
     @Column(name = "room_type_id", columnDefinition = "Int(20) COMMENT '房间种类id'")
     private Long roomTypeId;
 
@@ -53,6 +54,14 @@ public class TbHotelRoomDetail extends BaseDataIdLong {
     // 床铺数量
     @Column(name = "bed_num", columnDefinition = "Int(10) default 1 COMMENT '床铺数量'")
     private Integer bedNum;
+
+    // 是否是钟点房 0：否 1：是
+    @Column(name = "hour_room_flag", columnDefinition = "Int(10) default 0 COMMENT '是否是钟点房'")
+    private Integer hourRoomFlag;
+
+    // 是否根据床位计算可入住人数 0：否 1：是
+    @Column(name = "calc_check_in_num_bed_flag", columnDefinition = "Int(10) default 0 COMMENT '是否根据床位计算可入住人数'")
+    private Integer calcCheckInNumBedFlag;
 
     // 销售价，单位：元
     @Column(name = "sell_price")

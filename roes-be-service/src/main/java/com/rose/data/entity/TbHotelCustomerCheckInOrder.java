@@ -39,6 +39,10 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     @Column(name = "sell_price")
     private BigDecimal sellPrice;
 
+    // 押金，单位：元
+    @Column(name = "deposit_money")
+    private BigDecimal depositMoney;
+
     // 销售价描述
     @Column(name = "sell_price_desc", columnDefinition = "varchar(255) COMMENT '销售价描述'")
     private String sellPriceDesc;
@@ -47,13 +51,17 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     @Column(name = "check_out_desc", columnDefinition = "varchar(500) COMMENT '退房规则描述'")
     private String checkOutDesc;
 
-    // 此单利润
-    @Column(name = "profit_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '房间类型'")
-    private BigDecimal profitMoney;
-
     // 房间备注
     @Column(name = "room_remark", columnDefinition = "varchar(800) COMMENT '房间备注'")
     private String roomRemark;
+
+    // 实际收取金额，单位：元
+    @Column(name = "real_collect_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '实际收取金额'")
+    private BigDecimal realCollectMoney;
+
+    // 此单利润
+    @Column(name = "profit_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '此单利润'")
+    private BigDecimal profitMoney;
 
     @Column(name = "check_in_customer_name", columnDefinition = "varchar(255) COMMENT '入住客户姓名'")
     private String checkInCustomerName;
@@ -71,4 +79,8 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     //@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "check_out_date", columnDefinition = "datetime COMMENT '退房时间'")
     private Date checkOutDate;
+
+    // 商户对此订单备注
+    @Column(name = "merch_order_remark", columnDefinition = "varchar(800) COMMENT '商户对此订单备注'")
+    private String merchOrderRemark;
 }
