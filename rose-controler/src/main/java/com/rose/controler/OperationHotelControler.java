@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 /**
- * 功能：酒店关联 controller
+ * 功能：酒店 运营 controller
  * @author sunpeng
  * @date 2019
  */
 @Slf4j
 @RestController
-@RequestMapping("/user/hotel")
-public class HotelControler {
+@RequestMapping("/user/operationHotel")
+public class OperationHotelControler {
 
     @Inject
 	private HotelService hotelService;

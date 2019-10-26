@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 /**
- * 功能：房间类别 controller
+ * 功能：房间类别 运营 controller
  * @author sunpeng
  * @date 2019
  */
 @Slf4j
 @RestController
-@RequestMapping("/user/hotelRoomType")
-public class HotelRoomTypeControler {
+@RequestMapping("/user/operationHotelRoomType")
+public class OperationHotelRoomTypeControler {
 
     @Inject
 	private HotelRoomTypeService hotelRoomTypeService;
@@ -35,8 +35,8 @@ public class HotelRoomTypeControler {
         return hotelRoomTypeService.search(param);
     }
 
-    // 功能：运营人员保存或修改房间类别
-    @PostMapping(value= "/operationSave")
+    // 功能：保存或修改房间类别
+    @PostMapping(value= "/save")
     public void save(@RequestBody TbHotelRoomType param) {
         if (param == null || param.getHotelId() == null || StringUtil.isEmpty(param.getRoomTypeName())) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
@@ -44,8 +44,8 @@ public class HotelRoomTypeControler {
         hotelRoomTypeService.save(param);
     }
 
-    // 功能：运营人员删除房间类别
-    @GetMapping(value= "/operationDelete")
+    // 功能：删除房间类别
+    @GetMapping(value= "/delete")
     public void delete(@RequestParam Long id) {
         hotelRoomTypeService.delete(id);
     }

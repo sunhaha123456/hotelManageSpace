@@ -40,20 +40,20 @@ public class JumpControler {
     }
 
     /**
-     * 功能：跳转酒店关联页面
+     * 功能：跳转运营酒店管理页面
      * @return
      */
-    @GetMapping(value = "/user/menuManage/toHotelManage")
-    public String toHotelReleation() {
-        return "menu/hotelManage";
+    @GetMapping(value = "/user/menuManage/toOperationHotelManage")
+    public String toOperationHotelManage() {
+        return "menu/operationHotelManage";
     }
 
     /**
-     * 功能：跳转运营的酒店房间类别页面
+     * 功能：跳转运营酒店房间类别页面
      * @return
      */
     @GetMapping(value = "/user/menuManage/toOperationHotelRoomTypeManage")
-    public String toHotelRoomTypeManage() {
+    public String toOperationHotelRoomTypeManage() {
         return "menu/operationHotelRoomTypeManage";
     }
 }

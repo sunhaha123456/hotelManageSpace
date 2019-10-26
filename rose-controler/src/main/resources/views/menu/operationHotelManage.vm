@@ -19,7 +19,7 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/hotel/getDetail", {"id":id});
+                var result = ajaxSynchGet("user/operationHotel/getDetail", {"id":id});
                 if (result.code == '200') {
                     var hotelName = result.data.hotelName;
                     var remark = result.data.remark;
@@ -37,7 +37,7 @@
             if ($('#manager_add').form('validate')) {
                 var hotelName = $('#hotelNameAdd').val();
                 var hotelRemark = $('#hotelRemarkAdd').val();
-                var result = ajaxSynchPostJson("user/hotel/save", {"hotelName":hotelName, "remark":hotelRemark});
+                var result = ajaxSynchPostJson("user/operationHotel/save", {"hotelName":hotelName, "remark":hotelRemark});
                 if (result.code == '200') {
                     alertSuccess();
                     $('#manager_add').dialog('close');
@@ -54,7 +54,7 @@
                     var id = rows[0].id;
                     var hotelName = $('#hotelNameEdit').val();
                     var hotelRemark = $('#hotelRemarkEdit').val();
-                    var result = ajaxSynchPostJson("user/hotel/save", {"id":id, "hotelName": hotelName, "remark": hotelRemark})
+                    var result = ajaxSynchPostJson("user/operationHotel/save", {"id":id, "hotelName": hotelName, "remark": hotelRemark})
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
@@ -78,7 +78,7 @@
                     if (flag) {
                         var id = rows[0].id;
                         $('#manager').datagrid('loading');
-                        var result = ajaxSynchGet("user/hotel/opert", {"id": id, "state": state});
+                        var result = ajaxSynchGet("user/operationHotel/opert", {"id": id, "state": state});
                         $('#manager').datagrid('loaded');
                         searchHotel();
                         alertInfo(result.msg);
@@ -135,7 +135,7 @@
             });
         }
         function searchHotel() {
-            var result = ajaxSynchPostJson("user/hotel/search", {"page":1, "rows":10});
+            var result = ajaxSynchPostJson("user/operationHotel/search", {"page":1, "rows":10});
             if (result.code == '200') {
                 $('#manager').datagrid('loadData', result.data);
             }

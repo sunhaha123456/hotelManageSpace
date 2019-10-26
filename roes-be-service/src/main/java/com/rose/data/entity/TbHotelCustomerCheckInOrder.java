@@ -55,14 +55,6 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     @Column(name = "room_remark", columnDefinition = "varchar(800) COMMENT '房间备注'")
     private String roomRemark;
 
-    // 实际收取金额，单位：元
-    @Column(name = "real_collect_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '实际收取金额'")
-    private BigDecimal realCollectMoney;
-
-    // 此单利润
-    @Column(name = "profit_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '此单利润'")
-    private BigDecimal profitMoney;
-
     @Column(name = "check_in_customer_name", columnDefinition = "varchar(255) COMMENT '入住客户姓名'")
     private String checkInCustomerName;
 
@@ -73,12 +65,40 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     private String checkInCustomerIdNo;
 
     //@Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "check_in_date", columnDefinition = "datetime COMMENT '入住时间'")
-    private Date checkInDate;
+    @Column(name = "plan_check_in_date", columnDefinition = "datetime COMMENT '计划入住时间'")
+    private Date planCheckInDate;
 
     //@Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "check_out_date", columnDefinition = "datetime COMMENT '退房时间'")
-    private Date checkOutDate;
+    @Column(name = "plan_check_out_date", columnDefinition = "datetime COMMENT '计划退房时间'")
+    private Date planCheckOutDate;
+
+    //@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "real_check_in_date", columnDefinition = "datetime COMMENT '实际入住时间'")
+    private Date realCheckInDate;
+
+    //@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "real_check_out_date", columnDefinition = "datetime COMMENT '实际退房时间'")
+    private Date realCheckOutDate;
+
+    // 实际收取金额，单位：元
+    @Column(name = "real_collect_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '实际收取金额'")
+    private BigDecimal realCollectMoney;
+
+    // 此单利润
+    @Column(name = "profit_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '此单利润'")
+    private BigDecimal profitMoney;
+
+    // 订单类别 0：已到店直接入住类型订单 1：未到店预定入住类型订单
+    @Column(name = "order_type", columnDefinition = "int(1) default 0 COMMENT '订单类别'")
+    private Integer orderType;
+
+    // 订单状态
+    // 0：已入住
+    // 1：已退房
+    // 2：已预订
+    // 3：已取消
+    @Column(name = "order_status", columnDefinition = "int(1) default 0 COMMENT '订单状态'")
+    private Integer orderStatus;
 
     // 商户对此订单备注
     @Column(name = "merch_order_remark", columnDefinition = "varchar(800) COMMENT '商户对此订单备注'")

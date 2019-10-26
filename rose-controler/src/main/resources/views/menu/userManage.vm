@@ -271,7 +271,7 @@
                 $('#authAdd').combobox('loadData', result.data);
                 $('#authDistriAuth').combobox('loadData', result.data);
             }
-            var result = ajaxSynchGet("user/hotel/listAll", null);
+            var result = ajaxSynchGet("user/operationHotel/listAll", null);
             if (result.code == '200') {
                 $('#distriHotel').combobox('loadData', result.data);
             }
