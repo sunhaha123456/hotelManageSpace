@@ -152,7 +152,7 @@
     var treeMenuId;
     var contentMain = $('#contentMain');
     var navHeader = $('#navHeader');
-    var iframeHightConst = 100;
+    var iframeHightConst = 48;
     function menuClick(menuParentName, menuChildName, menuParentId, menuChildId, treeMenuId){
         var nav = menuParentName + "  > " + menuChildName;
         $("#navHeader").html(nav);
