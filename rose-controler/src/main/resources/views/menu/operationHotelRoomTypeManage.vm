@@ -95,7 +95,7 @@
                 striped : true,
                 rownumbers : true,
                 border : false,
-                pagination : false,
+                pagination : true,
                 singleSelect:true,
                 toolbar : '#manager_tool',
                 columns : [[
@@ -124,10 +124,28 @@
         }
         function searchHotelRoomType() {
             var hotelId = $('#hotelList').combobox('getValue');
-            var result = ajaxSynchPostJson("user/operationHotel/search", {"hotelId":hotelId , "page":1, "rows":10});
+            var result = ajaxSynchPostJson("user/operationHotelRoomType/search", {"hotelId":hotelId, "page":1, "rows":10});
             if (result.code == '200') {
+                dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
+            } else {
+                alertWarn(result.msg);
             }
+        }
+        function dataGridPageInit() {
+            var p = $('#manager').datagrid('getPager');
+            $(p).pagination({
+                pageNumber : 1,
+                pageSize : 10,
+                pageList : [10, 20, 30, 40, 50],
+                onSelectPage:function(pageNumber, pageSize){
+                    var hotelId = $('#hotelList').combobox('getValue');
+                    var result = ajaxSynchPostJson("user/operationHotelRoomType/search", {"hotelId":hotelId, "page":pageNumber, "rows":pageSize});
+                    if (result.code == '200') {
+                        $('#manager').datagrid('loadData', result.data);
+                    }
+                },
+            });
         }
         function webPageInit() {
             var result = ajaxSynchGet("user/operationHotel/listAll", null);
@@ -150,10 +168,10 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editHotelRoomTypeShow()">编辑</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="deleteHotelRoomType()">删除</a>
         </div>
-    </div>
-    <div style="padding:0 0 0 7px;color:#333;">
-        酒店：<select class="easyui-combobox" id="hotelList" style="width:100px;" data-options="valueField:'id',textField:'hotelName'" />
-        <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchHotelRoomType()">查询</a>
+        <div style="padding:0 0 0 7px;color:#333;">
+            选择酒店：<select class="easyui-combobox" id="hotelList" style="width:100px;" data-options="valueField:'id',textField:'hotelName'"></select>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchHotelRoomType()">查询</a>
+        </div>
     </div>
 </table>
 

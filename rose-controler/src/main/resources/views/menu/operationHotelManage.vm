@@ -88,6 +88,7 @@
                 alertWarn("请先选择记录！");
             }
         }
+
         function dataGridInit() {
             $('#manager').datagrid({
                 fit : true,
@@ -95,7 +96,7 @@
                 striped : true,
                 rownumbers : true,
                 border : false,
-                pagination : false,
+                pagination : true,
                 singleSelect:true,
                 toolbar : '#manager_tool',
                 columns : [[
@@ -137,9 +138,27 @@
         function searchHotel() {
             var result = ajaxSynchPostJson("user/operationHotel/search", {"page":1, "rows":10});
             if (result.code == '200') {
+                dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
+            } else {
+                alertWarn(result.msg);
             }
         }
+        function dataGridPageInit() {
+            var p = $('#manager').datagrid('getPager');
+            $(p).pagination({
+                pageNumber : 1,
+                pageSize : 10,
+                pageList : [10, 20, 30, 40, 50],
+                onSelectPage:function(pageNumber, pageSize){
+                    var result = ajaxSynchPostJson("user/operationHotel/search", {"page":pageNumber, "rows":pageSize});
+                    if (result.code == '200') {
+                        $('#manager').datagrid('loadData', result.data);
+                    }
+                },
+            });
+        }
+
         $(function () {
             dataGridInit();
             searchHotel();

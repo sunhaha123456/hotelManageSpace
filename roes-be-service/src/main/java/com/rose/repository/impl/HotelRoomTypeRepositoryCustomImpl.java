@@ -21,7 +21,7 @@ public class HotelRoomTypeRepositoryCustomImpl extends BaseRepositoryImpl implem
     public PageList<TbHotelRoomType> list(Long hotelId, Integer pageNo, Integer pageSize) throws Exception {
         StringBuilder sql = new StringBuilder();
         List<Object> paramList = new ArrayList();
-        sql.append(" SELECT a.id, a.room_type_name roomTypeName, a.remark, b.hotel_name hotelName ");
+        sql.append(" SELECT a.id, a.create_date createDate, a.room_type_name roomTypeName, a.remark, b.hotel_name hotelName ");
         sql.append(" FROM tb_hotel_room_type a JOIN tb_hotel_detail b on a.hotel_id = b.id ");
         if (hotelId != null) {
             sql.append(" AND a.hotel_id = ? ");
