@@ -169,7 +169,7 @@
             });
         }
         function searchRole() {
-            var result = ajaxSynchGet("user/roleManage/list", {"roleState": 2});
+            var result = ajaxSynchGet("user/roleManage/listForEnter", {"roleState": 2});
             if (result.code == '200') {
                 $('#manager').datagrid('loadData', result.data);
             }
@@ -194,7 +194,7 @@
         <!--/*
         <div style="padding:0 0 0 7px;color:#333;">
             角色名：<input type="text" class="textbox" id="unameSearch" style="width:110px" />
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchRole()">查询</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-searchForEnter" onclick="searchRole()">查询</a>
         </div>
         */-->
     </div>

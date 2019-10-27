@@ -19,17 +19,15 @@ import java.util.List;
 public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl implements HotelRoomDetailRepositoryCustom {
 
     @Override
-    public PageList<TbHotelRoomDetail> list(HotelRoomRequest param) throws Exception {
+    public PageList<TbHotelRoomDetail> listForEnter(HotelRoomRequest param) throws Exception {
         StringBuilder sql = new StringBuilder();
         List<Object> paramList = new ArrayList();
         sql.append(" SELECT a.id, a.room_no roomNo, a.room_state roomState, ");
         sql.append(" b.room_type_name roomTypeName, a.room_window_flag roomWindowFlag, ");
         sql.append(" a.room_wc_flag roomWcFlag, a.bed_num bedNum, a.sell_price sellPrice");
         sql.append(" FROM tb_hotel_room_detail a join tb_hotel_room_type b ON a.room_type_id = b.id ");
-//        if (hotelId != null) {
-//            sql.append(" AND a.hotel_id = ? ");
-//            paramList.add(hotelId);
-//        }
+        sql.append(" AND a.hotel_id = ? ");
+        paramList.add(param.getHotelId());
         HashMap<String, String> sortMap = new LinkedHashMap<>();
         sortMap.put("a.id", "asc");
         return queryPage(sql.toString(), TbHotelRoomDetail.class, new PageUtil(param.getPage(), param.getRows()), null, paramList.toArray());

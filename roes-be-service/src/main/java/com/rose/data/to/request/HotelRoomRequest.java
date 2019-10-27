@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Data
 public class HotelRoomRequest extends PageParam {
+    private Long hotelId;       // 酒店id
     private String roomName;    // 房间名称
     private Date checkInDate;   // 入住时间
     private Date checkOutDate;  // 退房时间

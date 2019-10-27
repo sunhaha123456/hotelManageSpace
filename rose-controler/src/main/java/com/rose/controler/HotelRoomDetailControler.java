@@ -1,6 +1,9 @@
 package com.rose.controler;
 
 import com.rose.common.data.base.PageList;
+import com.rose.common.data.response.ResponseResultCode;
+import com.rose.common.exception.BusinessException;
+import com.rose.common.util.StringUtil;
 import com.rose.data.entity.TbHotelRoomDetail;
 import com.rose.data.to.request.HotelRoomRequest;
 import com.rose.service.HotelRoomDetailService;
@@ -22,14 +25,40 @@ public class HotelRoomDetailControler {
     @Inject
     private HotelRoomDetailService hotelRoomDetailService;
 
-    @PostMapping(value= "/search")
-    public PageList<TbHotelRoomDetail> search(@RequestBody HotelRoomRequest param) throws Exception {
-        return hotelRoomDetailService.search(param);
+    /**
+     * 功能：查询 for 房间录入
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value= "/searchForEnter")
+    public PageList<TbHotelRoomDetail> searchForEnter(@RequestBody HotelRoomRequest param) throws Exception {
+        if (param == null || param.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+        }
+        return hotelRoomDetailService.searchForEnter(param);
     }
 
-    // 功能：删除房间
-    @GetMapping(value = "/operationDelete")
-    public void delete(@RequestParam Long id) {
-        hotelRoomDetailService.delete(id);
+    /**
+     * 功能：新增 / 修改
+     * @param param
+     */
+    @PostMapping(value= "/save")
+    public void save(@RequestBody TbHotelRoomDetail param) {
+        if (param == null || param.getHotelId() == null || StringUtil.isEmpty(param.getRoomNo()) || param.getRoomFloorNum() == null || param.getBedNum() == null) {
+            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+        }
+        hotelRoomDetailService.save(param);
+    }
+
+    /**
+     * 功能：操作酒店房间
+     * 备注：只有下架才能删除
+     * @param id
+     * @param state 0：上架 1：下架 2：删除
+     */
+    @PostMapping(value= "/opert")
+    public void opert(@RequestParam Long id, @RequestParam Integer state) {
+        hotelRoomDetailService.opert(id, state);
     }
 }

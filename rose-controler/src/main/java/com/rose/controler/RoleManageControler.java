@@ -34,7 +34,7 @@ public class RoleManageControler {
      * @return
      * @throws Exception
      */
-    @GetMapping(value= "/list")
+    @GetMapping(value= "/listForEnter")
     public List<TbRoleGroup> list(@RequestParam Integer roleState) throws Exception {
         return roleGroupService.list(roleState);
     }

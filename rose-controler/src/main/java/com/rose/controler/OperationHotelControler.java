@@ -30,7 +30,7 @@ public class OperationHotelControler {
         return hotelService.getDetail(id);
     }
 
-    @PostMapping(value= "/search")
+    @PostMapping(value= "/searchForEnter")
     public PageList<TbHotelDetail> search(@RequestBody PageParam param) throws Exception {
         return hotelService.search(param);
     }

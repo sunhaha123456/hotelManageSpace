@@ -69,9 +69,9 @@ public class JsonUtil {
     }
 
     /**
-     * 功能：json 转 list
+     * 功能：json 转 listForEnter
      * @param jsonData json str
-     * @param beanType list 中 元素类型
+     * @param beanType listForEnter 中 元素类型
      * @return
      */
     public static <T> List<T> jsonToList(String jsonData, Class<T> beanType) {

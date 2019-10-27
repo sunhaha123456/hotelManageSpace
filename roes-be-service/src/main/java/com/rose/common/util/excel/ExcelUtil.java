@@ -62,7 +62,7 @@ public abstract class ExcelUtil {
      * @param response
      * @param filename Excel表格名
      * @param sheetName Excel工作簿名
-     * @param list 数据，保证 list != null && list.size > 0
+     * @param list 数据，保证 listForEnter != null && listForEnter.size > 0
      * @param groupName 读取指定组的数据，"" 或 null 表示读取全部数据
      * @param password 表格密码，"" 或 "null" 或 null 表示不进行加密
      * @param <T>

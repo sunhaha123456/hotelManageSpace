@@ -8,9 +8,9 @@ import com.rose.data.to.request.HotelRoomRequest;
 public interface HotelRoomDetailRepositoryCustom extends BaseRepository {
 
     /**
-     * 功能：分页查询
+     * 功能：查询 for 房间录入
      * @return
      * @throws Exception
      */
-    PageList<TbHotelRoomDetail> list(HotelRoomRequest param) throws Exception;
+    PageList<TbHotelRoomDetail> listForEnter(HotelRoomRequest param) throws Exception;
 }

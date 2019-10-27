@@ -11,7 +11,9 @@ import com.rose.data.to.request.HotelRoomRequest;
  */
 public interface HotelRoomDetailService {
 
-    PageList<TbHotelRoomDetail> search(HotelRoomRequest param) throws Exception;
+    void save(TbHotelRoomDetail param);
 
-    void delete(Long id);
+    void opert(Long id, Integer state);
+
+    PageList<TbHotelRoomDetail> searchForEnter(HotelRoomRequest param) throws Exception;
 }
