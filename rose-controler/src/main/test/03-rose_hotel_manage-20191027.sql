@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2019-10-27 09:03:45
+Date: 2019-10-27 18:29:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -132,7 +132,7 @@ CREATE TABLE `tb_menu` (
   `sort` int(20) DEFAULT NULL COMMENT '排序',
   `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '跳转链接',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of tb_menu
@@ -143,14 +143,16 @@ INSERT INTO `tb_menu` VALUES ('3', '2018-06-23 18:11:17', '2019-01-31 15:31:32',
 INSERT INTO `tb_menu` VALUES ('4', '2018-06-23 18:11:17', '2019-01-31 15:31:37', '2', 'fa-circle-o', '菜单管理', '0', '1', '1', 'user/menuManage/toMenuManage');
 INSERT INTO `tb_menu` VALUES ('5', '2018-11-09 14:31:04', '2019-10-27 09:00:00', '1', 'fa-folder', '运营管理', '0', '0', '2', null);
 INSERT INTO `tb_menu` VALUES ('6', '2018-11-09 14:48:29', '2019-10-26 20:12:51', '2', 'fa-circle-o', '酒店录入', '0', '5', '2', 'user/menuManage/toOperationHotelManage');
-INSERT INTO `tb_menu` VALUES ('7', '2019-10-14 19:07:32', '2019-10-27 08:54:48', '1', 'fa-folder', '入住管理', '0', '0', '4', null);
+INSERT INTO `tb_menu` VALUES ('7', '2019-10-14 19:07:32', '2019-10-27 18:24:38', '1', 'fa-folder', '入住管理', '0', '0', '5', null);
 INSERT INTO `tb_menu` VALUES ('8', '2019-10-14 19:07:52', '2019-10-26 19:34:12', '2', 'fa-circle-o', '办理入住', '0', '7', '3', 'xxx');
 INSERT INTO `tb_menu` VALUES ('9', '2019-10-14 19:08:05', '2019-10-26 19:35:29', '2', 'fa-circle-o', '入住详情', '0', '7', '2', 'xxx');
 INSERT INTO `tb_menu` VALUES ('10', '2019-10-14 19:08:17', '2019-10-26 19:35:43', '2', 'fa-circle-o', '营收统计', '0', '7', '1', 'xxx');
 INSERT INTO `tb_menu` VALUES ('11', '2019-10-26 19:41:33', '2019-10-26 20:13:18', '2', 'fa-circle-o', '房间类型录入', '0', '5', '1', 'user/menuManage/toOperationHotelRoomTypeManage');
-INSERT INTO `tb_menu` VALUES ('12', '2019-10-27 08:54:36', '2019-10-27 09:00:23', '1', 'fa-folder', '员工管理', '0', '0', '3', null);
+INSERT INTO `tb_menu` VALUES ('12', '2019-10-27 08:54:36', '2019-10-27 18:25:01', '1', 'fa-folder', '员工管理', '0', '0', '3', null);
 INSERT INTO `tb_menu` VALUES ('13', '2019-10-27 08:56:13', '2019-10-27 08:56:13', '2', 'fa-circle-o', '员工录入', '0', '12', '2', 'xxx');
 INSERT INTO `tb_menu` VALUES ('14', '2019-10-27 08:58:44', '2019-10-27 08:58:44', '2', 'fa-circle-o', '工资管理', '0', '12', '1', 'xxx');
+INSERT INTO `tb_menu` VALUES ('15', '2019-10-27 18:23:38', '2019-10-27 18:24:50', '1', 'fa-folder', '房间管理', '0', '0', '4', null);
+INSERT INTO `tb_menu` VALUES ('16', '2019-10-27 18:26:37', '2019-10-27 18:26:37', '2', 'fa-circle-o', '房间录入', '0', '15', '1', 'xxx');
 
 -- ----------------------------
 -- Table structure for tb_menu_role_group_releation
@@ -163,25 +165,27 @@ CREATE TABLE `tb_menu_role_group_releation` (
   `menu_id` int(20) DEFAULT NULL COMMENT '菜单id',
   `role_group_id` int(20) DEFAULT NULL COMMENT '角色组id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of tb_menu_role_group_releation
 -- ----------------------------
-INSERT INTO `tb_menu_role_group_releation` VALUES ('32', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '1', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('33', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '2', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('34', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '3', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('35', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '4', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('36', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '5', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('37', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '6', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('38', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '11', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('39', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '7', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('40', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '8', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('41', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '9', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('42', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '10', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('43', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '12', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('44', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '13', '1');
-INSERT INTO `tb_menu_role_group_releation` VALUES ('45', '2019-10-27 08:58:58', '2019-10-27 08:58:58', '14', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('46', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '1', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('47', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '2', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('48', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '3', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('49', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '4', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('50', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '5', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('51', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '6', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('52', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '11', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('53', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '7', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('54', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '8', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('55', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '9', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('56', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '10', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('57', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '12', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('58', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '13', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('59', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '14', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('60', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '15', '1');
+INSERT INTO `tb_menu_role_group_releation` VALUES ('61', '2019-10-27 18:27:00', '2019-10-27 18:27:00', '16', '1');
 
 -- ----------------------------
 -- Table structure for tb_role_group
