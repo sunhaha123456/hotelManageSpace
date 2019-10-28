@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 /**
- * 功能：酒店 运营 controller
+ * 功能：运营端 酒店管理 controller
  * @author sunpeng
  * @date 2019
  */
@@ -30,7 +30,7 @@ public class OperationHotelControler {
         return hotelService.getDetail(id);
     }
 
-    @PostMapping(value= "/searchForEnter")
+    @PostMapping(value= "/search")
     public PageList<TbHotelDetail> search(@RequestBody PageParam param) throws Exception {
         return hotelService.search(param);
     }

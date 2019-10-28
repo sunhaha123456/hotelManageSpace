@@ -152,7 +152,7 @@ INSERT INTO `tb_menu` VALUES ('12', '2019-10-27 08:54:36', '2019-10-27 18:25:01'
 INSERT INTO `tb_menu` VALUES ('13', '2019-10-27 08:56:13', '2019-10-27 08:56:13', '2', 'fa-circle-o', '员工录入', '0', '12', '2', 'xxx');
 INSERT INTO `tb_menu` VALUES ('14', '2019-10-27 08:58:44', '2019-10-27 08:58:44', '2', 'fa-circle-o', '工资管理', '0', '12', '1', 'xxx');
 INSERT INTO `tb_menu` VALUES ('15', '2019-10-27 18:23:38', '2019-10-27 18:24:50', '1', 'fa-folder', '房间管理', '0', '0', '4', null);
-INSERT INTO `tb_menu` VALUES ('16', '2019-10-27 18:26:37', '2019-10-27 18:48:15', '2', 'fa-circle-o', '房间录入', '0', '15', '1', 'user/menuManage/toHotelRoomManage');
+INSERT INTO `tb_menu` VALUES ('16', '2019-10-27 18:26:37', '2019-10-27 18:48:15', '2', 'fa-circle-o', '房间录入', '0', '15', '1', 'user/menuManage/toHotelRoomEnter');
 
 -- ----------------------------
 -- Table structure for tb_menu_role_group_releation

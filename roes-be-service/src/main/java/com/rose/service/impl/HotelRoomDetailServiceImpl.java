@@ -92,13 +92,18 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
     }
 
     @Override
-    public PageList<TbHotelRoomDetail> searchForEnter(HotelRoomRequest param) throws Exception {
+    public PageList<TbHotelRoomDetail> searchForMerchEnter(HotelRoomRequest param) throws Exception {
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null) {
             throw new BusinessException(ResponseResultCode.SERVER_ERROR);
         }
         param.setHotelId(user.getHotelId());
         return hotelRoomDetailRepositoryCustom.listForEnter(param);
+    }
+
+    @Override
+    public TbHotelRoomDetail getDetail(Long id) {
+        return hotelRoomDetailRepository.findOne(id);
     }
 
     @Override

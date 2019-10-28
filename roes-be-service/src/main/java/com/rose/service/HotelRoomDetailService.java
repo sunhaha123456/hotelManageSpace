@@ -18,7 +18,15 @@ public interface HotelRoomDetailService {
 
     void opert(Long id, Integer state);
 
-    PageList<TbHotelRoomDetail> searchForEnter(HotelRoomRequest param) throws Exception;
+    /**
+     * 功能：商户录入酒店房间
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    PageList<TbHotelRoomDetail> searchForMerchEnter(HotelRoomRequest param) throws Exception;
+
+    TbHotelRoomDetail getDetail(Long id);
 
     List<TbHotelRoomType> listHotelRoomType();
 }

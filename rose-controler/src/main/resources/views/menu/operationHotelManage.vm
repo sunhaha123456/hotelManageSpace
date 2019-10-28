@@ -136,7 +136,7 @@
             });
         }
         function searchHotel() {
-            var result = ajaxSynchPostJson("user/operationHotel/searchForEnter", {"page":1, "rows":10});
+            var result = ajaxSynchPostJson("user/operationHotel/search", {"page":1, "rows":10});
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -151,7 +151,7 @@
                 pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/operationHotel/searchForEnter", {"page":pageNumber, "rows":pageSize});
+                    var result = ajaxSynchPostJson("user/operationHotel/search", {"page":pageNumber, "rows":pageSize});
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }
@@ -178,7 +178,7 @@
         <!--/*
         <div style="padding:0 0 0 7px;color:#333;">
             角色名：<input type="text" class="textbox" id="unameSearch" style="width:110px" />
-            <a href="#" class="easyui-linkbutton" iconCls="icon-searchForEnter" onclick="searchHotel()">查询</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-searchForMerchEnter" onclick="searchHotel()">查询</a>
         </div>
         */-->
     </div>

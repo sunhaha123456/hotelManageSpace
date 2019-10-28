@@ -30,7 +30,7 @@ public class UserManageControler {
     @Inject
     private UserService userService;
 
-    @PostMapping(value= "/searchForEnter")
+    @PostMapping(value= "/search")
     public PageList<TbSysUser> search(@RequestBody UserSearchRequest param) throws Exception {
         return userService.search(param);
     }

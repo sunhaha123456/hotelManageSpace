@@ -106,12 +106,17 @@
                         hidden : true
                     },
                     {
-                        field : 'hotelName',
-                        title : '酒店名称',
+                        field : 'roomNo',
+                        title : '房间编号',
                         width : 100,
                     },
                     {
-                        field : 'hotelState',
+                        field : 'roomFloorNum',
+                        title : '所在楼层',
+                        width : 100,
+                    },
+                    {
+                        field : 'roomUpshelfState',
                         title : '状态',
                         width : 100,
                         formatter: function(value,row,index){
@@ -123,8 +128,8 @@
                         }
                     },
                     {
-                        field : 'remark',
-                        title : '备注',
+                        field : 'roomTypeName',
+                        title : '类别名称',
                         width : 100,
                     },
                     {
@@ -149,7 +154,7 @@
             if (roomUpshelfState == '请选择') {
                 roomUpshelfState = null;
             }
-            var result = ajaxSynchPostJson("user/hotelRoomDetail/searchForEnter", {"roomNo":roomNo, "hotelId":hotelId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":1, "rows":10});
+            var result = ajaxSynchPostJson("user/hotelRoomEnter/search", {"roomNo":roomNo, "hotelId":hotelId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":1, "rows":10});
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -164,7 +169,7 @@
                 pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/operationHotel/searchForEnter", {"page":pageNumber, "rows":pageSize});
+                    var result = ajaxSynchPostJson("user/operationHotel/search", {"page":pageNumber, "rows":pageSize});
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }
@@ -173,7 +178,7 @@
         }
 
         function webPageInit() {
-            var result = ajaxSynchGet("user/hotelRoomDetail/listHotelRoomType", null);
+            var result = ajaxSynchGet("user/hotelRoomEnter/listHotelRoomType", null);
             if (result.code == '200') {
                 $('#roomTypeIdForSearch').combobox('loadData', result.data);
                 $('#roomTypeIdForSearch').combobox('setValue', -1);

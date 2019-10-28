@@ -124,7 +124,7 @@
         }
         function searchHotelRoomType() {
             var hotelId = $('#hotelList').combobox('getValue');
-            var result = ajaxSynchPostJson("user/operationHotelRoomType/searchForEnter", {"hotelId":hotelId, "page":1, "rows":10});
+            var result = ajaxSynchPostJson("user/operationHotelRoomType/search", {"hotelId":hotelId, "page":1, "rows":10});
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -140,7 +140,7 @@
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
                     var hotelId = $('#hotelList').combobox('getValue');
-                    var result = ajaxSynchPostJson("user/operationHotelRoomType/searchForEnter", {"hotelId":hotelId, "page":pageNumber, "rows":pageSize});
+                    var result = ajaxSynchPostJson("user/operationHotelRoomType/search", {"hotelId":hotelId, "page":pageNumber, "rows":pageSize});
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }

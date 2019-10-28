@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 /**
- * 功能：房间类别 运营 controller
+ * 功能：运营端 房间类别 controller
  * @author sunpeng
  * @date 2019
  */
@@ -31,12 +31,12 @@ public class OperationHotelRoomTypeControler {
     }
 
     /**
-     * 功能：运营端 房间类别录入
+     * 功能：房间类别录入
      * @param param
      * @return
      * @throws Exception
      */
-    @PostMapping(value= "/searchForEnter")
+    @PostMapping(value= "/search")
     public PageList<TbHotelRoomType> search(@RequestBody HotelRoomTypeSearchRequest param) throws Exception {
         return hotelRoomTypeService.search(param);
     }

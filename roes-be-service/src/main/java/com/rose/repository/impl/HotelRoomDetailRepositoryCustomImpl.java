@@ -24,7 +24,8 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
         List<Object> paramList = new ArrayList();
         sql.append(" SELECT a.id, a.room_no roomNo, a.room_state roomState, ");
         sql.append(" b.room_type_name roomTypeName, a.room_window_flag roomWindowFlag, ");
-        sql.append(" a.room_wc_flag roomWcFlag, a.bed_num bedNum, a.sell_price sellPrice");
+        sql.append(" a.room_wc_flag roomWcFlag, a.bed_num bedNum, a.sell_price sellPrice, ");
+        sql.append(" a.create_date createDate");
         sql.append(" FROM tb_hotel_room_detail a join tb_hotel_room_type b ON a.room_type_id = b.id ");
         sql.append(" AND a.hotel_id = ? ");
         paramList.add(param.getHotelId());

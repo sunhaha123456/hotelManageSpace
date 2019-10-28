@@ -21,8 +21,8 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/user/hotelRoomDetail")
-public class HotelRoomDetailControler {
+@RequestMapping("/user/hotelRoomEnter")
+public class HotelRoomEnterControler {
 
     @Inject
     private HotelRoomDetailService hotelRoomDetailService;
@@ -33,12 +33,22 @@ public class HotelRoomDetailControler {
      * @return
      * @throws Exception
      */
-    @PostMapping(value= "/searchForEnter")
-    public PageList<TbHotelRoomDetail> searchForEnter(@RequestBody HotelRoomRequest param) throws Exception {
+    @PostMapping(value= "/search")
+    public PageList<TbHotelRoomDetail> search(@RequestBody HotelRoomRequest param) throws Exception {
         if (param == null || param.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
         }
-        return hotelRoomDetailService.searchForEnter(param);
+        return hotelRoomDetailService.searchForMerchEnter(param);
+    }
+
+    /**
+     * 功能：详情
+     * @param id
+     * @return
+     */
+    @GetMapping(value= "/getDetail")
+    public TbHotelRoomDetail getDetail(@RequestParam Long id) {
+        return hotelRoomDetailService.getDetail(id);
     }
 
     /**
