@@ -2,7 +2,10 @@ package com.rose.service;
 
 import com.rose.common.data.base.PageList;
 import com.rose.data.entity.TbHotelRoomDetail;
+import com.rose.data.entity.TbHotelRoomType;
 import com.rose.data.to.request.HotelRoomRequest;
+
+import java.util.List;
 
 /**
  * 功能：房间房间 service
@@ -16,4 +19,6 @@ public interface HotelRoomDetailService {
     void opert(Long id, Integer state);
 
     PageList<TbHotelRoomDetail> searchForEnter(HotelRoomRequest param) throws Exception;
+
+    List<TbHotelRoomType> listHotelRoomType();
 }

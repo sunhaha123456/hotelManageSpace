@@ -5,15 +5,17 @@ import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
 import com.rose.common.util.StringUtil;
 import com.rose.data.entity.TbHotelRoomDetail;
+import com.rose.data.entity.TbHotelRoomType;
 import com.rose.data.to.request.HotelRoomRequest;
 import com.rose.service.HotelRoomDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
- * 功能：酒店房间 controller
+ * 功能：酒店房间录入 controller
  * @author sunpeng
  * @date 2019
  */
@@ -26,7 +28,7 @@ public class HotelRoomDetailControler {
     private HotelRoomDetailService hotelRoomDetailService;
 
     /**
-     * 功能：查询 for 房间录入
+     * 功能：查询
      * @param param
      * @return
      * @throws Exception
@@ -60,5 +62,14 @@ public class HotelRoomDetailControler {
     @PostMapping(value= "/opert")
     public void opert(@RequestParam Long id, @RequestParam Integer state) {
         hotelRoomDetailService.opert(id, state);
+    }
+
+    /**
+     * 功能：获取酒店房间类别
+     * @return
+     */
+    @PostMapping(value= "/listHotelRoomType")
+    public List<TbHotelRoomType> listHotelRoomType() {
+        return hotelRoomDetailService.listHotelRoomType();
     }
 }

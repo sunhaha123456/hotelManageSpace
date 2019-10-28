@@ -41,7 +41,7 @@
                 if (result.code == '200') {
                     alertSuccess();
                     $('#manager_add').dialog('close');
-                    searchHotel();
+                    searchHotelRoom();
                 } else {
                     alertWarn(result.msg);
                 }
@@ -58,7 +58,7 @@
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
-                        searchHotel();
+                        searchHotelRoom();
                     } else {
                         alertWarn(result.msg);
                     }
@@ -80,7 +80,7 @@
                         $('#manager').datagrid('loading');
                         var result = ajaxSynchGet("user/operationHotel/opert", {"id": id, "state": state});
                         $('#manager').datagrid('loaded');
-                        searchHotel();
+                        searchHotelRoom();
                         alertInfo(result.msg);
                     }
                 });
@@ -135,8 +135,21 @@
                 ]]
             });
         }
-        function searchHotel() {
-            var result = ajaxSynchPostJson("user/operationHotel/searchForEnter", {"page":1, "rows":10});
+        function searchHotelRoom() {
+            var roomNo = $('#roomNoForSearch').val();
+            var hotelId = $('#roomTypeIdForSearch').combobox('getValue');
+            if (hotelId == -1) {
+                hotelId = null;
+            }
+            var roomFloorNum = $('#roomFloorNumForSearch').combobox('getValue');
+            if (roomFloorNum == '请选择') {
+                roomFloorNum = null;
+            }
+            var roomUpshelfState = $('#roomUpshelfStateForSearch').combobox('getValue');
+            if (roomUpshelfState == '请选择') {
+                roomUpshelfState = null;
+            }
+            var result = ajaxSynchPostJson("user/hotelRoomDetail/searchForEnter", {"roomNo":roomNo, "hotelId":hotelId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":1, "rows":10});
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -159,9 +172,20 @@
             });
         }
 
+        function webPageInit() {
+            var result = ajaxSynchGet("user/hotelRoomDetail/listHotelRoomType", null);
+            if (result.code == '200') {
+                $('#roomTypeIdForSearch').combobox('loadData', result.data);
+                $('#roomTypeIdForSearch').combobox('setValue', -1);
+            } else {
+                alertWarn(result.msg);
+            }
+        }
+
         $(function () {
             dataGridInit();
-            searchHotel();
+            searchHotelRoom();
+            webPageInit();
         });
     </script>
 </head>
@@ -177,10 +201,11 @@
         </div>
 
         <div style="padding:0 0 0 7px;color:#333;">
-            房间编号：<input type="text" class="textbox" id="unameSearch" style="width:110px" />
-            房间类型：<input type="text" class="textbox" id="unameSearch" style="width:110px" />
+            房间编号：<input type="text" class="textbox" id="roomNoForSearch" style="width:110px" />
+            房间类型：
+            <select class="easyui-combobox" id="roomTypeIdForSearch" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'"></select>
             房间楼层：
-            <select class="easyui-combobox" id="roomFloorNumForSearch" style="width:100px;">
+            <select class="easyui-combobox" id="" style="width:100px;">
                 <option value="请选择" selected="true">请选择</option>
                 <option value="1">1楼</option>
                 <option value="2" />2楼</option>
@@ -193,12 +218,12 @@
                 <option value="9" />9楼</option>
             </select>
             房间状态：
-            <select class="easyui-combobox" id="roomStateForSearch" style="width:100px;">
+            <select class="easyui-combobox" id="roomUpshelfStateForSearch" style="width:100px;">
                 <option value="请选择" selected="true">请选择</option>
                 <option value="0" />上架</option>
                 <option value="1" />下架</option>
             </select>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchHotel()">查询</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchHotelRoom()">查询</a>
         </div>
     </div>
 </table>

@@ -6,18 +6,18 @@ import com.rose.common.exception.BusinessException;
 import com.rose.common.util.ValueHolder;
 import com.rose.data.entity.TbHotelDetail;
 import com.rose.data.entity.TbHotelRoomDetail;
+import com.rose.data.entity.TbHotelRoomType;
 import com.rose.data.entity.TbSysUser;
 import com.rose.data.to.request.HotelRoomRequest;
-import com.rose.repository.HotelDetailRepository;
-import com.rose.repository.HotelRoomDetailRepository;
-import com.rose.repository.HotelRoomDetailRepositoryCustom;
-import com.rose.repository.SysUserRepository;
+import com.rose.repository.*;
 import com.rose.service.HotelRoomDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -34,6 +34,9 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
 
     @Inject
     private SysUserRepository sysUserRepository;
+
+    @Inject
+    private HotelRoomTypeRepository hotelRoomTypeRepository;
 
     @Inject
     private ValueHolder valueHolder;
@@ -96,5 +99,23 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
         }
         param.setHotelId(user.getHotelId());
         return hotelRoomDetailRepositoryCustom.listForEnter(param);
+    }
+
+    @Override
+    public List<TbHotelRoomType> listHotelRoomType() {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        List<TbHotelRoomType> resList = new ArrayList<>();
+        TbHotelRoomType choose = new TbHotelRoomType();
+        choose.setId(-1L);
+        choose.setRoomTypeName("请选择");
+        resList.add(choose);
+        List<TbHotelRoomType> list = hotelRoomTypeRepository.listByHotelId(user.getHotelId());
+        if (list != null) {
+            resList.addAll(list);
+        }
+        return resList;
     }
 }

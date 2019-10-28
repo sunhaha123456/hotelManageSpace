@@ -30,6 +30,12 @@ public class OperationHotelRoomTypeControler {
         return hotelRoomTypeService.getDetail(id);
     }
 
+    /**
+     * 功能：运营端 房间类别录入
+     * @param param
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value= "/searchForEnter")
     public PageList<TbHotelRoomType> search(@RequestBody HotelRoomTypeSearchRequest param) throws Exception {
         return hotelRoomTypeService.search(param);
