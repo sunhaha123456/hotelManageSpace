@@ -28,5 +28,5 @@ public interface HotelRoomDetailService {
 
     TbHotelRoomDetail getDetail(Long id);
 
-    List<TbHotelRoomType> listHotelRoomType();
+    List<TbHotelRoomType> listHotelRoomTypeByCurrentUserReleatHotel();
 }

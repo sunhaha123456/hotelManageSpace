@@ -107,7 +107,7 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
     }
 
     @Override
-    public List<TbHotelRoomType> listHotelRoomType() {
+    public List<TbHotelRoomType> listHotelRoomTypeByCurrentUserReleatHotel() {
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);

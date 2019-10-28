@@ -11,6 +11,9 @@
     <script th:src="@{/static/easyui/easy.common.js}"></script>
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
+        function detailHotelShow() {
+            $('#manager_detail').dialog('open');
+        }
         function addHotelShow() {
             $('#manager_add').dialog('open');
             $('#roleNameAdd').focus();
@@ -178,7 +181,7 @@
         }
 
         function webPageInit() {
-            var result = ajaxSynchGet("user/hotelRoomEnter/listHotelRoomType", null);
+            var result = ajaxSynchGet("user/hotelRoomEnter/listHotelRoomTypeByCurrentUserReleatHotel", null);
             if (result.code == '200') {
                 $('#roomTypeIdForSearch').combobox('loadData', result.data);
                 $('#roomTypeIdForSearch').combobox('setValue', -1);
@@ -198,6 +201,7 @@
 <table id="manager">
     <div id="manager_tool">
         <div style="margin-bottom:5px;">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="detailHotelShow()">查看</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addHotelShow()">新增</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editHotelShow()">编辑</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="opertHotelState(1)">下架</a>
@@ -232,6 +236,28 @@
         </div>
     </div>
 </table>
+
+<form id="manager_detail" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:150,width:320,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+       onClose:function () {
+            $('#manager_edit').form('reset');
+       },
+		buttons:[{
+					text : '提交',
+					iconCls : 'icon-add-green',
+					handler : function () {
+                    editHotelCommit();
+					}
+				},{
+					text:'关闭',
+					iconCls : 'icon-redo',
+					handler:function(){
+                    $('#manager_edit').dialog('close');
+					}
+				}]">
+    <p>酒店名称：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入酒店名称',invalidMessage:'酒店名称长度至少为1位'," type="text" id="hotelNameEdit" style="width:200px;" /></p>
+    <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：<input class="easyui-validatebox" type="text" id="hotelRemarkEdit" style="width:200px;" /></p>
+</form>
 
 <form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
       data-options="top:150,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
