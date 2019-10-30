@@ -3,6 +3,7 @@ package com.rose.repository.impl;
 import com.rose.common.data.base.PageList;
 import com.rose.common.data.base.PageUtil;
 import com.rose.common.repository.impl.BaseRepositoryImpl;
+import com.rose.common.util.StringUtil;
 import com.rose.data.entity.TbHotelRoomDetail;
 import com.rose.data.to.request.HotelRoomRequest;
 import com.rose.repository.HotelRoomDetailRepositoryCustom;
@@ -29,6 +30,18 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
         sql.append(" FROM tb_hotel_room_detail a join tb_hotel_room_type b ON a.room_type_id = b.id ");
         sql.append(" AND a.hotel_id = ? ");
         paramList.add(param.getHotelId());
+        if (StringUtil.isNotEmpty(param.getRoomNo())) {
+            sql.append(" AND instr(a.room_no, ?) > 0 ");
+            paramList.add(param.getRoomNo());
+        }
+        if (param.getRoomTypeId() != null) {
+            sql.append(" AND b.id = ? ");
+            paramList.add(param.getRoomTypeId());
+        }
+        if (param.getRoomFloorNum() != null) {
+            sql.append(" AND a.room_floor_num = ? ");
+            paramList.add(param.getRoomFloorNum());
+        }
         HashMap<String, String> sortMap = new LinkedHashMap<>();
         sortMap.put("a.id", "asc");
         return queryPage(sql.toString(), TbHotelRoomDetail.class, new PageUtil(param.getPage(), param.getRows()), null, paramList.toArray());

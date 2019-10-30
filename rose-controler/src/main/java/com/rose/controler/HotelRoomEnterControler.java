@@ -78,7 +78,7 @@ public class HotelRoomEnterControler {
      * 功能：获取酒店房间类别
      * @return
      */
-    @PostMapping(value= "/listHotelRoomTypeByCurrentUserReleatHotel")
+    @GetMapping(value= "/listHotelRoomTypeByCurrentUserReleatHotel")
     public List<TbHotelRoomType> listHotelRoomType() {
         return hotelRoomDetailService.listHotelRoomTypeByCurrentUserReleatHotel();
     }

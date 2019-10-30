@@ -103,7 +103,19 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
 
     @Override
     public TbHotelRoomDetail getDetail(Long id) {
-        return hotelRoomDetailRepository.findOne(id);
+        TbHotelRoomDetail room =  hotelRoomDetailRepository.findOne(id);
+        if (room == null) {
+            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+        }
+        Long roomTypeId = room.getRoomTypeId();
+        if (roomTypeId != null) {
+            TbHotelRoomType roomType = hotelRoomTypeRepository.findOne(roomTypeId);
+            if (roomType == null) {
+                throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+            }
+            room.setRoomTypeName(roomType.getRoomTypeName());
+        }
+        return room;
     }
 
     @Override
