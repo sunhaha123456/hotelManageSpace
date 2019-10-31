@@ -87,6 +87,9 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
             }
             hotelRoomDetailRepository.updateRoomUpshelfState(id, 0, 1);
         } else if (state == 2) { // 删除
+            if (roomDetail.getRoomUpshelfState() != 1) {
+                throw new BusinessException("请先下架房间！");
+            }
             hotelRoomDetailRepository.deleteById(id);
         }
     }

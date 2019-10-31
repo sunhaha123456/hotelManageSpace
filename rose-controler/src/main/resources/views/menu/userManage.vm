@@ -67,6 +67,8 @@
                     var hotelId = result.data.hotelId;
                     if (hotelId != null) {
                         $('#distriHotel').combobox('setValue', hotelId);
+                    } else {
+                        $('#distriHotel').combobox('setValue', -1);
                     }
                     $('#manager_distriUserHotel').dialog('open');
                 } else {

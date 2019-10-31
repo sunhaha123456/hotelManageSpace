@@ -19,12 +19,12 @@
                 if (result.code == '200') {
                     var data = result.data;
                     $("#detailRoomNo").text(data.roomNo);
+                    $("#detailRoomFloorNum").text(data.roomFloorNum);
                     if (data.roomUpshelfState == 0) {
                         $("#detailRoomUpshelfState").text('上架');
                     } else {
                         $("#detailRoomUpshelfState").text('下架');
                     }
-                    $("#detailRoomFloorNum").text(data.roomFloorNum);
                     $("#detailBedNum").text(data.bedNum);
                     $("#detailRoomTypeName").text(data.roomTypeName);
                     if (data.roomWindowFlag == 0) {
@@ -39,12 +39,22 @@
                     } else {
                         $("#detailRoomWcFlag").text('无');
                     }
+                    if (data.hourRoomFlag == 0) {
+                        $("#detailHourRoomFlag").text('否');
+                    } else {
+                        $("#detailHourRoomFlag").text('是');
+                    }
+                    $("#detailSellPrice").text(data.sellPrice);
+                    if (data.calcCheckInNumBedFlag == 0) {
+                        $("#detailCalcCheckInNumBedFlag").text('否');
+                    } else {
+                        $("#detailCalcCheckInNumBedFlag").text('是');
+                    }
                     if (data.calcCheckInNumBedFlag == 0) {
                         $("#detailRoomWcFlag").text('是');
                     } else {
                         $("#detailRoomWcFlag").text('否');
                     }
-                    $("#detailSellPrice").text(data.sellPrice);
                     $("#detailSellPriceDesc").text(data.sellPriceDesc);
                     $("#detailCheckOutDesc").text(data.checkOutDesc);
                     $("#detailRoomOverallDesc").text(data.roomOverallDesc);
@@ -66,10 +76,24 @@
                 var id = rows[0].id;
                 var result = ajaxSynchGet("user/operationHotel/getDetail", {"id":id});
                 if (result.code == '200') {
-                    var hotelName = result.data.hotelName;
-                    var remark = result.data.remark;
-                    $('#hotelNameEdit').val(hotelName);
-                    $('#hotelRemarkEdit').val(remark);
+                    var data = result.data;
+                    $('#editRoomNo').val(data.roomNo);
+                    $('#editRoomFloorNum').combobox('setValue', data.roomFloorNum);
+                    $('#editRoomUpshelfState').combobox('setValue', data.roomUpshelfState);
+                    $('#editBedNum').val(data.bedNum);
+                    if (data.roomTypeId == null) {
+                        $('#editRoomTypeId').combobox('setValue', -1);
+                    } else {
+                        $('#editRoomTypeId').combobox('setValue', data.roomTypeId);
+                    }
+                    $('#editRoomWindowFlag').combobox('setValue', data.roomWindowFlag);
+                    $('#editRoomWcFlag').combobox('setValue', data.roomWcFlag);
+                    $('#editHourRoomFlag').combobox('setValue', data.hourRoomFlag);
+                    $('#editSellPrice').val(data.sellPrice);
+                    $('#editCalcCheckInNumBedFlag').combobox('setValue', data.calcCheckInNumBedFlag);
+                    $('#editSellPrice').val(data.sellPriceDesc);
+                    $('#editCheckOutDesc').val(data.checkOutDesc);
+                    $('#editRoomOverallDesc').val(data.roomOverallDesc);
                     $('#manager_edit').dialog('open');
                 } else {
                     alertWarn(result.msg);
@@ -83,26 +107,28 @@
                 var roomNo = $('#addRoomNo').val();
                 var roomFloorNum = $('#addRoomFloorNum').combobox('getValue');
                 var roomUpshelfState = $('#addRoomUpshelfState').combobox('getValue');
+                var bedNum = $('#addBedNum').val();
                 var roomTypeId = $('#addRoomTypeId').combobox('getValue');
-                if (roomTypeId = '请选择') {
+                if (roomTypeId = -1) {
                     roomTypeId = null;
                 }
                 var roomWindowFlag = $('#addRoomWindowFlag').combobox('getValue');
                 var roomWcFlag = $('#addRoomWcFlag').combobox('getValue');
-                var bedNum = $('#addBedNum').val();
                 var hourRoomFlag = $('#addHourRoomFlag').combobox('getValue');
                 var sellPrice = $('#addSellPrice').val();
+                var calcCheckInNumBedFlag = $('#addCalcCheckInNumBedFlag').combobox('getValue');
                 var sellPriceDesc = $('#addSellPriceDesc').val();
                 var checkOutDesc = $('#addCheckOutDesc').val();
                 var roomOverallDesc = $('#addRoomOverallDesc').val();
 
                 var param = {
                     "roomNo":roomNo, "roomFloorNum":roomFloorNum,
-                    "roomUpshelfState":roomUpshelfState, "roomTypeId":roomTypeId,
-                    "roomWindowFlag":roomWindowFlag, "roomWcFlag":roomWcFlag,
-                    "bedNum":bedNum, "hourRoomFlag":hourRoomFlag,
-                    "sellPrice":sellPrice, "sellPriceDesc":sellPriceDesc,
-                    "checkOutDesc":checkOutDesc, "roomOverallDesc":roomOverallDesc
+                    "roomUpshelfState":roomUpshelfState, "bedNum":bedNum,
+                    "roomTypeId":roomTypeId, "roomWindowFlag":roomWindowFlag,
+                    "roomWcFlag":roomWcFlag, "hourRoomFlag":hourRoomFlag,
+                    "sellPrice":sellPrice, "calcCheckInNumBedFlag":calcCheckInNumBedFlag,
+                    "sellPriceDesc":sellPriceDesc, "checkOutDesc":checkOutDesc,
+                    "roomOverallDesc":roomOverallDesc
                 };
 
                 var result = ajaxSynchPostJson("user/hotelRoomEnter/save", param);
@@ -124,7 +150,7 @@
                     var roomFloorNum = $('#addRoomFloorNum').combobox('getValue');
                     var roomUpshelfState = $('#addRoomUpshelfState').combobox('getValue');
                     var roomTypeId = $('#addRoomTypeId').combobox('getValue');
-                    if (roomTypeId = '请选择') {
+                    if (roomTypeId = -1) {
                         roomTypeId = null;
                     }
                     var roomWindowFlag = $('#addRoomWindowFlag').combobox('getValue');
@@ -286,8 +312,8 @@
 
         $(function () {
             dataGridInit();
-            searchHotelRoom();
             webPageInit();
+            searchHotelRoom();
         });
     </script>
 </head>
@@ -331,7 +357,7 @@
 </table>
 
 <form id="manager_detail" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:80,width:320,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:80,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_edit').form('reset');
        }">
@@ -476,7 +502,7 @@
 </form>
 
 <form id="manager_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:80,width:320,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:80,width:560,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_edit').form('reset');
        },
