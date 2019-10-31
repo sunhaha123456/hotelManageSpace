@@ -13,7 +13,7 @@
     <script th:inline="javascript">
         function addHotelRoomTypeShow() {
             var hotelId = $('#hotelList').combobox('getValue');
-            if (hotelId == null || hotelId == '') {
+            if (hotelId == -1) {
                 alertWarn("请先选择酒店！");
             } else {
                 $('#manager_add').dialog('open');
@@ -41,6 +41,9 @@
         function addHotelRoomTypeCommit() {
             if ($('#manager_add').form('validate')) {
                 var hotelId = $('#hotelList').combobox('getValue');
+                if (hotelId == -1) {
+                    hotelId = null;
+                }
                 var roomTypeName = $('#hotelRoomTypeNameAdd').val();
                 var remark = $('#hotelRoomTypeRemarkAdd').val();
                 var result = ajaxSynchPostJson("user/operationHotelRoomType/save", {"hotelId":hotelId, "roomTypeName":roomTypeName, "remark":remark});
@@ -124,6 +127,9 @@
         }
         function searchHotelRoomType() {
             var hotelId = $('#hotelList').combobox('getValue');
+            if (hotelId == -1) {
+                hotelId = null;
+            }
             var result = ajaxSynchPostJson("user/operationHotelRoomType/search", {"hotelId":hotelId, "page":1, "rows":10});
             if (result.code == '200') {
                 dataGridPageInit();
@@ -140,6 +146,9 @@
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
                     var hotelId = $('#hotelList').combobox('getValue');
+                    if (hotelId == -1) {
+                        hotelId = null;
+                    }
                     var result = ajaxSynchPostJson("user/operationHotelRoomType/search", {"hotelId":hotelId, "page":pageNumber, "rows":pageSize});
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
@@ -151,6 +160,7 @@
             var result = ajaxSynchGet("user/operationHotel/listAll", null);
             if (result.code == '200') {
                 $('#hotelList').combobox('loadData', result.data);
+                $('#hotelList').combobox('setValue', -1);
             }
         }
         $(function () {

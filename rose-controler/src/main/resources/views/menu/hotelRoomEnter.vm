@@ -329,7 +329,7 @@
 </table>
 
 <form id="manager_detail" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:150,width:320,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:80,width:320,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_edit').form('reset');
        }">
@@ -358,7 +358,7 @@
 </form>
 
 <form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:150,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:80,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_add').form('reset');
        },
@@ -429,20 +429,20 @@
     <p>房间销售价格：<input class="easyui-numberbox" data-options="required:true,min:0,precision:2,missingMessage:'房间销售价格只能是数字'" type="text" id="addSellPrice" style="width:200px;" /></p>
     <p>销售价格描述：
         <br />
-        <textarea rows="3" cols="20" id="addSellPriceDesc">
+        <textarea rows="3" cols="20" id="addSellPriceDesc" />
     </p>
     <p>退房规则描述：
         <br />
-        <textarea rows="3" cols="20" id="addCheckOutDesc">
+        <textarea rows="3" cols="20" id="addCheckOutDesc" />
     </p>
     <p>房间整体描述：
         <br />
-        <textarea rows="3" cols="20" id="addRoomOverallDesc">
+        <textarea rows="3" cols="20" id="addRoomOverallDesc" />
     </p>
 </form>
 
 <form id="manager_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:150,width:320,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:80,width:320,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_edit').form('reset');
        },

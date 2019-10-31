@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +47,16 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Object listAll() {
-        return hotelDetailRepository.findAll();
+        List<TbHotelDetail> resList = new ArrayList<>();
+        TbHotelDetail chocie = new TbHotelDetail();
+        chocie.setId(-1L);
+        chocie.setHotelName("请选择");
+        resList.add(chocie);
+        List<TbHotelDetail> list = hotelDetailRepository.findAll();
+        if (list != null && list.size() > 0) {
+            resList.addAll(list);
+        }
+        return resList;
     }
 
     @Transactional(rollbackFor = Exception.class)

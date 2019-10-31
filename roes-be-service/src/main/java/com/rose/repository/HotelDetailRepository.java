@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface HotelDetailRepository extends CrudRepository<TbHotelDetail, Long> {
 
     @Query(value = "select count(1) from tb_hotel_detail where hotel_name = :hotelName", nativeQuery = true)
@@ -17,4 +19,7 @@ public interface HotelDetailRepository extends CrudRepository<TbHotelDetail, Lon
     @Modifying
     @Query(value = "update tb_hotel_detail set hotel_state = :hotelState where id = :id", nativeQuery = true)
     int updateStateById(@Param(value = "id") Long id, @Param(value = "hotelState") Integer hotelState);
+
+    @Query(value = "select * from tb_hotel_detail order by id asc", nativeQuery = true)
+    List<TbHotelDetail> findAll();
 }

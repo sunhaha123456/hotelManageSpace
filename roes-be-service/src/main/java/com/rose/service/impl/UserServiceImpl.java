@@ -133,9 +133,11 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new BusinessException("该用户不存在！");
         }
-        TbHotelDetail hotel = hotelDetailRepository.findOne(hotelId);
-        if (hotel == null) {
-            throw new BusinessException("该酒店不存在！");
+        if (hotelId != null) {
+            TbHotelDetail hotel = hotelDetailRepository.findOne(hotelId);
+            if (hotel == null) {
+                throw new BusinessException("该酒店不存在！");
+            }
         }
         sysUserRepository.updateHotelId(id, hotelId);
     }

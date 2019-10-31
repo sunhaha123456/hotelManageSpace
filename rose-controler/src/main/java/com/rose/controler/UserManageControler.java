@@ -88,7 +88,7 @@ public class UserManageControler {
     }
 
     @GetMapping(value= "/updateReleationHotelId")
-    public void updateReleationHotelId(@RequestParam Long id, @RequestParam Long hotelId) throws Exception {
+    public void updateReleationHotelId(@RequestParam Long id, @RequestParam(required = false) Long hotelId) throws Exception {
         userService.updateReleationHotelId(id, hotelId);
     }
 }

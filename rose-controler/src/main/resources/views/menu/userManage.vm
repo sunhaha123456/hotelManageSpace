@@ -133,6 +133,9 @@
             if (rows.length > 0) {
                 var id = rows[0].id;
                 var hotelId = $('#distriHotel').combobox('getValue');
+                if (hotelId == -1) {
+                    hotelId = null;
+                }
                 var result = ajaxSynchGet("user/userManage/updateReleationHotelId", {"id":id, "hotelId":hotelId});
                 if (result.code == '200') {
                     alertSuccess();
@@ -274,6 +277,7 @@
             var result = ajaxSynchGet("user/operationHotel/listAll", null);
             if (result.code == '200') {
                 $('#distriHotel').combobox('loadData', result.data);
+                $('#distriHotel').combobox('setValue', -1);
             }
         }
 

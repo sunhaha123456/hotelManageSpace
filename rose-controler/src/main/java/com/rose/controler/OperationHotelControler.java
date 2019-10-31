@@ -35,6 +35,10 @@ public class OperationHotelControler {
         return hotelService.search(param);
     }
 
+    /**
+     * 功能：获取全部酒店列表，并且第一条一定是请选择
+     * @return
+     */
     @GetMapping(value= "/listAll")
     public Object listAll() {
         return hotelService.listAll();
