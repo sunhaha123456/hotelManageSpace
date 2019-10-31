@@ -241,13 +241,10 @@
                 roomTypeId = null;
             }
             var roomFloorNum = $('#roomFloorNumForSearch').combobox('getValue');
-            if (roomFloorNum == '请选择') {
+            if (roomFloorNum == -1) {
                 roomFloorNum = null;
             }
             var roomUpshelfState = $('#roomUpshelfStateForSearch').combobox('getValue');
-            if (roomUpshelfState == '请选择') {
-                roomUpshelfState = null;
-            }
             var result = ajaxSynchPostJson("user/hotelRoomEnter/search", {"roomNo":roomNo, "roomTypeId":hotelId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":1, "rows":10});
             if (result.code == '200') {
                 dataGridPageInit();
@@ -274,6 +271,12 @@
         function webPageInit() {
             var result = ajaxSynchGet("user/hotelRoomEnter/listHotelRoomTypeByCurrentUserReleatHotel", null);
             if (result.code == '200') {
+                $('#addRoomTypeId').combobox('loadData', result.data);
+                $('#addRoomTypeId').combobox('setValue', -1);
+
+                $('#editRoomTypeId').combobox('loadData', result.data);
+                $('#editRoomTypeId').combobox('setValue', -1);
+
                 $('#roomTypeIdForSearch').combobox('loadData', result.data);
                 $('#roomTypeIdForSearch').combobox('setValue', -1);
             } else {
@@ -306,7 +309,7 @@
             <select class="easyui-combobox" id="roomTypeIdForSearch" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'"></select>
             房间楼层：
             <select class="easyui-combobox" id="roomFloorNumSearch" style="width:100px;">
-                <option value="请选择" selected="true">请选择</option>
+                <option value="-1" selected="true">请选择</option>
                 <option value="1">1楼</option>
                 <option value="2">2楼</option>
                 <option value="3">3楼</option>
@@ -319,8 +322,7 @@
             </select>
             房间状态：
             <select class="easyui-combobox" id="roomUpshelfStateForSearch" style="width:100px;">
-                <option value="请选择" selected="true">请选择</option>
-                <option value="0">上架</option>
+                <option value="0" selected="true">上架</option>
                 <option value="1">下架</option>
             </select>
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchHotelRoom()">查询</a>
@@ -333,32 +335,56 @@
        onClose:function () {
             $('#manager_edit').form('reset');
        }">
-    <p>房间编号：<span id="detailRoomNo">xxx</span></p>
-    <p>房间状态：<span id="detailRoomUpshelfState">xxx</span></p>
-    <p>所在楼层：<span id="detailRoomFloorNum">xxx</span></p>
-    <p>房间床数：<span id="detailBedNum">xxx</span></p>
-    <p>房间类别：<span id="detailRoomTypeName">xxx</span></p>
-    <p>有无窗户：<span id="detailRoomWindowFlag">xxx</span></p>
-    <p>有无独立卫生间：<span id="detailRoomWcFlag">xxx</span></p>
-    <p>是否根据床位计算可入住人数：<span id="detailCalcCheckInNumBedFlag">xxx</span></p>
-    <p>是否是钟点房：<span id="detailHourRoomFlag">xxx</span></p>
-    <p>房间销售价格：<span id="detailSellPrice">xxx</span></p>
+    <p>
+        编&nbsp;&nbsp;&nbsp;号：<span id="detailRoomNo" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        楼&nbsp;&nbsp;&nbsp;层：
+        <span id="detailRoomFloorNum" style="width:100px;" />
+    </p>
+    <p>
+        状&nbsp;&nbsp;&nbsp;态：
+        <span id="detailRoomUpshelfState" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床&nbsp;&nbsp;&nbsp;数：
+        <span id="detailBedNum" style="width:100px;" />
+    </p>
+    <p>
+        类&nbsp;&nbsp;&nbsp;别：
+        <span id="detailRoomTypeName" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        窗&nbsp;&nbsp;&nbsp;户：
+        <span id="detailRoomWindowFlag" style="width:100px;" />
+    </p>
+    <p>
+        卫生间：
+        <span id="detailRoomWcFlag" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        钟点房：
+        <span id="detailHourRoomFlag" style="width:100px;" />
+    </p>
+    <p>
+        价&nbsp;&nbsp;&nbsp;格：
+        <span id="detailSellPrice" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床位=可入住人数：
+        <span id="detailCalcCheckInNumBedFlag" style="width:100px;" />
+    </p>
     <p>销售价格描述：
         <br />
-        <span id="detailSellPriceDesc">xxx</span>
+        <textarea rows="1" cols="60" id="detailSellPriceDesc" readonly />
     </p>
     <p>退房规则描述：
         <br />
-        <span id="detailCheckOutDesc">xxx</span>
+        <textarea rows="1" cols="60" id="detailCheckOutDesc" readonly />
     </p>
     <p>房间整体描述：
         <br />
-        <span id="detailRoomOverallDesc">xxx</span>
+        <textarea rows="1" cols="60" id="detailRoomOverallDesc" readonly />
     </p>
 </form>
 
 <form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:80,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:80,width:560,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_add').form('reset');
        },
@@ -375,14 +401,10 @@
                     $('#manager_add').dialog('close');
 					}
 				}]">
-    <p>房间编号：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入房间编号',invalidMessage:'房间编号长度至少为1位'," type="text" id="addRoomNo" style="width:200px;" /></p>
-    <p>房间状态：
-        <select class="easyui-combobox" id="addRoomUpshelfState" style="width:100px;">
-            <option value="0" selected="true">上架</option>
-            <option value="1">下架</option>
-        </select>
-    </p>
-    <p>所在楼层：
+    <p>
+        编&nbsp;&nbsp;&nbsp;号：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入房间编号',invalidMessage:'房间编号长度至少为1位'," type="text" id="addRoomNo" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        楼&nbsp;&nbsp;&nbsp;层：
         <select class="easyui-combobox" id="addRoomFloorNum" style="width:100px;">
             <option value="1" selected="true">1楼</option>
             <option value="2">2楼</option>
@@ -395,49 +417,61 @@
             <option value="9">9楼</option>
         </select>
     </p>
-    <p>房间床数：<input class="easyui-numberbox" data-options="required:true,min:0,missingMessage:'房间床数只能是数字'" type="text" id="addBedNum" style="width:200px;" /></p>
-    <p>房间类别：
-        <select class="easyui-combobox" id="addRoomTypeId" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'">
-            <option value="请选择" selected="true" />
+    <p>
+        状&nbsp;&nbsp;&nbsp;态：
+        <select class="easyui-combobox" id="addRoomUpshelfState" style="width:100px;">
+            <option value="0" selected="true">上架</option>
+            <option value="1">下架</option>
         </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床&nbsp;&nbsp;&nbsp;数：
+        <input class="easyui-numberbox" data-options="required:true,min:0,missingMessage:'房间床数只能是数字'" type="text" id="addBedNum" style="width:100px;" />
     </p>
-    <p>有无窗户：
+    <p>
+        类&nbsp;&nbsp;&nbsp;别：
+        <select class="easyui-combobox" id="addRoomTypeId" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'">
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        窗&nbsp;&nbsp;&nbsp;户：
         <select class="easyui-combobox" id="addRoomWindowFlag" style="width:100px;">
             <option value="0" selected="true">无</option>
-            <option value="1">有不能看到海的普通窗户</option>
-            <option value="2">有可以看到还的海景窗户</option>
+            <option value="1">有普通窗户</option>
+            <option value="2">有海景窗户</option>
         </select>
     </p>
-    <p>有无独立卫生间：
+    <p>
+        卫生间：
         <select class="easyui-combobox" id="addRoomWcFlag" style="width:100px;">
-            <option value="0" selected="true">有</option>
-            <option value="1">无</option>
+            <option value="0" selected="true">有独立卫生间</option>
+            <option value="1">无独立卫生间</option>
         </select>
-    </p>
-    <p>是否根据床位计算可入住人数：
-        <select class="easyui-combobox" id="addCalcCheckInNumBedFlag" style="width:100px;">
-            <option value="0" selected="true">是</option>
-            <option value="1">否</option>
-        </select>
-    </p>
-    <p>是否是钟点房：
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        钟点房：
         <select class="easyui-combobox" id="addHourRoomFlag" style="width:100px;">
             <option value="0" selected="true">是</option>
             <option value="1">否</option>
         </select>
     </p>
-    <p>房间销售价格：<input class="easyui-numberbox" data-options="required:true,min:0,precision:2,missingMessage:'房间销售价格只能是数字'" type="text" id="addSellPrice" style="width:200px;" /></p>
+    <p>
+        价&nbsp;&nbsp;&nbsp;格：<input class="easyui-numberbox" data-options="required:true,min:0,precision:2,missingMessage:'房间销售价格只能是数字'" type="text" id="addSellPrice" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床位=可入住人数：
+        <select class="easyui-combobox" id="addCalcCheckInNumBedFlag" style="width:100px;">
+            <option value="1" selected="true">否</option>
+            <option value="0">是</option>
+        </select>
+    </p>
     <p>销售价格描述：
         <br />
-        <textarea rows="3" cols="20" id="addSellPriceDesc" />
+        <textarea rows="1" cols="60" id="addSellPriceDesc" />
     </p>
     <p>退房规则描述：
         <br />
-        <textarea rows="3" cols="20" id="addCheckOutDesc" />
+        <textarea rows="1" cols="60" id="addCheckOutDesc" />
     </p>
     <p>房间整体描述：
         <br />
-        <textarea rows="3" cols="20" id="addRoomOverallDesc" />
+        <textarea rows="1" cols="60" id="addRoomOverallDesc" />
     </p>
 </form>
 
@@ -459,14 +493,10 @@
                     $('#manager_edit').dialog('close');
 					}
 				}]">
-    <p>房间编号：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入房间编号',invalidMessage:'房间编号长度至少为1位'," type="text" id="editRoomNo" style="width:200px;" /></p>
-    <p>房间状态：
-        <select class="easyui-combobox" id="editRoomUpshelfState" style="width:100px;">
-            <option value="0" selected="true">上架</option>
-            <option value="1">下架</option>
-        </select>
-    </p>
-    <p>所在楼层：
+    <p>
+        编&nbsp;&nbsp;&nbsp;号：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入房间编号',invalidMessage:'房间编号长度至少为1位'," type="text" id="editRoomNo" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        楼&nbsp;&nbsp;&nbsp;层：
         <select class="easyui-combobox" id="editRoomFloorNum" style="width:100px;">
             <option value="1" selected="true">1楼</option>
             <option value="2">2楼</option>
@@ -479,49 +509,61 @@
             <option value="9">9楼</option>
         </select>
     </p>
-    <p>房间床数：<input class="easyui-numberbox" data-options="required:true,min:0,missingMessage:'房间床数只能是数字'" type="text" id="editBedNum" style="width:200px;" /></p>
-    <p>房间类别：
-        <select class="easyui-combobox" id="editRoomTypeName" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'">
-            <option value="请选择" selected="true" />
+    <p>
+        状&nbsp;&nbsp;&nbsp;态：
+        <select class="easyui-combobox" id="editRoomUpshelfState" style="width:100px;">
+            <option value="0" selected="true">上架</option>
+            <option value="1">下架</option>
         </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床&nbsp;&nbsp;&nbsp;数：
+        <input class="easyui-numberbox" data-options="required:true,min:0,missingMessage:'房间床数只能是数字'" type="text" id="editBedNum" style="width:100px;" />
     </p>
-    <p>有无窗户：
+    <p>
+        类&nbsp;&nbsp;&nbsp;别：
+        <select class="easyui-combobox" id="editRoomTypeId" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'">
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        窗&nbsp;&nbsp;&nbsp;户：
         <select class="easyui-combobox" id="editRoomWindowFlag" style="width:100px;">
             <option value="0" selected="true">无</option>
-            <option value="1">有不能看到海的普通窗户</option>
-            <option value="2">有可以看到还的海景窗户</option>
+            <option value="1">有普通窗户</option>
+            <option value="2">有海景窗户</option>
         </select>
     </p>
-    <p>有无独立卫生间：
+    <p>
+        卫生间：
         <select class="easyui-combobox" id="editRoomWcFlag" style="width:100px;">
-            <option value="0" selected="true">有</option>
-            <option value="1">无</option>
+            <option value="0" selected="true">有独立卫生间</option>
+            <option value="1">无独立卫生间</option>
         </select>
-    </p>
-    <p>是否根据床位计算可入住人数：
-        <select class="easyui-combobox" id="editCalcCheckInNumBedFlag" style="width:100px;">
-            <option value="0" selected="true">是</option>
-            <option value="1">否</option>
-        </select>
-    </p>
-    <p>是否是钟点房：
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        钟点房：
         <select class="easyui-combobox" id="editHourRoomFlag" style="width:100px;">
             <option value="0" selected="true">是</option>
             <option value="1">否</option>
         </select>
     </p>
-    <p>房间销售价格：<input class="easyui-numberbox" data-options="required:true,min:0,precision:2,missingMessage:'房间销售价格只能是数字'" type="text" id="editSellPrice" style="width:200px;" /></p>
+    <p>
+        价&nbsp;&nbsp;&nbsp;格：<input class="easyui-numberbox" data-options="required:true,min:0,precision:2,missingMessage:'房间销售价格只能是数字'" type="text" id="editSellPrice" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床位=可入住人数：
+        <select class="easyui-combobox" id="editCalcCheckInNumBedFlag" style="width:100px;">
+            <option value="1" selected="true">否</option>
+            <option value="0">是</option>
+        </select>
+    </p>
     <p>销售价格描述：
         <br />
-        <textarea rows="3" cols="20" id="addSellPriceDesc">
+        <textarea rows="1" cols="60" id="editSellPrice" />
     </p>
     <p>退房规则描述：
         <br />
-        <textarea rows="3" cols="20" id="editCheckOutDesc">
+        <textarea rows="1" cols="60" id="editCheckOutDesc" />
     </p>
     <p>房间整体描述：
         <br />
-        <textarea rows="3" cols="20" id="editRoomOverallDesc">
+        <textarea rows="1" cols="60" id="editRoomOverallDesc" />
     </p>
 </form>
 </body>
