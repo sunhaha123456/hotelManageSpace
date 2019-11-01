@@ -18,46 +18,50 @@
                 var result = ajaxSynchGet("user/hotelRoomEnter/getDetail", {"id":id});
                 if (result.code == '200') {
                     var data = result.data;
-                    $("#detailRoomNo").text(data.roomNo);
-                    $("#detailRoomFloorNum").text(data.roomFloorNum);
+                    $("#detailRoomNo").val(data.roomNo);
+                    $("#detailRoomFloorNum").val(data.roomFloorNum);
                     if (data.roomUpshelfState == 0) {
-                        $("#detailRoomUpshelfState").text('上架');
+                        $("#detailRoomUpshelfState").val('上架');
                     } else {
-                        $("#detailRoomUpshelfState").text('下架');
+                        $("#detailRoomUpshelfState").val('下架');
                     }
-                    $("#detailBedNum").text(data.bedNum);
-                    $("#detailRoomTypeName").text(data.roomTypeName);
+                    $("#detailBedNum").val(data.bedNum);
+                    if (data.roomTypeName == null || data.roomTypeName == '') {
+                        $("#detailRoomTypeName").val('无');
+                    } else {
+                        $("#detailRoomTypeName").val(data.roomTypeName);
+                    }
                     if (data.roomWindowFlag == 0) {
-                        $("#detailRoomWindowFlag").text('无');
+                        $("#detailRoomWindowFlag").val('无');
                     } else if (data.roomWindowFlag == 1) {
-                        $("#detailRoomWindowFlag").text('有普通窗户');
+                        $("#detailRoomWindowFlag").val('有普通窗户');
                     } else if (data.roomWindowFlag == 2) {
-                        $("#detailRoomWindowFlag").text('有海景窗户');
+                        $("#detailRoomWindowFlag").val('有海景窗户');
                     }
                     if (data.roomWcFlag == 0) {
-                        $("#detailRoomWcFlag").text('有');
+                        $("#detailRoomWcFlag").val('有');
                     } else {
-                        $("#detailRoomWcFlag").text('无');
+                        $("#detailRoomWcFlag").val('无');
                     }
                     if (data.hourRoomFlag == 0) {
-                        $("#detailHourRoomFlag").text('否');
+                        $("#detailHourRoomFlag").val('否');
                     } else {
-                        $("#detailHourRoomFlag").text('是');
+                        $("#detailHourRoomFlag").val('是');
                     }
-                    $("#detailSellPrice").text(data.sellPrice);
+                    $("#detailSellPrice").val(data.sellPrice);
                     if (data.calcCheckInNumBedFlag == 0) {
-                        $("#detailCalcCheckInNumBedFlag").text('否');
+                        $("#detailCalcCheckInNumBedFlag").val('否');
                     } else {
-                        $("#detailCalcCheckInNumBedFlag").text('是');
+                        $("#detailCalcCheckInNumBedFlag").val('是');
                     }
                     if (data.calcCheckInNumBedFlag == 0) {
-                        $("#detailRoomWcFlag").text('是');
+                        $("#detailRoomWcFlag").val('是');
                     } else {
-                        $("#detailRoomWcFlag").text('否');
+                        $("#detailRoomWcFlag").val('否');
                     }
-                    $("#detailSellPriceDesc").text(data.sellPriceDesc);
-                    $("#detailCheckOutDesc").text(data.checkOutDesc);
-                    $("#detailRoomOverallDesc").text(data.roomOverallDesc);
+                    $("#detailSellPriceDesc").val(data.sellPriceDesc);
+                    $("#detailCheckOutDesc").val(data.checkOutDesc);
+                    $("#detailRoomOverallDesc").val(data.roomOverallDesc);
                     $('#manager_detail').dialog('open');
                 } else {
                     alertWarn(result.msg);
@@ -271,7 +275,7 @@
                 roomFloorNum = null;
             }
             var roomUpshelfState = $('#roomUpshelfStateForSearch').combobox('getValue');
-            var result = ajaxSynchPostJson("user/hotelRoomEnter/search", {"roomNo":roomNo, "roomTypeId":hotelId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":1, "rows":10});
+            var result = ajaxSynchPostJson("user/hotelRoomEnter/search", {"roomNo":roomNo, "roomTypeId":roomTypeId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":1, "rows":10});
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -334,7 +338,7 @@
             房间类型：
             <select class="easyui-combobox" id="roomTypeIdForSearch" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'"></select>
             房间楼层：
-            <select class="easyui-combobox" id="roomFloorNumSearch" style="width:100px;">
+            <select class="easyui-combobox" id="roomFloorNumForSearch" style="width:100px;">
                 <option value="-1" selected="true">请选择</option>
                 <option value="1">1楼</option>
                 <option value="2">2楼</option>
@@ -362,38 +366,37 @@
             $('#manager_edit').form('reset');
        }">
     <p>
-        编&nbsp;&nbsp;&nbsp;号：<span id="detailRoomNo" style="width:100px;" />
+        编&nbsp;&nbsp;&nbsp;号：<input type="text" id="detailRoomNo" readonly="readonly" style="width:100px;" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        楼&nbsp;&nbsp;&nbsp;层：
-        <span id="detailRoomFloorNum" style="width:100px;" />
+        楼&nbsp;&nbsp;&nbsp;层：<input type="text" id="detailRoomFloorNum" readonly="readonly" style="width:100px;" />
     </p>
     <p>
         状&nbsp;&nbsp;&nbsp;态：
-        <span id="detailRoomUpshelfState" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" id="detailRoomUpshelfState" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         床&nbsp;&nbsp;&nbsp;数：
-        <span id="detailBedNum" style="width:100px;" />
+        <input type="text" id="detailBedNum" readonly="readonly" style="width:100px;" />
     </p>
     <p>
         类&nbsp;&nbsp;&nbsp;别：
-        <span id="detailRoomTypeName" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" id="detailRoomTypeName" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         窗&nbsp;&nbsp;&nbsp;户：
-        <span id="detailRoomWindowFlag" style="width:100px;" />
+        <input type="text" id="detailRoomWindowFlag" readonly="readonly" style="width:100px;" />
     </p>
     <p>
         卫生间：
-        <span id="detailRoomWcFlag" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" id="detailRoomWcFlag" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         钟点房：
-        <span id="detailHourRoomFlag" style="width:100px;" />
+        <input type="text" id="detailHourRoomFlag" readonly="readonly" style="width:100px;" />
     </p>
     <p>
         价&nbsp;&nbsp;&nbsp;格：
-        <span id="detailSellPrice" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" id="detailSellPrice" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         床位=可入住人数：
-        <span id="detailCalcCheckInNumBedFlag" style="width:100px;" />
+        <input type="text" id="detailCalcCheckInNumBedFlag" readonly="readonly" style="width:100px;" />
     </p>
     <p>销售价格描述：
         <br />

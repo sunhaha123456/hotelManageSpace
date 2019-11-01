@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -44,6 +45,11 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void save(TbHotelRoomDetail param) {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        param.setHotelId(user.getHotelId());
         Long id = param.getId();
         Long hotelId = param.getHotelId();
         String roomNo = param.getRoomNo().trim();
@@ -51,11 +57,14 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
         if (hotel == null || hotel.getHotelState() != 0) {
             throw new BusinessException("酒店已被下架！");
         }
+        Date now = new Date();
         if (id == null) { // 新增
             int  c = hotelRoomDetailRepository.countByRoomNo(roomNo);
             if (c > 0) {
                 throw new BusinessException("房间编号重复！");
             }
+            param.setCreateDate(now);
+            param.setLastModified(now);
         } else { // 修改
             int  c = hotelRoomDetailRepository.countByRoomNo(id, roomNo);
             if (c > 0) {

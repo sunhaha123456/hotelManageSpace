@@ -23,11 +23,11 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
     public PageList<TbHotelRoomDetail> listForEnter(HotelRoomRequest param) throws Exception {
         StringBuilder sql = new StringBuilder();
         List<Object> paramList = new ArrayList();
-        sql.append(" SELECT a.id, a.room_no roomNo, a.room_state roomState, ");
+        sql.append(" SELECT a.id, a.room_no roomNo, a.room_upshelf_state roomUpshelfState, ");
         sql.append(" b.room_type_name roomTypeName, a.room_window_flag roomWindowFlag, ");
         sql.append(" a.room_wc_flag roomWcFlag, a.bed_num bedNum, a.sell_price sellPrice, ");
-        sql.append(" a.create_date createDate");
-        sql.append(" FROM tb_hotel_room_detail a join tb_hotel_room_type b ON a.room_type_id = b.id ");
+        sql.append(" a.create_date createDate, a.room_floor_num roomFloorNum");
+        sql.append(" FROM tb_hotel_room_detail a left join tb_hotel_room_type b ON a.room_type_id = b.id ");
         sql.append(" AND a.hotel_id = ? ");
         paramList.add(param.getHotelId());
         if (StringUtil.isNotEmpty(param.getRoomNo())) {
