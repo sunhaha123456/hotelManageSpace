@@ -70,6 +70,12 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
             if (c > 0) {
                 throw new BusinessException("房间编号重复！");
             }
+            TbHotelRoomDetail room = hotelRoomDetailRepository.findOne(id);
+            if (room == null || !param.getHotelId().equals(room.getHotelId())) {
+                throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+            }
+            param.setCreateDate(room.getCreateDate());
+            param.setLastModified(now);
         }
         hotelRoomDetailRepository.save(param);
     }
@@ -118,6 +124,10 @@ public class HotelRoomDetailServiceImpl implements HotelRoomDetailService {
         TbHotelRoomDetail room =  hotelRoomDetailRepository.findOne(id);
         if (room == null) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+        }
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null || !user.getHotelId().equals(room.getHotelId())) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
         Long roomTypeId = room.getRoomTypeId();
         if (roomTypeId != null) {

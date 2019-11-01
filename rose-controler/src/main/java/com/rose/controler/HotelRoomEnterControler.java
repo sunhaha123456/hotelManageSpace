@@ -69,7 +69,7 @@ public class HotelRoomEnterControler {
      * @param id
      * @param state 0：上架 1：下架 2：删除
      */
-    @PostMapping(value= "/opert")
+    @GetMapping(value= "/opert")
     public void opert(@RequestParam Long id, @RequestParam Integer state) {
         hotelRoomDetailService.opert(id, state);
     }

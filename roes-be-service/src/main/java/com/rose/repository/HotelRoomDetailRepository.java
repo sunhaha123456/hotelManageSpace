@@ -22,7 +22,7 @@ public interface HotelRoomDetailRepository extends CrudRepository<TbHotelRoomDet
     int updateRoomUpshelfState(@Param(value = "id") Long id, @Param(value = "oldRoomUpshelfState") Integer oldRoomUpshelfState, @Param(value = "newRoomUpshelfState") Integer newRoomUpshelfState);
 
     @Modifying
-    @Query(value = "delete tb_hotel_room_detail where id = :id and room_upshelf_state = 1", nativeQuery = true)
+    @Query(value = "delete from tb_hotel_room_detail where id = :id and room_upshelf_state = 1", nativeQuery = true)
     int deleteById(@Param(value = "id") Long id);
 
     @Query(value = "select count(1) from tb_hotel_room_detail where room_no = :roomNo", nativeQuery = true)

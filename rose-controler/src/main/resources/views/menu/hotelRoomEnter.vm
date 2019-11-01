@@ -27,7 +27,7 @@
                     }
                     $("#detailBedNum").val(data.bedNum);
                     if (data.roomTypeName == null || data.roomTypeName == '') {
-                        $("#detailRoomTypeName").val('无');
+                        $("#detailRoomTypeName").val('未选择');
                     } else {
                         $("#detailRoomTypeName").val(data.roomTypeName);
                     }
@@ -72,13 +72,14 @@
         }
         function addHotelRoomShow() {
             $('#manager_add').dialog('open');
+            $('#addRoomTypeId').combobox('setValue', -1);
             $('#addRoomNo').focus();
         }
         function editHotelRoomShow() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/operationHotel/getDetail", {"id":id});
+                var result = ajaxSynchGet("user/hotelRoomEnter/getDetail", {"id":id});
                 if (result.code == '200') {
                     var data = result.data;
                     $('#editRoomNo').val(data.roomNo);
@@ -95,7 +96,7 @@
                     $('#editHourRoomFlag').combobox('setValue', data.hourRoomFlag);
                     $('#editSellPrice').val(data.sellPrice);
                     $('#editCalcCheckInNumBedFlag').combobox('setValue', data.calcCheckInNumBedFlag);
-                    $('#editSellPrice').val(data.sellPriceDesc);
+                    $('#editSellPriceDesc').val(data.sellPriceDesc);
                     $('#editCheckOutDesc').val(data.checkOutDesc);
                     $('#editRoomOverallDesc').val(data.roomOverallDesc);
                     $('#manager_edit').dialog('open');
@@ -113,7 +114,7 @@
                 var roomUpshelfState = $('#addRoomUpshelfState').combobox('getValue');
                 var bedNum = $('#addBedNum').val();
                 var roomTypeId = $('#addRoomTypeId').combobox('getValue');
-                if (roomTypeId = -1) {
+                if (roomTypeId == -1) {
                     roomTypeId = null;
                 }
                 var roomWindowFlag = $('#addRoomWindowFlag').combobox('getValue');
@@ -150,30 +151,32 @@
                 var rows = $('#manager').datagrid('getSelections');
                 if (rows.length > 0) {
                     var id = rows[0].id;
-                    var roomNo = $('#addRoomNo').val();
-                    var roomFloorNum = $('#addRoomFloorNum').combobox('getValue');
-                    var roomUpshelfState = $('#addRoomUpshelfState').combobox('getValue');
-                    var roomTypeId = $('#addRoomTypeId').combobox('getValue');
-                    if (roomTypeId = -1) {
+                    var roomNo = $('#editRoomNo').val();
+                    var roomFloorNum = $('#editRoomFloorNum').combobox('getValue');
+                    var roomUpshelfState = $('#editRoomUpshelfState').combobox('getValue');
+                    var bedNum = $('#editBedNum').val();
+                    var roomTypeId = $('#editRoomTypeId').combobox('getValue');
+                    if (roomTypeId == -1) {
                         roomTypeId = null;
                     }
-                    var roomWindowFlag = $('#addRoomWindowFlag').combobox('getValue');
-                    var roomWcFlag = $('#addRoomWcFlag').combobox('getValue');
-                    var bedNum = $('#addBedNum').val();
-                    var hourRoomFlag = $('#addHourRoomFlag').combobox('getValue');
-                    var sellPrice = $('#addSellPrice').val();
-                    var sellPriceDesc = $('#addSellPriceDesc').val();
-                    var checkOutDesc = $('#addCheckOutDesc').val();
-                    var roomOverallDesc = $('#addRoomOverallDesc').val();
+                    var roomWindowFlag = $('#editRoomWindowFlag').combobox('getValue');
+                    var roomWcFlag = $('#editRoomWcFlag').combobox('getValue');
+                    var hourRoomFlag = $('#editHourRoomFlag').combobox('getValue');
+                    var sellPrice = $('#editSellPrice').val();
+                    var calcCheckInNumBedFlag = $('#editCalcCheckInNumBedFlag').combobox('getValue');
+                    var sellPriceDesc = $('#editSellPriceDesc').val();
+                    var checkOutDesc = $('#editCheckOutDesc').val();
+                    var roomOverallDesc = $('#editRoomOverallDesc').val();
 
                     var param = {
                         "id":id,
                         "roomNo":roomNo, "roomFloorNum":roomFloorNum,
-                        "roomUpshelfState":roomUpshelfState, "roomTypeId":roomTypeId,
-                        "roomWindowFlag":roomWindowFlag, "roomWcFlag":roomWcFlag,
-                        "bedNum":bedNum, "hourRoomFlag":hourRoomFlag,
-                        "sellPrice":sellPrice, "sellPriceDesc":sellPriceDesc,
-                        "checkOutDesc":checkOutDesc, "roomOverallDesc":roomOverallDesc
+                        "roomUpshelfState":roomUpshelfState, "bedNum":bedNum,
+                        "roomTypeId":roomTypeId, "roomWindowFlag":roomWindowFlag,
+                        "roomWcFlag":roomWcFlag, "hourRoomFlag":hourRoomFlag,
+                        "sellPrice":sellPrice, "calcCheckInNumBedFlag":calcCheckInNumBedFlag,
+                        "sellPriceDesc":sellPriceDesc, "checkOutDesc":checkOutDesc,
+                        "roomOverallDesc":roomOverallDesc
                     };
 
                     var result = ajaxSynchPostJson("user/hotelRoomEnter/save", param);
@@ -187,7 +190,7 @@
                 }
             }
         }
-        function opertHotelState(state) {
+        function opertHotelRoomState(state) {
             var showMsg = '';
             if (state == 0) {
                 showMsg = '您确定上架该酒店房间吗？';
@@ -328,9 +331,9 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="detailHotelRoomShow()">查看</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addHotelRoomShow()">新增</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editHotelRoomShow()">编辑</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="opertHotelState(1)">下架</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="opertHotelState(0)">上架</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="opertUserState(2)">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="opertHotelRoomState(1)">下架</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="opertHotelRoomState(0)">上架</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="opertHotelRoomState(2)">删除</a>
         </div>
 
         <div style="padding:0 0 0 7px;color:#333;">
@@ -361,9 +364,9 @@
 </table>
 
 <form id="manager_detail" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:80,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:25,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
-            $('#manager_edit').form('reset');
+            $('#manager_detail').form('reset');
        }">
     <p>
         编&nbsp;&nbsp;&nbsp;号：<input type="text" id="detailRoomNo" readonly="readonly" style="width:100px;" />
@@ -379,8 +382,8 @@
     </p>
     <p>
         类&nbsp;&nbsp;&nbsp;别：
-        <input type="text" id="detailRoomTypeName" readonly="readonly" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" id="detailRoomTypeName" readonly="readonly" style="width:175px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         窗&nbsp;&nbsp;&nbsp;户：
         <input type="text" id="detailRoomWindowFlag" readonly="readonly" style="width:100px;" />
     </p>
@@ -413,7 +416,7 @@
 </form>
 
 <form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:80,width:560,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:25,width:560,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_add').form('reset');
        },
@@ -431,7 +434,7 @@
 					}
 				}]">
     <p>
-        编&nbsp;&nbsp;&nbsp;号：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入房间编号',invalidMessage:'房间编号长度至少为1位'," type="text" id="addRoomNo" style="width:100px;" />
+        编&nbsp;&nbsp;&nbsp;号：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'房间编号',invalidMessage:'长度至少为1位'," type="text" id="addRoomNo" style="width:100px;" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         楼&nbsp;&nbsp;&nbsp;层：
         <select class="easyui-combobox" id="addRoomFloorNum" style="width:100px;">
@@ -454,17 +457,17 @@
         </select>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         床&nbsp;&nbsp;&nbsp;数：
-        <input class="easyui-numberbox" data-options="required:true,min:0,missingMessage:'房间床数只能是数字'" type="text" id="addBedNum" style="width:100px;" />
+        <input class="easyui-numberbox" value="1" data-options="required:true,min:0,missingMessage:'房间床数只能是数字'" type="text" id="addBedNum" style="width:100px;" />
     </p>
     <p>
         类&nbsp;&nbsp;&nbsp;别：
-        <select class="easyui-combobox" id="addRoomTypeId" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'">
+        <select class="easyui-combobox" id="addRoomTypeId" style="width:175px;" data-options="valueField:'id',textField:'roomTypeName'">
         </select>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         窗&nbsp;&nbsp;&nbsp;户：
         <select class="easyui-combobox" id="addRoomWindowFlag" style="width:100px;">
-            <option value="0" selected="true">无</option>
-            <option value="1">有普通窗户</option>
+            <option value="0">没有窗户</option>
+            <option value="1" selected="true">有普通窗户</option>
             <option value="2">有海景窗户</option>
         </select>
     </p>
@@ -505,7 +508,7 @@
 </form>
 
 <form id="manager_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:80,width:560,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:25,width:560,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_edit').form('reset');
        },
@@ -550,12 +553,12 @@
     </p>
     <p>
         类&nbsp;&nbsp;&nbsp;别：
-        <select class="easyui-combobox" id="editRoomTypeId" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'">
+        <select class="easyui-combobox" id="editRoomTypeId" style="width:175px;" data-options="valueField:'id',textField:'roomTypeName'">
         </select>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         窗&nbsp;&nbsp;&nbsp;户：
         <select class="easyui-combobox" id="editRoomWindowFlag" style="width:100px;">
-            <option value="0" selected="true">无</option>
+            <option value="0" selected="true">没有窗户</option>
             <option value="1">有普通窗户</option>
             <option value="2">有海景窗户</option>
         </select>
@@ -584,7 +587,7 @@
     </p>
     <p>销售价格描述：
         <br />
-        <textarea rows="1" cols="60" id="editSellPrice" />
+        <textarea rows="1" cols="60" id="editSellPriceDesc" />
     </p>
     <p>退房规则描述：
         <br />

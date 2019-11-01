@@ -157,6 +157,6 @@ public class LoginServiceImpl implements LoginService {
             log.error("getHomePageShowUname，异常，hotelId：{}，查无对应酒店！", user.getHotelId());
             throw new BusinessException(ResponseResultCode.SERVER_ERROR);
         }
-        return hotel.getHotelName() + "  " + user.getUname();
+        return hotel.getHotelName() + "|" + user.getUname();
     }
 }
