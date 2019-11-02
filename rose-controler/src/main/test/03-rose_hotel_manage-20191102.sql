@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2019-10-27 18:50:15
+Date: 2019-11-02 14:40:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -142,12 +142,12 @@ INSERT INTO `tb_menu` VALUES ('2', '2018-06-23 18:11:17', '2019-01-31 15:31:26',
 INSERT INTO `tb_menu` VALUES ('3', '2018-06-23 18:11:17', '2019-01-31 15:31:32', '2', 'fa-circle-o', '角色管理', '0', '1', '2', 'user/roleManage/toRoleManage');
 INSERT INTO `tb_menu` VALUES ('4', '2018-06-23 18:11:17', '2019-01-31 15:31:37', '2', 'fa-circle-o', '菜单管理', '0', '1', '1', 'user/menuManage/toMenuManage');
 INSERT INTO `tb_menu` VALUES ('5', '2018-11-09 14:31:04', '2019-10-27 09:00:00', '1', 'fa-folder', '运营管理', '0', '0', '2', null);
-INSERT INTO `tb_menu` VALUES ('6', '2018-11-09 14:48:29', '2019-10-26 20:12:51', '2', 'fa-circle-o', '酒店录入', '0', '5', '2', 'user/menuManage/toOperationHotelManage');
+INSERT INTO `tb_menu` VALUES ('6', '2018-11-09 14:48:29', '2019-11-02 14:35:35', '2', 'fa-circle-o', '酒店录入', '0', '5', '2', 'user/menuManage/toOperationHotelEnter');
 INSERT INTO `tb_menu` VALUES ('7', '2019-10-14 19:07:32', '2019-10-27 18:24:38', '1', 'fa-folder', '入住管理', '0', '0', '5', null);
-INSERT INTO `tb_menu` VALUES ('8', '2019-10-14 19:07:52', '2019-10-26 19:34:12', '2', 'fa-circle-o', '办理入住', '0', '7', '3', 'xxx');
+INSERT INTO `tb_menu` VALUES ('8', '2019-10-14 19:07:52', '2019-11-02 14:37:20', '2', 'fa-circle-o', '办理入住', '0', '7', '3', 'user/userManage/toHandleCheckIn');
 INSERT INTO `tb_menu` VALUES ('9', '2019-10-14 19:08:05', '2019-10-26 19:35:29', '2', 'fa-circle-o', '入住详情', '0', '7', '2', 'xxx');
 INSERT INTO `tb_menu` VALUES ('10', '2019-10-14 19:08:17', '2019-10-26 19:35:43', '2', 'fa-circle-o', '营收统计', '0', '7', '1', 'xxx');
-INSERT INTO `tb_menu` VALUES ('11', '2019-10-26 19:41:33', '2019-10-26 20:13:18', '2', 'fa-circle-o', '房间类型录入', '0', '5', '1', 'user/menuManage/toOperationHotelRoomTypeManage');
+INSERT INTO `tb_menu` VALUES ('11', '2019-10-26 19:41:33', '2019-11-02 14:36:19', '2', 'fa-circle-o', '房间类型录入', '0', '5', '1', 'user/menuManage/toOperationHotelRoomTypeEnter');
 INSERT INTO `tb_menu` VALUES ('12', '2019-10-27 08:54:36', '2019-10-27 18:25:01', '1', 'fa-folder', '员工管理', '0', '0', '3', null);
 INSERT INTO `tb_menu` VALUES ('13', '2019-10-27 08:56:13', '2019-10-27 08:56:13', '2', 'fa-circle-o', '员工录入', '0', '12', '2', 'xxx');
 INSERT INTO `tb_menu` VALUES ('14', '2019-10-27 08:58:44', '2019-10-27 08:58:44', '2', 'fa-circle-o', '工资管理', '0', '12', '1', 'xxx');
