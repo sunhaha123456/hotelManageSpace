@@ -26,9 +26,10 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
         sql.append(" SELECT a.id, a.room_no roomNo, a.room_upshelf_state roomUpshelfState, ");
         sql.append(" b.room_type_name roomTypeName, a.room_window_flag roomWindowFlag, ");
         sql.append(" a.room_wc_flag roomWcFlag, a.bed_num bedNum, a.sell_price sellPrice, ");
-        sql.append(" a.create_date createDate, a.room_floor_num roomFloorNum");
+        sql.append(" a.create_date createDate, a.room_floor_num roomFloorNum, ");
+        sql.append(" a.hour_room_flag hourRoomFlag");
         sql.append(" FROM tb_hotel_room_detail a left join tb_hotel_room_type b ON a.room_type_id = b.id ");
-        sql.append(" AND a.hotel_id = ? ");
+        sql.append(" WHERE a.hotel_id = ? ");
         paramList.add(param.getHotelId());
         if (StringUtil.isNotEmpty(param.getRoomNo())) {
             sql.append(" AND instr(a.room_no, ?) > 0 ");
@@ -41,6 +42,10 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
         if (param.getRoomFloorNum() != null) {
             sql.append(" AND a.room_floor_num = ? ");
             paramList.add(param.getRoomFloorNum());
+        }
+        if (param.getRoomUpshelfState() != null) {
+            sql.append(" AND a.room_upshelf_state = ? ");
+            paramList.add(param.getRoomUpshelfState());
         }
         HashMap<String, String> sortMap = new LinkedHashMap<>();
         sortMap.put("a.id", "asc");

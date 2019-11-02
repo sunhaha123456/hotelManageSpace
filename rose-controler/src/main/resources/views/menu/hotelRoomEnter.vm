@@ -11,6 +11,11 @@
     <script th:src="@{/static/easyui/easy.common.js}"></script>
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
+        function codeKeyDown() {
+            if (event.keyCode == 13) {
+                searchHotelRoom();
+            }
+        }
         function detailHotelRoomShow() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
@@ -243,8 +248,44 @@
                         width : 100,
                     },
                     {
+                        field : 'hourRoomFlag',
+                        title : '是否钟点房',
+                        width : 100,
+                        formatter: function(value,row,index){
+                            if (value == 0) {
+                                return "否";
+                            } else {
+                                return "是";
+                            }
+                        }
+                    },
+                    {
+                        field : 'sellPrice',
+                        title : '售价',
+                        width : 100,
+                    },
+                    {
                         field : 'roomTypeName',
                         title : '类别名称',
+                        width : 100,
+                    },
+                    {
+                        field : 'roomWindowFlag',
+                        title : '窗户',
+                        width : 100,
+                        formatter: function(value,row,index){
+                            if (value == 0) {
+                                return "无";
+                            } else if (value == 1) {
+                                return "有普通窗户";
+                            } else {
+                                return "有海景窗户";
+                            }
+                        }
+                    },
+                    {
+                        field : 'bedNum',
+                        title : '床数',
                         width : 100,
                     },
                     {
@@ -328,18 +369,18 @@
 <table id="manager">
     <div id="manager_tool">
         <div style="margin-bottom:5px;">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="detailHotelRoomShow()">查看</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addHotelRoomShow()">新增</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editHotelRoomShow()">编辑</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="opertHotelRoomState(1)">下架</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="detailHotelRoomShow()">查看</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="opertHotelRoomState(0)">上架</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="opertHotelRoomState(1)">下架</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="opertHotelRoomState(2)">删除</a>
         </div>
 
         <div style="padding:0 0 0 7px;color:#333;">
-            房间编号：<input type="text" class="textbox" id="roomNoForSearch" style="width:110px" />
+            房间编号：<input type="text" class="textbox" id="roomNoForSearch" onkeydown="codeKeyDown()" style="width:110px" />
             房间类型：
-            <select class="easyui-combobox" id="roomTypeIdForSearch" style="width:100px;" data-options="valueField:'id',textField:'roomTypeName'"></select>
+            <select class="easyui-combobox" id="roomTypeIdForSearch" style="width:175px;" data-options="valueField:'id',textField:'roomTypeName'"></select>
             房间楼层：
             <select class="easyui-combobox" id="roomFloorNumForSearch" style="width:100px;">
                 <option value="-1" selected="true">请选择</option>
