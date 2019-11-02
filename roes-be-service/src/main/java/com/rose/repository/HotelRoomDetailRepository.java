@@ -30,4 +30,7 @@ public interface HotelRoomDetailRepository extends CrudRepository<TbHotelRoomDet
 
     @Query(value = "select count(1) from tb_hotel_room_detail where id != :id and room_no = :roomNo", nativeQuery = true)
     int countByRoomNo(@Param(value = "id") Long id, @Param(value = "roomNo") String roomNo);
+
+    @Query(value = "select distinct room_floor_num from tb_hotel_room_detail where hotel_id = :hotelId and room_upshelf_state = 0 order by room_floor_num asc", nativeQuery = true)
+    List<Integer> findFloorList(@Param(value = "hotelId") Long hotelId);
 }

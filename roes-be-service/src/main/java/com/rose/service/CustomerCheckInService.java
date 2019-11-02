@@ -1,5 +1,7 @@
 package com.rose.service;
 
+import java.util.List;
+
 /**
  * 功能：客人入住 service
  * @author sunpeng
@@ -7,4 +9,5 @@ package com.rose.service;
  */
 public interface CustomerCheckInService {
 
+    List getFloorList();
 }

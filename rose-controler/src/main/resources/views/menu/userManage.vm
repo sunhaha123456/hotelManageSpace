@@ -362,7 +362,7 @@
 </form>
 
 <form id="manager_distriUserHotel" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:150,width:320,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:45,width:300,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_distriUserHotel').form('reset');
        },
@@ -380,7 +380,7 @@
 					}
 				}]">
     <p>
-        关联酒店：<select class="easyui-combobox" id="distriHotel" style="width:100px;" data-options="valueField:'id',textField:'hotelName'" />
+        关联酒店：<select class="easyui-combobox" id="distriHotel" style="width:150px;" data-options="valueField:'id',textField:'hotelName'" />
     </p>
 </form>
 
