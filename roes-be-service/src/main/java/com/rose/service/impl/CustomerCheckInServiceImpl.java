@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -54,6 +55,14 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
             throw new BusinessException(ResponseResultCode.SERVER_ERROR);
         }
         param.setHotelId(user.getHotelId());
+        Date planCheckInDate = param.getPlanCheckInDate();
+        Date planCheckOutDate = param.getPlanCheckOutDate();
+
+
+
+
+
+
         return hotelRoomDetailRepositoryCustom.listForFloor(param);
     }
 }

@@ -32,7 +32,7 @@ public class HandleCheckInControler {
 
     @PostMapping(value= "/searchByFloor")
     public PageList<TbHotelRoomDetail> searchByFloor(@RequestBody HotelRoomRequest param) throws Exception {
-        if (param == null || param.getRoomFloorNum() == null) {
+        if (param == null || param.getRoomFloorNum() == null || param.getPlanCheckInDate() == null || param.getPlanCheckOutDate() == null) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
         }
         return customerCheckInService.searchByFloor(param);

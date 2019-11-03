@@ -52,6 +52,15 @@
                         field : 'checkInState',
                         title : '入住详情',
                         width : 100,
+                        formatter: function(value,row,index){
+                            if (value == 0) {
+                                return "房间空闲";
+                            } else if (value == 1) {
+                                return "已被入住";
+                            } else {
+                                return "已被预订";
+                            }
+                        }
                     },
                     {
                         field : 'roomTypeName',

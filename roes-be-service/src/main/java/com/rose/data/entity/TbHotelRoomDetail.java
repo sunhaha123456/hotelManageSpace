@@ -79,7 +79,10 @@ public class TbHotelRoomDetail extends BaseDataIdLong {
     @Column(name = "room_overall_desc", columnDefinition = "varchar(500) COMMENT '房间整体描述'")
     private String roomOverallDesc;
 
-    // 入住详情
+    // 入住详情 state
+    // 0：房间空闲
+    // 1：已被入住
+    // 2：已被预订
     @Transient
-    private String checkInState;
+    private Integer checkInState;
 }
