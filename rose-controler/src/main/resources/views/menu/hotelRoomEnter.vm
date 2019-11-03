@@ -244,7 +244,17 @@
                     },
                     {
                         field : 'roomFloorNum',
-                        title : '所在楼层',
+                        title : '房间楼层',
+                        width : 100,
+                    },
+                    {
+                        field : 'sellPrice',
+                        title : '售价',
+                        width : 100,
+                    },
+                    {
+                        field : 'roomTypeName',
+                        title : '类别名称',
                         width : 100,
                     },
                     {
@@ -258,16 +268,6 @@
                                 return "是";
                             }
                         }
-                    },
-                    {
-                        field : 'sellPrice',
-                        title : '售价',
-                        width : 100,
-                    },
-                    {
-                        field : 'roomTypeName',
-                        title : '类别名称',
-                        width : 100,
                     },
                     {
                         field : 'roomWindowFlag',

@@ -78,4 +78,8 @@ public class TbHotelRoomDetail extends BaseDataIdLong {
     // 房间整体描述
     @Column(name = "room_overall_desc", columnDefinition = "varchar(500) COMMENT '房间整体描述'")
     private String roomOverallDesc;
+
+    // 入住详情
+    @Transient
+    private String checkInState;
 }

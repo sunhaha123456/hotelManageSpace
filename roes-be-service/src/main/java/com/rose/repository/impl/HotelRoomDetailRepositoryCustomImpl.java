@@ -51,4 +51,24 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
         sortMap.put("a.id", "asc");
         return queryPage(sql.toString(), TbHotelRoomDetail.class, new PageUtil(param.getPage(), param.getRows()), null, paramList.toArray());
     }
+
+    @Override
+    public PageList<TbHotelRoomDetail> listForFloor(HotelRoomRequest param) throws Exception {
+        StringBuilder sql = new StringBuilder();
+        List<Object> paramList = new ArrayList();
+        sql.append(" SELECT a.id, a.room_no roomNo, a.room_upshelf_state roomUpshelfState, ");
+        sql.append(" b.room_type_name roomTypeName, a.room_window_flag roomWindowFlag, ");
+        sql.append(" a.room_wc_flag roomWcFlag, a.bed_num bedNum, a.sell_price sellPrice, ");
+        sql.append(" a.create_date createDate, a.room_floor_num roomFloorNum, ");
+        sql.append(" a.hour_room_flag hourRoomFlag");
+        sql.append(" FROM tb_hotel_room_detail a left join tb_hotel_room_type b ON a.room_type_id = b.id ");
+        sql.append(" WHERE a.room_upshelf_state = 0 ");
+        sql.append(" AND a.hotel_id = ? ");
+        paramList.add(param.getHotelId());
+        sql.append(" AND a.room_floor_num = ? ");
+        paramList.add(param.getRoomFloorNum());
+        HashMap<String, String> sortMap = new LinkedHashMap<>();
+        sortMap.put("a.room_no", "asc");
+        return queryPage(sql.toString(), TbHotelRoomDetail.class, new PageUtil(param.getPage(), param.getRows()), null, paramList.toArray());
+    }
 }

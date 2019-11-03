@@ -1,5 +1,9 @@
 package com.rose.service;
 
+import com.rose.common.data.base.PageList;
+import com.rose.data.entity.TbHotelRoomDetail;
+import com.rose.data.to.request.HotelRoomRequest;
+
 import java.util.List;
 
 /**
@@ -10,4 +14,6 @@ import java.util.List;
 public interface CustomerCheckInService {
 
     List getFloorList();
+
+    PageList<TbHotelRoomDetail> searchByFloor(HotelRoomRequest param) throws Exception;
 }

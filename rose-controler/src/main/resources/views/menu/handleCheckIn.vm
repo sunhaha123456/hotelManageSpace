@@ -34,37 +34,66 @@
                         hidden : true
                     },
                     {
-                        field : 'hotelName',
-                        title : '酒店名称',
+                        field : 'roomNo',
+                        title : '房间编号',
                         width : 100,
                     },
                     {
-                        field : 'hotelState',
-                        title : '状态',
+                        field : 'roomFloorNum',
+                        title : '房间楼层',
+                        width : 100,
+                    },
+                    {
+                        field : 'sellPrice',
+                        title : '售价',
+                        width : 100,
+                    },
+                    {
+                        field : 'checkInState',
+                        title : '入住详情',
+                        width : 100,
+                    },
+                    {
+                        field : 'roomTypeName',
+                        title : '类别名称',
+                        width : 100,
+                    },
+                    {
+                        field : 'hourRoomFlag',
+                        title : '是否钟点房',
                         width : 100,
                         formatter: function(value,row,index){
-                            if (value == 0){
-                                return "上架";
+                            if (value == 0) {
+                                return "否";
                             } else {
-                                return "下架";
+                                return "是";
                             }
                         }
-                    },                        
-                    {
-                        field : 'remark',
-                        title : '备注',
-                        width : 100,
                     },
                     {
-                        field : 'createDate',
-                        title : '创建日期',
+                        field : 'roomWindowFlag',
+                        title : '窗户',
+                        width : 100,
+                        formatter: function(value,row,index){
+                            if (value == 0) {
+                                return "无";
+                            } else if (value == 1) {
+                                return "有普通窗户";
+                            } else {
+                                return "有海景窗户";
+                            }
+                        }
+                    },
+                    {
+                        field : 'bedNum',
+                        title : '床数',
                         width : 100,
                     }
                 ]]
             });
         }
         function searchRoom() {
-            var result = ajaxSynchPostJson("user/operationHotel/search", {"roomFloorNum":floorHavChoose, "page":1, "rows":10});
+            var result = ajaxSynchPostJson("user/handleCheckIn/searchByFloor", {"roomFloorNum":floorHavChoose, "page":1, "rows":10});
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -150,15 +179,15 @@
     <div id="manager_tool">
         <div style="margin-bottom:5px;" id="floorList">
             <a href="#" class="easyui-linkbutton" plain="true"></a>
-            <a href="#" id="floor_1" class="easyui-linkbutton" plain="true" onclick="searchRoom(1)"><font size="3"><strong>1楼房间</strong></font></a>
-            <a href="#" id="floor_2" class="easyui-linkbutton" plain="true" onclick="searchRoom(2)"><font size="3"><strong>2楼房间</strong></font></a>
-            <a href="#" id="floor_3" class="easyui-linkbutton" plain="true" onclick="searchRoom(3)"><font size="3"><strong>3楼房间</strong></font></a>
-            <a href="#" id="floor_4" class="easyui-linkbutton" plain="true" onclick="searchRoom(4)"><font size="3"><strong>4楼房间</strong></font></a>
-            <a href="#" id="floor_5" class="easyui-linkbutton" plain="true" onclick="searchRoom(5)"><font size="3"><strong>5楼房间</strong></font></a>
-            <a href="#" id="floor_6" class="easyui-linkbutton" plain="true" onclick="searchRoom(6)"><font size="3"><strong>6楼房间</strong></font></a>
-            <a href="#" id="floor_7" class="easyui-linkbutton" plain="true" onclick="searchRoom(7)"><font size="3"><strong>7楼房间</strong></font></a>
-            <a href="#" id="floor_8" class="easyui-linkbutton" plain="true" onclick="searchRoom(8)"><font size="3"><strong>8楼房间</strong></font></a>
-            <a href="#" id="floor_9" class="easyui-linkbutton" plain="true" onclick="searchRoom(9)"><font size="3"><strong>9楼房间</strong></font></a>
+            <a href="#" id="floor_1" class="easyui-linkbutton" plain="true" onclick="floorClick(1)"><font size="3"><strong>1楼房间</strong></font></a>
+            <a href="#" id="floor_2" class="easyui-linkbutton" plain="true" onclick="floorClick(2)"><font size="3"><strong>2楼房间</strong></font></a>
+            <a href="#" id="floor_3" class="easyui-linkbutton" plain="true" onclick="floorClick(3)"><font size="3"><strong>3楼房间</strong></font></a>
+            <a href="#" id="floor_4" class="easyui-linkbutton" plain="true" onclick="floorClick(4)"><font size="3"><strong>4楼房间</strong></font></a>
+            <a href="#" id="floor_5" class="easyui-linkbutton" plain="true" onclick="floorClick(5)"><font size="3"><strong>5楼房间</strong></font></a>
+            <a href="#" id="floor_6" class="easyui-linkbutton" plain="true" onclick="floorClick(6)"><font size="3"><strong>6楼房间</strong></font></a>
+            <a href="#" id="floor_7" class="easyui-linkbutton" plain="true" onclick="floorClick(7)"><font size="3"><strong>7楼房间</strong></font></a>
+            <a href="#" id="floor_8" class="easyui-linkbutton" plain="true" onclick="floorClick(8)"><font size="3"><strong>8楼房间</strong></font></a>
+            <a href="#" id="floor_9" class="easyui-linkbutton" plain="true" onclick="floorClick(9)"><font size="3"><strong>9楼房间</strong></font></a>
         </div>
 
         <!--/*
