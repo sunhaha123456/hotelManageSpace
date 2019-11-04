@@ -80,7 +80,8 @@ public class TbHotelRoomDetail extends BaseDataIdLong {
     private String roomOverallDesc;
 
     // 房间入住状态描述
-
+    // 当 不是 根据床位计算可入住人数时：空闲、已入住、已预订
+    // 当 是 根据床位计算可入住人数时：空闲、已住满、已入住床位：x，剩余床位：y
     @Transient
     private String checkInStateDesc;
 }
