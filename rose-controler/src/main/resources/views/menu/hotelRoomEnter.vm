@@ -253,11 +253,6 @@
                         width : 100,
                     },
                     {
-                        field : 'roomTypeName',
-                        title : '类别名称',
-                        width : 100,
-                    },
-                    {
                         field : 'hourRoomFlag',
                         title : '是否钟点房',
                         width : 100,
@@ -268,6 +263,11 @@
                                 return "是";
                             }
                         }
+                    },
+                    {
+                        field : 'roomTypeName',
+                        title : '类别名称',
+                        width : 100,
                     },
                     {
                         field : 'roomWindowFlag',

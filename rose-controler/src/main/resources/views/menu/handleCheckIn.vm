@@ -39,32 +39,18 @@
                         width : 100,
                     },
                     {
+                        field : 'checkInStateDesc',
+                        title : '房间状态',
+                        width : 100,
+                    },
+                    {
                         field : 'roomFloorNum',
                         title : '房间楼层',
                         width : 100,
                     },
                     {
                         field : 'sellPrice',
-                        title : '售价',
-                        width : 100,
-                    },
-                    {
-                        field : 'checkInState',
-                        title : '入住详情',
-                        width : 100,
-                        formatter: function(value,row,index){
-                            if (value == 0) {
-                                return "房间空闲";
-                            } else if (value == 1) {
-                                return "已被入住";
-                            } else {
-                                return "已被预订";
-                            }
-                        }
-                    },
-                    {
-                        field : 'roomTypeName',
-                        title : '类别名称',
+                        title : '房间售价',
                         width : 100,
                     },
                     {
@@ -78,6 +64,11 @@
                                 return "是";
                             }
                         }
+                    },
+                    {
+                        field : 'roomTypeName',
+                        title : '类别名称',
+                        width : 100,
                     },
                     {
                         field : 'roomWindowFlag',
