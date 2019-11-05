@@ -97,7 +97,7 @@
                             "roomFloorNum": floorHavChoose,
                             "planCheckInDate": $('#planCheckInDate').datetimebox('getValue'),
                             "planCheckOutDate": $('#planCheckOutDate').datetimebox('getValue'),
-                            "page":1, "rows":10
+                            "page":1, "rows":20
             };
             var result = ajaxSynchPostJson("user/handleCheckIn/searchByFloor", param);
             if (result.code == '200') {
@@ -111,10 +111,10 @@
             var p = $('#manager').datagrid('getPager');
             $(p).pagination({
                 pageNumber : 1,
-                pageSize : 10,
+                pageSize : 20,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/operationHotel/search", {"page":pageNumber, "rows":pageSize});
+                    var result = ajaxSynchPostJson("user/handleCheckIn/searchByFloor", {"page":pageNumber, "rows":pageSize});
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }
@@ -176,6 +176,30 @@
             }
         }
 
+        function showRoomCheckInDetail() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+
+
+
+            } else {
+                alertWarn('操作失败！');
+            }
+        }
+
+        function showHandleCheckIn() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+
+
+
+            } else {
+                alertWarn('操作失败！');
+            }
+        }
+
         $(function () {
             dataGridInit();
             webPageInit();
@@ -203,7 +227,9 @@
             &nbsp;&nbsp;&nbsp;
             入住时间：<input id="planCheckInDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;&nbsp;
             退房时间：<input id="planCheckOutDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchRoom()">查询</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchRoom()">查询</a>&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showRoomCheckInDetail()">房间入住详情</a>&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showHandleCheckIn()">办理客人入住</a>&nbsp;&nbsp;&nbsp;
         </div>
     </div>
 </table>
