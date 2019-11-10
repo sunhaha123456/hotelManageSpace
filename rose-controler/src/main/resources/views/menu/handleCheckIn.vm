@@ -19,7 +19,7 @@
         var floorHavChoose = null;
         function dataGridInit() {
             $('#manager').datagrid({
-                fit : true,
+                //fit : true,
                 fitColumns : true,
                 striped : true,
                 rownumbers : true,
@@ -109,7 +109,7 @@
                             "roomFloorNum": floorHavChoose,
                             "planCheckInDate": $('#planCheckInDate').datetimebox('getValue'),
                             "planCheckOutDate": $('#planCheckOutDate').datetimebox('getValue'),
-                            "page":1, "rows":10
+                            "page":1, "rows":20
             };
             var result = ajaxSynchPostJson("user/handleCheckIn/searchByFloor", param);
             if (result.code == '200') {
@@ -123,10 +123,16 @@
             var p = $('#manager').datagrid('getPager');
             $(p).pagination({
                 pageNumber : 1,
-                pageSize : 10,
+                pageSize : 20,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/handleCheckIn/searchByFloor", {"page":pageNumber, "rows":pageSize});
+                    var param = {
+                        "roomFloorNum": floorHavChoose,
+                        "planCheckInDate": $('#planCheckInDate').datetimebox('getValue'),
+                        "planCheckOutDate": $('#planCheckOutDate').datetimebox('getValue'),
+                        "page":pageNumber, "rows":pageSize
+                    };
+                    var result = ajaxSynchPostJson("user/handleCheckIn/searchByFloor", param);
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }

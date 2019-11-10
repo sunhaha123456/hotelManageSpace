@@ -124,7 +124,7 @@
         }
         function dataGridInit() {
             $('#manager').datagrid({
-                fit : true,
+                //fit : true,
                 fitColumns : true,
                 striped : true,
                 rownumbers : true,

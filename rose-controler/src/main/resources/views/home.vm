@@ -152,7 +152,7 @@
     var treeMenuId;
     var contentMain = $('#contentMain');
     var navHeader = $('#navHeader');
-    var iframeHightConst = 45;
+    var iframeHightConst = 35;
     function menuClick(menuParentName, menuChildName, menuParentId, menuChildId, treeMenuId){
         var nav = menuParentName + "  > " + menuChildName;
         $("#navHeader").html(nav);
@@ -270,7 +270,7 @@
             });
             $("#menuMain").html(menuMainHtml);
             $("#navHeader").html(navHeaderHtml);
-            $('#contentIframe').height(contentMain.height() - navHeader.height() - iframeHightConst);
+            $('#contentIframe').height(contentMain.height() - navHeader.height() - iframeHightConst - 35);
             $("#unameHomeSpan").html([[${uname}]]);
             var menuParent = $(menuParentId);
             var menuChild = $(menuChild);
