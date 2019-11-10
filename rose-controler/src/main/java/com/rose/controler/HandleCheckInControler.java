@@ -4,6 +4,7 @@ import com.rose.common.data.base.PageList;
 import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
 import com.rose.common.util.DateUtil;
+import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.entity.TbHotelRoomDetail;
 import com.rose.data.to.request.HotelRoomRequest;
 import com.rose.service.CustomerCheckInService;
@@ -57,5 +58,10 @@ public class HandleCheckInControler {
             throw new BusinessException("退房时间必须晚于入住时间！");
         }
         return customerCheckInService.searchByFloor(param);
+    }
+
+    @PostMapping(value= "/getRoomCheckInDetail")
+    public PageList<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(@RequestBody HotelRoomRequest param) throws Exception {
+        return customerCheckInService.getRoomCheckInDetail(param);
     }
 }

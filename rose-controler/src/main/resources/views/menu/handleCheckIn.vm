@@ -197,11 +197,24 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
+                var param = {
+                    "roomId": id,
+                    "page":1, "rows":10
+                };
+                var result = ajaxSynchPostJson("user/handleCheckIn/getRoomCheckInDetail", param);
+                if (result.code == '200') {
+                    var data = result.data;
 
 
 
+
+
+                    $('#manager_add').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
             } else {
-                alertWarn('操作失败！');
+                alertWarn('请选择记录！');
             }
         }
 

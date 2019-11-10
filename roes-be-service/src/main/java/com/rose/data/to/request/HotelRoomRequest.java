@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 public class HotelRoomRequest extends PageParam {
     private Long hotelId;                // 酒店id
+    private Long roomId;                 // 房间id
     private String roomNo;               // 房间编号
     private Integer roomFloorNum;       // 房间楼层
     private Long roomTypeId;            // 房间类别

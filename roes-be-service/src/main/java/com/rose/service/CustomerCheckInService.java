@@ -1,6 +1,7 @@
 package com.rose.service;
 
 import com.rose.common.data.base.PageList;
+import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.entity.TbHotelRoomDetail;
 import com.rose.data.to.request.HotelRoomRequest;
 
@@ -16,4 +17,6 @@ public interface CustomerCheckInService {
     List getFloorList();
 
     PageList<TbHotelRoomDetail> searchByFloor(HotelRoomRequest param) throws Exception;
+
+    PageList<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(HotelRoomRequest param) throws Exception;
 }

@@ -27,8 +27,8 @@ public class HotelRoomTypeRepositoryCustomImpl extends BaseRepositoryImpl implem
             sql.append(" AND a.hotel_id = ? ");
             paramList.add(hotelId);
         }
-        HashMap<String, String> sortMap = new LinkedHashMap<>();
+        LinkedHashMap<String, String> sortMap = new LinkedHashMap<>();
         sortMap.put("a.id", "asc");
-        return queryPage(sql.toString(), TbHotelRoomType.class, new PageUtil(pageNo, pageSize), null, paramList.toArray());
+        return queryPage(sql.toString(), TbHotelRoomType.class, new PageUtil(pageNo, pageSize), sortMap, paramList.toArray());
     }
 }

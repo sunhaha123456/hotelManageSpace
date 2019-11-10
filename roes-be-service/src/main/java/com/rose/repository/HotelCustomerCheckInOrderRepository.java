@@ -1,7 +1,6 @@
 package com.rose.repository;
 
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
-import com.rose.data.entity.TbHotelDetail;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

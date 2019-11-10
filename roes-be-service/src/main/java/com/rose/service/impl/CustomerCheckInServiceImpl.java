@@ -43,7 +43,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     public List getFloorList() {
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
-            return new ArrayList<>();
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
         return hotelRoomDetailRepository.findFloorList(user.getHotelId());
     }
@@ -52,7 +52,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     public PageList<TbHotelRoomDetail> searchByFloor(HotelRoomRequest param) throws Exception {
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
-            throw new BusinessException(ResponseResultCode.SERVER_ERROR);
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
         param.setHotelId(user.getHotelId());
         Date planCheckInDate = param.getPlanCheckInDate();
@@ -94,6 +94,16 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
                 }
             }
         }
+        return page;
+    }
+
+    @Override
+    public PageList<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(HotelRoomRequest param) throws Exception {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        PageList<TbHotelCustomerCheckInOrder> page = hotelCustomerCheckInOrderRepositoryCustom.listByHotelIdAndRoomId(user.getHotelId(), param.getRoomId(), param.getPage(), param.getRows());
         return page;
     }
 }

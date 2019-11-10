@@ -47,9 +47,9 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
             sql.append(" AND a.room_upshelf_state = ? ");
             paramList.add(param.getRoomUpshelfState());
         }
-        HashMap<String, String> sortMap = new LinkedHashMap<>();
+        LinkedHashMap<String, String> sortMap = new LinkedHashMap<>();
         sortMap.put("a.id", "asc");
-        return queryPage(sql.toString(), TbHotelRoomDetail.class, new PageUtil(param.getPage(), param.getRows()), null, paramList.toArray());
+        return queryPage(sql.toString(), TbHotelRoomDetail.class, new PageUtil(param.getPage(), param.getRows()), sortMap, paramList.toArray());
     }
 
     @Override
@@ -67,8 +67,8 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
         paramList.add(param.getHotelId());
         sql.append(" AND a.room_floor_num = ? ");
         paramList.add(param.getRoomFloorNum());
-        HashMap<String, String> sortMap = new LinkedHashMap<>();
+        LinkedHashMap<String, String> sortMap = new LinkedHashMap<>();
         sortMap.put("a.room_no", "asc");
-        return queryPage(sql.toString(), TbHotelRoomDetail.class, new PageUtil(param.getPage(), param.getRows()), null, paramList.toArray());
+        return queryPage(sql.toString(), TbHotelRoomDetail.class, new PageUtil(param.getPage(), param.getRows()), sortMap, paramList.toArray());
     }
 }
