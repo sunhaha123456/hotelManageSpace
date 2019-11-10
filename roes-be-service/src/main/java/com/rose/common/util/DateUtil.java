@@ -1,22 +1,15 @@
 package com.rose.common.util;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class DateUtil {
 
     public final static String DATEFORMAT = "yyyy-MM-dd";
     public final static String TIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public static String getCurrentDateTime() {
+    public static String getCurrentDate() {
         return format(new Date(), DATEFORMAT);
     }
 
@@ -54,5 +47,18 @@ public class DateUtil {
             }
         }
         return null;
+    }
+
+    public static Date addDate(Date strDate, int number) {
+        Date date;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(strDate);
+        cal.add(Calendar.DATE, number);
+        date = cal.getTime();
+        return date;
+    }
+
+    public static String addDate(String strDate, int number) {
+        return formatDate2Date(addDate(formatStr2Date(strDate), number));
     }
 }

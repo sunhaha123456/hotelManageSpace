@@ -39,9 +39,16 @@
                         width : 100,
                     },
                     {
-                        field : 'checkInStateDesc',
-                        title : '房间状态',
+                        field : 'checkInState',
+                        title : '是否可入住',
                         width : 100,
+                        formatter: function(value,row,index){
+                            if (value == 0) {
+                                return "是";
+                            } else {
+                                return "否";
+                            }
+                        }
                     },
                     {
                         field : 'roomFloorNum',
@@ -89,7 +96,12 @@
                         title : '床数',
                         width : 100,
                     }
-                ]]
+                ]],
+                rowStyler: function(index,row){
+                    if (row.checkInState != 0) {
+                        return 'background-color:#FF0036';
+                    }
+                }
             });
         }
         function searchRoom() {
@@ -97,7 +109,7 @@
                             "roomFloorNum": floorHavChoose,
                             "planCheckInDate": $('#planCheckInDate').datetimebox('getValue'),
                             "planCheckOutDate": $('#planCheckOutDate').datetimebox('getValue'),
-                            "page":1, "rows":20
+                            "page":1, "rows":10
             };
             var result = ajaxSynchPostJson("user/handleCheckIn/searchByFloor", param);
             if (result.code == '200') {
@@ -111,7 +123,7 @@
             var p = $('#manager').datagrid('getPager');
             $(p).pagination({
                 pageNumber : 1,
-                pageSize : 20,
+                pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
                     var result = ajaxSynchPostJson("user/handleCheckIn/searchByFloor", {"page":pageNumber, "rows":pageSize});
@@ -132,9 +144,8 @@
         }
 
         function webPageInit() {
-            var nowStr = getNowDatetime();
-            $('#planCheckInDate').datetimebox('setValue', nowStr);
-            $('#planCheckOutDate').datetimebox('setValue', nowStr);
+            $('#planCheckInDate').datetimebox('setValue', [[${today}]]);
+            $('#planCheckOutDate').datetimebox('setValue', [[${tomorrow}]]);
             var result = ajaxSynchGet("user/handleCheckIn/getFloorList", null);
             if (result.code == '200') {
                 var list = result.data;
@@ -225,11 +236,11 @@
 
         <div style="padding:0 0 0 7px;color:#333;">
             &nbsp;&nbsp;&nbsp;
-            入住时间：<input id="planCheckInDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;&nbsp;
-            退房时间：<input id="planCheckOutDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchRoom()">查询</a>&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showRoomCheckInDetail()">房间入住详情</a>&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showHandleCheckIn()">办理客人入住</a>&nbsp;&nbsp;&nbsp;
+            入住时间：<input id="planCheckInDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;&nbsp;&nbsp;
+            退房时间：<input id="planCheckOutDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchRoom()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showRoomCheckInDetail()">房间入住详情</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showHandleCheckIn()">办理客人入住</a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </div>
 </table>

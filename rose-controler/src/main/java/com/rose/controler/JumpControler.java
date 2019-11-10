@@ -1,8 +1,11 @@
 package com.rose.controler;
 
+import com.rose.common.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 功能：跳转 controller
@@ -71,7 +74,14 @@ public class JumpControler {
      * @return
      */
     @GetMapping(value = "/user/userManage/toHandleCheckIn")
-    public String toHandleCheckIn() {
+    public String toHandleCheckIn(HttpServletRequest request) {
+
+        String today = DateUtil.getCurrentDate() + " 12:00:00";
+        String tomorrow = DateUtil.addDate(today, 1) + " 12:00:00";
+
+        request.setAttribute("today", today);
+        request.setAttribute("tomorrow", tomorrow);
+
         return "menu/handleCheckIn";
     }
 }
