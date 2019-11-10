@@ -199,17 +199,17 @@
                 var id = rows[0].id;
                 var param = {
                     "roomId": id,
-                    "page":1, "rows":10
+                    "page":1, "rows":100
                 };
                 var result = ajaxSynchPostJson("user/handleCheckIn/getRoomCheckInDetail", param);
                 if (result.code == '200') {
-                    var data = result.data;
-
-
-
-
-
-                    $('#manager_add').dialog('open');
+                    $('#roomCheckInDeatilDataGrid').datagrid({
+                        columns:[[
+                            {field:'id',title:'你好啊',width:100}
+                        ]]
+                    });
+                    $('#roomCheckInDeatilDataGrid').datagrid('loadData', result.data);
+                    $('#roomCheckInDeatilWindow').window('open');
                 } else {
                     alertWarn(result.msg);
                 }
@@ -263,5 +263,9 @@
         </div>
     </div>
 </table>
+
+<div id="roomCheckInDeatilWindow" class="easyui-window" title="房间入住详情" data-options="modal:true,closed:true,minimizable:false,maximizable:false,iconCls:'icon-save'" style="width:950px;height:450px;padding:10px;">
+    <table id="roomCheckInDeatilDataGrid"></table>
+</div>
 </body>
 </html>

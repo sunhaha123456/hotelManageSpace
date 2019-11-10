@@ -77,7 +77,6 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
                         list.add(order);
                     }
 
-                    TbHotelCustomerCheckInOrder order = null;
                     for (TbHotelRoomDetail room : pageList) { // 进行房间状态处理
                         list = orderMap.get(room.getId());
                         if (list == null) { // 当未查找到
@@ -85,7 +84,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
                             continue;
                         }
                         // 当查找到
-                        if (room.getCalcCheckInNumBedFlag() == 0) { // 当不是根据床位计算可入住人数时
+                        if (room.getCalcCheckInNumBedFlag() != null && room.getCalcCheckInNumBedFlag() == 0) { // 当不是根据床位计算可入住人数时
                             room.setCheckInState(1);
                         } else { // 当是根据床位计算可入住人数时
                             room.setCheckInState(room.getBedNum() > list.size() ? 0 : 1);

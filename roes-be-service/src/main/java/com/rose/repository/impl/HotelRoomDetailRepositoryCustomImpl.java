@@ -60,7 +60,7 @@ public class HotelRoomDetailRepositoryCustomImpl extends BaseRepositoryImpl impl
         sql.append(" b.room_type_name roomTypeName, a.room_window_flag roomWindowFlag, ");
         sql.append(" a.room_wc_flag roomWcFlag, a.bed_num bedNum, a.sell_price sellPrice, ");
         sql.append(" a.create_date createDate, a.room_floor_num roomFloorNum, ");
-        sql.append(" a.hour_room_flag hourRoomFlag");
+        sql.append(" a.hour_room_flag hourRoomFlag, a.calc_check_in_num_bed_flag calcCheckInNumBedFlag ");
         sql.append(" FROM tb_hotel_room_detail a left join tb_hotel_room_type b ON a.room_type_id = b.id ");
         sql.append(" WHERE a.room_upshelf_state = 0 ");
         sql.append(" AND a.hotel_id = ? ");

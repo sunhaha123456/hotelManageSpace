@@ -57,7 +57,9 @@ public class HotelRoomEnterControler {
      */
     @PostMapping(value= "/save")
     public void save(@RequestBody TbHotelRoomDetail param) {
-        if (param == null || StringUtil.isEmpty(param.getRoomNo()) || param.getRoomFloorNum() == null || param.getBedNum() == null) {
+        if (param == null || StringUtil.isEmpty(param.getRoomNo()) ||
+            param.getRoomFloorNum() == null || param.getBedNum() == null ||
+            param.getCalcCheckInNumBedFlag() == null) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
         }
         hotelRoomDetailService.save(param);
