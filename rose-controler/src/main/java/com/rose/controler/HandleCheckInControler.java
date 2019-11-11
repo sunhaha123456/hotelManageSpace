@@ -60,8 +60,8 @@ public class HandleCheckInControler {
         return customerCheckInService.searchByFloor(param);
     }
 
-    @PostMapping(value= "/getRoomCheckInDetail")
-    public PageList<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(@RequestBody HotelRoomRequest param) throws Exception {
-        return customerCheckInService.getRoomCheckInDetail(param);
+    @GetMapping(value= "/getRoomCheckInDetail")
+    public List<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(@RequestParam Long roomId) throws Exception {
+        return customerCheckInService.getRoomCheckInDetail(roomId);
     }
 }

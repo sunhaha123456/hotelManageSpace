@@ -197,15 +197,32 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var param = {
-                    "roomId": id,
-                    "page":1, "rows":100
-                };
-                var result = ajaxSynchPostJson("user/handleCheckIn/getRoomCheckInDetail", param);
+                var result = ajaxSynchGet("user/handleCheckIn/getRoomCheckInDetail", {"roomId": id});
                 if (result.code == '200') {
                     $('#roomCheckInDeatilDataGrid').datagrid({
+                        fitColumns : true,
+                        striped : true,
+                        border : false,
                         columns:[[
-                            {field:'id',title:'你好啊',width:100}
+                            {field:'roomNo',title:'房间编号',width:100},
+                            {
+                                field:'orderStatus',
+                                title:'订单状态',
+                                width:100,
+                                formatter: function(value,row,index){
+                                    if (value == 0) {
+                                        return "已入住";
+                                    } else {
+                                        return "已预订";
+                                    }
+                                }
+                            },
+                            {field:'sellPrice',title:'销售价',width:100},
+                            {field:'depositMoney',title:'实收押金',width:100},
+                            {field:'checkInCustomerName',title:'客人姓名',width:120},
+                            {field:'checkInCustomerLinkPhone',title:'客人手机',width:100},
+                            {field:'lockStartDate',title:'开始时间',width:145},
+                            {field:'lockEndDate',title:'结束时间',width:145}
                         ]]
                     });
                     $('#roomCheckInDeatilDataGrid').datagrid('loadData', result.data);
@@ -225,8 +242,11 @@
 
 
 
+//                $('#manager_add').dialog('open');
+//                $('#addRoomTypeId').combobox('setValue', -1);
+//                $('#addRoomNo').focus();
             } else {
-                alertWarn('操作失败！');
+                alertWarn('请选择记录！');
             }
         }
 
@@ -264,8 +284,8 @@
     </div>
 </table>
 
-<div id="roomCheckInDeatilWindow" class="easyui-window" title="房间入住详情" data-options="modal:true,closed:true,minimizable:false,maximizable:false,iconCls:'icon-save'" style="width:950px;height:450px;padding:10px;">
-    <table id="roomCheckInDeatilDataGrid"></table>
+<div id="roomCheckInDeatilWindow" class="easyui-window" title="房间入住详情" data-options="modal:true,closed:true,minimizable:false,maximizable:false,iconCls:'icon-nav'" style="width:1000px;height:450px;padding:10px;">
+    <table id="roomCheckInDeatilDataGrid" style="width:950px;"></table>
 </div>
 </body>
 </html>

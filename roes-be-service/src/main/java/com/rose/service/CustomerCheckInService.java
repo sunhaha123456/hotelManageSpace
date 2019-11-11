@@ -18,5 +18,5 @@ public interface CustomerCheckInService {
 
     PageList<TbHotelRoomDetail> searchByFloor(HotelRoomRequest param) throws Exception;
 
-    PageList<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(HotelRoomRequest param) throws Exception;
+    List<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(Long roomId) throws Exception;
 }

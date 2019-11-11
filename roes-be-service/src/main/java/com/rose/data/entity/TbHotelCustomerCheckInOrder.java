@@ -38,7 +38,7 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     @Column(name = "sell_price")
     private BigDecimal sellPrice;
 
-    // 押金，单位：元
+    // 实收到押金，单位：元
     @Column(name = "deposit_money")
     private BigDecimal depositMoney;
 

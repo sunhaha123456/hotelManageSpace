@@ -1,7 +1,5 @@
 package com.rose.repository.impl;
 
-import com.rose.common.data.base.PageList;
-import com.rose.common.data.base.PageUtil;
 import com.rose.common.repository.impl.BaseRepositoryImpl;
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.repository.HotelCustomerCheckInOrderRepositoryCustom;
@@ -9,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 @Slf4j
@@ -18,7 +14,7 @@ import java.util.List;
 public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositoryImpl implements HotelCustomerCheckInOrderRepositoryCustom {
 
     @Override
-    public PageList<TbHotelCustomerCheckInOrder> listByHotelIdAndRoomId(Long hotelId, Long roomId, Integer pageNo, Integer pageSize) throws Exception {
+    public List<TbHotelCustomerCheckInOrder> listByHotelIdAndRoomId(Long hotelId, Long roomId) {
         StringBuilder sql = new StringBuilder();
         List<Object> paramList = new ArrayList();
         sql.append(" SELECT id, room_no roomNo, sell_price sellPrice, deposit_money depositMoney, ");
@@ -26,9 +22,10 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
         sql.append(" order_type orderType, order_status orderStatus, ");
         sql.append(" lock_start_date lockStartDate, create_date createDate ");
         sql.append(" FROM tb_hotel_customer_check_in_order ");
-        sql.append(" WHERE order_status in(0,2) ");
-        LinkedHashMap<String, String> sortMap = new LinkedHashMap<>();
-        sortMap.put("lock_start_date", "asc");
-        return queryPage(sql.toString(), TbHotelCustomerCheckInOrder.class, new PageUtil(pageNo, pageSize), sortMap, paramList.toArray());
+        sql.append(" WHERE order_status in(0,2) and hotel_id = ? and room_id = ? ");
+        sql.append(" order by lock_start_date asc ");
+        paramList.add(hotelId);
+        paramList.add(roomId);
+        return queryList(sql.toString(), TbHotelCustomerCheckInOrder.class, paramList.toArray());
     }
 }

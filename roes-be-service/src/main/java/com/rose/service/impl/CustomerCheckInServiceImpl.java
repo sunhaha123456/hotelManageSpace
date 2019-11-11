@@ -97,12 +97,12 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     }
 
     @Override
-    public PageList<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(HotelRoomRequest param) throws Exception {
+    public List<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(Long roomId) throws Exception {
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
-        PageList<TbHotelCustomerCheckInOrder> page = hotelCustomerCheckInOrderRepositoryCustom.listByHotelIdAndRoomId(user.getHotelId(), param.getRoomId(), param.getPage(), param.getRows());
-        return page;
+        List<TbHotelCustomerCheckInOrder> list = hotelCustomerCheckInOrderRepositoryCustom.listByHotelIdAndRoomId(user.getHotelId(), roomId);
+        return list;
     }
 }
