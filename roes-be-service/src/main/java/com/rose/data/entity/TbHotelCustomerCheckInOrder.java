@@ -54,13 +54,13 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     @Column(name = "room_remark", columnDefinition = "varchar(800) COMMENT '房间备注'")
     private String roomRemark;
 
-    @Column(name = "check_in_customer_name", columnDefinition = "varchar(255) COMMENT '入住客户姓名'")
+    @Column(name = "check_in_customer_name", columnDefinition = "varchar(255) COMMENT '入住客人姓名'")
     private String checkInCustomerName;
 
-    @Column(name = "check_in_customer_link_phone", columnDefinition = "varchar(255) COMMENT '入住客户联系手机号'")
+    @Column(name = "check_in_customer_link_phone", columnDefinition = "varchar(255) COMMENT '入住客人联系手机号'")
     private String checkInCustomerLinkPhone;
 
-    @Column(name = "check_in_customer_id_no", columnDefinition = "varchar(255) COMMENT '入住客户身份证号'")
+    @Column(name = "check_in_customer_id_no", columnDefinition = "varchar(255) COMMENT '入住客人身份证号'")
     private String checkInCustomerIdNo;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

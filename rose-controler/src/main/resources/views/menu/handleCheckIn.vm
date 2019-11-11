@@ -238,13 +238,28 @@
         function showHandleCheckIn() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
+                $('#handlePlanCheckInDate').datetimebox('setValue', $('#planCheckInDate').datetimebox('getValue'));
+                $('#handlePlanCheckOutDate').datetimebox('setValue', $('#planCheckOutDate').datetimebox('getValue'));
+                $('#handleCheckInCustomerName').focus();
+                $('#manager_add').dialog('open');
+            } else {
+                alertWarn('请选择记录！');
+            }
+        }
+
+        function handleCheckIn() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
                 var id = rows[0].id;
+//                handlePlanCheckInDate
+//                handlePlanCheckOutDate
+//                handleCheckInCustomerName
+//                handleCheckInCustomerLinkPhone
+//                handleCheckInCustomerIdNo
+//                handleDepositMoney
+//                handleOrderType
 
-
-
-//                $('#manager_add').dialog('open');
-//                $('#addRoomTypeId').combobox('setValue', -1);
-//                $('#addRoomNo').focus();
+                $('#manager_add').dialog('close');
             } else {
                 alertWarn('请选择记录！');
             }
@@ -287,5 +302,38 @@
 <div id="roomCheckInDeatilWindow" class="easyui-window" title="房间入住详情" data-options="modal:true,closed:true,minimizable:false,maximizable:false,iconCls:'icon-nav'" style="width:1000px;height:450px;padding:10px;">
     <table id="roomCheckInDeatilDataGrid" style="width:950px;"></table>
 </div>
+
+<form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:25,width:360,title:'办理入住',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+       onClose:function () {
+            $('#manager_add').form('reset');
+       },
+		buttons:[{
+					text : '提交',
+					iconCls : 'icon-add-green',
+					handler : function () {
+                    handleCheckIn();
+					}
+				},{
+					text:'关闭',
+					iconCls : 'icon-redo',
+					handler:function(){
+                    $('#manager_add').dialog('close');
+					}
+				}]">
+    <p>入住时间：<input id="handlePlanCheckInDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" /></p>
+    <p>退房时间：<input id="handlePlanCheckOutDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" /></p>
+    <p>客人姓名：<input id="handleCheckInCustomerName" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入用户名',invalidMessage:'用户名长度至少为1位'," type="text" style="width:200px;" /></p>
+    <p>手机号码：<input id="handleCheckInCustomerLinkPhone" class="easyui-validatebox" type="text" style="width:200px;" /></p>
+    <p>身份证号：<input id="handleCheckInCustomerIdNo" class="easyui-validatebox" type="text" style="width:200px;" /></p>
+    <p>实收押金：<input id="handleDepositMoney" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'房间销售价格只能是数字'" type="text" style="width:200px;" /></p>
+    <p>
+        入住类别：
+        <select class="easyui-combobox" id="handleOrderType" style="width:200px;">
+            <option value="0" selected="true">已来到店办理入住</option>
+            <option value="1">未到店办理预定</option>
+        </select>
+    </p>
+</form>
 </body>
 </html>
