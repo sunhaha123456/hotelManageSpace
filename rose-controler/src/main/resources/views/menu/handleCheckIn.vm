@@ -250,16 +250,23 @@
         function handleCheckIn() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
-                var id = rows[0].id;
-//                handlePlanCheckInDate
-//                handlePlanCheckOutDate
-//                handleCheckInCustomerName
-//                handleCheckInCustomerLinkPhone
-//                handleCheckInCustomerIdNo
-//                handleDepositMoney
-//                handleOrderType
-
-                $('#manager_add').dialog('close');
+                var param = {
+                    "roomId": rows[0].id,
+                    "planCheckInDate": $('#handlePlanCheckInDate').datetimebox('getValue'),
+                    "planCheckOutDate": $('#handlePlanCheckOutDate').datetimebox('getValue'),
+                    "checkInCustomerName": $('#handleCheckInCustomerName').val(),
+                    "checkInCustomerLinkPhone": $('#handleCheckInCustomerLinkPhone').val(),
+                    "checkInCustomerIdNo": $('#handleCheckInCustomerIdNo').val(),
+                    "depositMoney": $('#handleDepositMoney').val(),
+                    "orderType": $('#handleOrderType').combobox('getValue')
+                };
+                var result = ajaxSynchPostJson("user/handleCheckIn/handleCustomerCheckIn", param);
+                if (result.code == '200') {
+                    searchRoom();
+                    $('#manager_add').dialog('close');
+                } else {
+                    alertWarn(result.msg);
+                }
             } else {
                 alertWarn('请选择记录！');
             }

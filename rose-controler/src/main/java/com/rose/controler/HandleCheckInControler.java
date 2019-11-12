@@ -4,6 +4,7 @@ import com.rose.common.data.base.PageList;
 import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
 import com.rose.common.util.DateUtil;
+import com.rose.common.util.StringUtil;
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.entity.TbHotelRoomDetail;
 import com.rose.data.to.request.HotelRoomRequest;
@@ -63,5 +64,27 @@ public class HandleCheckInControler {
     @GetMapping(value= "/getRoomCheckInDetail")
     public List<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(@RequestParam Long roomId) throws Exception {
         return customerCheckInService.getRoomCheckInDetail(roomId);
+    }
+
+    /**
+     * 功能：办理客人入住
+     * @param param
+     * @throws Exception
+     */
+    @PostMapping(value= "/handleCustomerCheckIn")
+    public void handleCustomerCheckIn(@RequestBody TbHotelCustomerCheckInOrder param) throws Exception {
+        if (param == null || param.getRoomId() == null || param.getPlanCheckInDate() == null || param.getPlanCheckOutDate() == null) {
+            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+        }
+        if (StringUtil.isEmpty(param.getCheckInCustomerName())) {
+            throw new BusinessException("请填写客人姓名！");
+        }
+        if (param.getDepositMoney() == null) {
+            throw new BusinessException("请填写实收押金金额！");
+        }
+        if (param.getOrderType() == null) {
+            throw new BusinessException("请选择入住类型！");
+        }
+        customerCheckInService.handleCustomerCheckIn(param);
     }
 }

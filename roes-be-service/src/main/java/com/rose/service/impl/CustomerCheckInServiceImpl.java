@@ -12,6 +12,7 @@ import com.rose.repository.*;
 import com.rose.service.CustomerCheckInService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -104,5 +105,26 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         }
         List<TbHotelCustomerCheckInOrder> list = hotelCustomerCheckInOrderRepositoryCustom.listByHotelIdAndRoomId(user.getHotelId(), roomId);
         return list;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void handleCustomerCheckIn(TbHotelCustomerCheckInOrder param) {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        TbHotelRoomDetail room = hotelRoomDetailRepository.findOne(param.getRoomId());
+        if (room == null || room.getRoomUpshelfState() != 0 || !user.getHotelId().equals(room.getHotelId())) {
+            throw new BusinessException("所选房间已下架！");
+        }
+        // 判断房间是否可以预定
+
+
+        Date now = new Date();
+        param.setId(null);
+        param.setCreateDate(now);
+        param.setLastModified(now);
+        hotelCustomerCheckInOrderRepository.save(param);
     }
 }
