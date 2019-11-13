@@ -3,6 +3,7 @@ package com.rose.service.impl;
 import com.rose.common.data.base.PageList;
 import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
+import com.rose.common.util.DateUtil;
 import com.rose.common.util.ValueHolder;
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.entity.TbHotelRoomDetail;
@@ -51,13 +52,15 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
 
     @Override
     public PageList<TbHotelRoomDetail> searchByFloor(HotelRoomRequest param) throws Exception {
+        Date planCheckInDate = param.getPlanCheckInDate();
+        Date planCheckOutDate = param.getPlanCheckOutDate();
+        validateCheckInDateAndCheckOutDate(planCheckInDate, planCheckOutDate);
+
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
         param.setHotelId(user.getHotelId());
-        Date planCheckInDate = param.getPlanCheckInDate();
-        Date planCheckOutDate = param.getPlanCheckOutDate();
         PageList<TbHotelRoomDetail> page = hotelRoomDetailRepositoryCustom.listForFloor(param);
         if (page != null) {
             List<TbHotelRoomDetail> pageList = page.getRows();
@@ -110,6 +113,10 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void handleCustomerCheckIn(TbHotelCustomerCheckInOrder param) {
+        Date planCheckInDate = param.getPlanCheckInDate();
+        Date planCheckOutDate = param.getPlanCheckOutDate();
+        validateCheckInDateAndCheckOutDate(planCheckInDate, planCheckOutDate);
+
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
@@ -118,13 +125,52 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         if (room == null || room.getRoomUpshelfState() != 0 || !user.getHotelId().equals(room.getHotelId())) {
             throw new BusinessException("所选房间已下架！");
         }
-        // 判断房间是否可以预定
-
+        List<TbHotelCustomerCheckInOrder> orderList = hotelCustomerCheckInOrderRepository.listByCheckOutDate(room.getHotelId(), Arrays.asList(room.getId()), planCheckInDate, planCheckOutDate);
+        if (orderList != null && orderList.size() > 0) {
+            if (room.getCalcCheckInNumBedFlag() == 0) { // 不是根据床位计算可入住人数
+                throw new BusinessException("所选时间已有客人入住或预定！");
+            } else { // 是根据床位计算可入住人数
+                if ((orderList.size() + 1) > room.getBedNum()) {
+                    throw new BusinessException("所选时间床位已满！");
+                }
+            }
+        }
 
         Date now = new Date();
         param.setId(null);
         param.setCreateDate(now);
         param.setLastModified(now);
+
+
+
+
+
+
+
+
+
+
+
+
         hotelCustomerCheckInOrderRepository.save(param);
+    }
+
+    private void validateCheckInDateAndCheckOutDate(Date planCheckInDate, Date planCheckOutDate) {
+        if (planCheckInDate == null) {
+            throw new BusinessException("请选择入住时间！");
+        }
+        if (planCheckOutDate == null) {
+            throw new BusinessException("请选择退房时间！");
+        }
+        Date todayMinDate = DateUtil.formatStr2Time(DateUtil.getCurrentDate() + " 00:00:00");
+        if (planCheckInDate.getTime() <= todayMinDate.getTime()) {
+            throw new BusinessException("入住时间必须是今天及以后时间！");
+        }
+        if (planCheckOutDate.getTime() <= new Date().getTime()) {
+            throw new BusinessException("退房时间必须晚于当前时间！");
+        }
+        if (planCheckOutDate.getTime() <= planCheckInDate.getTime()) {
+            throw new BusinessException("退房时间必须晚于入住时间！");
+        }
     }
 }

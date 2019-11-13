@@ -150,8 +150,8 @@
         }
 
         function webPageInit() {
-            $('#planCheckInDate').datetimebox('setValue', [[${today}]]);
-            $('#planCheckOutDate').datetimebox('setValue', [[${tomorrow}]]);
+            $('#planCheckInDate').datetimebox('setValue', [[${startDateTime}]]);
+            $('#planCheckOutDate').datetimebox('setValue', [[${endDateTime}]]);
             var result = ajaxSynchGet("user/handleCheckIn/getFloorList", null);
             if (result.code == '200') {
                 var list = result.data;
