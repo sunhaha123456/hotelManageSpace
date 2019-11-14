@@ -7,6 +7,7 @@ import com.rose.common.util.DateUtil;
 import com.rose.common.util.ValueHolder;
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.entity.TbHotelRoomDetail;
+import com.rose.data.entity.TbHotelRoomType;
 import com.rose.data.entity.TbSysUser;
 import com.rose.data.to.request.HotelRoomRequest;
 import com.rose.repository.*;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,6 +39,9 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
 
     @Inject
     private SysUserRepository sysUserRepository;
+
+    @Inject
+    private HotelRoomTypeRepository hotelRoomTypeRepository;
 
     @Inject
     private ValueHolder valueHolder;
@@ -140,18 +145,35 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         param.setId(null);
         param.setCreateDate(now);
         param.setLastModified(now);
-
-
-
-
-
-
-
-
-
-
-
-
+        param.setHotelId(room.getHotelId());
+        param.setRoomId(room.getId());
+        param.setRoomNo(room.getRoomNo());
+        if (room.getRoomTypeId() != null) {
+            TbHotelRoomType roomType = hotelRoomTypeRepository.findOne(room.getRoomTypeId());
+            if (roomType == null) {
+                throw new BusinessException("房间类别不存在！");
+            }
+            param.setRoomTypeName(roomType.getRoomTypeName());
+        } else {
+            param.setRoomTypeName("");
+        }
+        param.setSellPrice(room.getSellPrice());
+        param.setSellPriceDesc(room.getSellPriceDesc());
+        param.setCheckOutDesc(room.getCheckOutDesc());
+        param.setRoomOverallDesc(room.getRoomOverallDesc());
+        if (param.getOrderType() == 0) { // 已到店直接入住类型订单
+            param.setRealCheckInDate(param.getPlanCheckInDate());
+            param.setRealCheckOutDate(null);
+            param.setOrderStatus(0);
+        } else { // 未到店预定入住类型订单
+            param.setRealCheckInDate(null);
+            param.setRealCheckOutDate(null);
+            param.setOrderStatus(2);
+        }
+        param.setLockStartDate(param.getPlanCheckInDate());
+        param.setLockEndDate(param.getPlanCheckOutDate());
+        param.setRealCollectMoney(BigDecimal.ZERO);
+        param.setProfitMoney(BigDecimal.ZERO);
         hotelCustomerCheckInOrderRepository.save(param);
     }
 

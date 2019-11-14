@@ -50,9 +50,9 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     @Column(name = "check_out_desc", columnDefinition = "varchar(500) COMMENT '退房规则描述'")
     private String checkOutDesc;
 
-    // 房间备注
-    @Column(name = "room_remark", columnDefinition = "varchar(800) COMMENT '房间备注'")
-    private String roomRemark;
+    // 房间整体描述
+    @Column(name = "room_overall_desc", columnDefinition = "varchar(500) COMMENT '房间整体描述'")
+    private String roomOverallDesc;
 
     @Column(name = "check_in_customer_name", columnDefinition = "varchar(255) COMMENT '入住客人姓名'")
     private String checkInCustomerName;
