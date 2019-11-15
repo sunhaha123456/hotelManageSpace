@@ -240,6 +240,8 @@
             if (rows.length > 0) {
                 $('#handlePlanCheckInDate').datetimebox('setValue', $('#planCheckInDate').datetimebox('getValue'));
                 $('#handlePlanCheckOutDate').datetimebox('setValue', $('#planCheckOutDate').datetimebox('getValue'));
+                $('#handleDepositMoney').val("0");
+                $('#handleRealCollectMoney').val("0");
                 $('#handleCheckInCustomerName').focus();
                 $('#manager_add').dialog('open');
             } else {
@@ -258,6 +260,8 @@
                     "checkInCustomerLinkPhone": $('#handleCheckInCustomerLinkPhone').val(),
                     "checkInCustomerIdNo": $('#handleCheckInCustomerIdNo').val(),
                     "depositMoney": $('#handleDepositMoney').val(),
+                    "realCollectMoney": $('#handleRealCollectMoney').val(),
+                    "merchOrderRemark": $('#handleMerchOrderRemark').val(),
                     "orderType": $('#handleOrderType').combobox('getValue')
                 };
                 var result = ajaxSynchPostJson("user/handleCheckIn/handleCustomerCheckIn", param);
@@ -269,6 +273,66 @@
                 }
             } else {
                 alertWarn('请选择记录！');
+            }
+        }
+
+        function showHotelRoomDetail() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchGet("user/hotelRoomEnter/getDetail", {"id":id});
+                if (result.code == '200') {
+                    var data = result.data;
+                    $("#detailRoomNo").val(data.roomNo);
+                    $("#detailRoomFloorNum").val(data.roomFloorNum);
+                    if (data.roomUpshelfState == 0) {
+                        $("#detailRoomUpshelfState").val('上架');
+                    } else {
+                        $("#detailRoomUpshelfState").val('下架');
+                    }
+                    $("#detailBedNum").val(data.bedNum);
+                    if (data.roomTypeName == null || data.roomTypeName == '') {
+                        $("#detailRoomTypeName").val('未选择');
+                    } else {
+                        $("#detailRoomTypeName").val(data.roomTypeName);
+                    }
+                    if (data.roomWindowFlag == 0) {
+                        $("#detailRoomWindowFlag").val('无');
+                    } else if (data.roomWindowFlag == 1) {
+                        $("#detailRoomWindowFlag").val('有普通窗户');
+                    } else if (data.roomWindowFlag == 2) {
+                        $("#detailRoomWindowFlag").val('有海景窗户');
+                    }
+                    if (data.roomWcFlag == 0) {
+                        $("#detailRoomWcFlag").val('有');
+                    } else {
+                        $("#detailRoomWcFlag").val('无');
+                    }
+                    if (data.hourRoomFlag == 0) {
+                        $("#detailHourRoomFlag").val('否');
+                    } else {
+                        $("#detailHourRoomFlag").val('是');
+                    }
+                    $("#detailSellPrice").val(data.sellPrice);
+                    if (data.calcCheckInNumBedFlag == 0) {
+                        $("#detailCalcCheckInNumBedFlag").val('否');
+                    } else {
+                        $("#detailCalcCheckInNumBedFlag").val('是');
+                    }
+                    if (data.calcCheckInNumBedFlag == 0) {
+                        $("#detailRoomWcFlag").val('是');
+                    } else {
+                        $("#detailRoomWcFlag").val('否');
+                    }
+                    $("#detailSellPriceDesc").val(data.sellPriceDesc);
+                    $("#detailCheckOutDesc").val(data.checkOutDesc);
+                    $("#detailRoomOverallDesc").val(data.roomOverallDesc);
+                    $('#manager_room_detail').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
             }
         }
 
@@ -300,8 +364,9 @@
             入住时间：<input id="planCheckInDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;&nbsp;&nbsp;
             退房时间：<input id="planCheckOutDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchRoom()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showRoomCheckInDetail()">房间入住详情</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showHandleCheckIn()">办理客人入住</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showHotelRoomDetail()">房间详情</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showRoomCheckInDetail()">入住详情</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showHandleCheckIn()">办理入住</a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </div>
 </table>
@@ -333,13 +398,70 @@
     <p>客人姓名：<input id="handleCheckInCustomerName" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入用户名',invalidMessage:'用户名长度至少为1位'," type="text" style="width:200px;" /></p>
     <p>手机号码：<input id="handleCheckInCustomerLinkPhone" class="easyui-validatebox" type="text" style="width:200px;" /></p>
     <p>身份证号：<input id="handleCheckInCustomerIdNo" class="easyui-validatebox" type="text" style="width:200px;" /></p>
-    <p>实收押金：<input id="handleDepositMoney" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'房间销售价格只能是数字'" type="text" style="width:200px;" /></p>
+    <p>实收押金：<input id="handleDepositMoney" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'押金只能是数字'" type="text" style="width:200px;" /></p>
+    <p>实收房费：<input id="handleRealCollectMoney" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'房费只能是数字'" type="text" style="width:200px;" /></p>
     <p>
         入住类别：
         <select class="easyui-combobox" id="handleOrderType" style="width:200px;">
             <option value="0" selected="true">已来到店办理入住</option>
             <option value="1">未到店办理预定</option>
         </select>
+    </p>
+    <p>商户备注：
+        <br />
+        <textarea rows="1" cols="60" id="handleMerchOrderRemark" />
+    </p>
+</form>
+
+<form id="manager_room_detail" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:25,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-nav',
+       onClose:function () {
+            $('#manager_room_detail').form('reset');
+       }">
+    <p>
+        编&nbsp;&nbsp;&nbsp;号：<input type="text" id="detailRoomNo" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        楼&nbsp;&nbsp;&nbsp;层：<input type="text" id="detailRoomFloorNum" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        状&nbsp;&nbsp;&nbsp;态：
+        <input type="text" id="detailRoomUpshelfState" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床&nbsp;&nbsp;&nbsp;数：
+        <input type="text" id="detailBedNum" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        类&nbsp;&nbsp;&nbsp;别：
+        <input type="text" id="detailRoomTypeName" readonly="readonly" style="width:175px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        窗&nbsp;&nbsp;&nbsp;户：
+        <input type="text" id="detailRoomWindowFlag" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        卫生间：
+        <input type="text" id="detailRoomWcFlag" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        钟点房：
+        <input type="text" id="detailHourRoomFlag" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        价&nbsp;&nbsp;&nbsp;格：
+        <input type="text" id="detailSellPrice" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床位=可入住人数：
+        <input type="text" id="detailCalcCheckInNumBedFlag" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>销售价格描述：
+        <br />
+        <textarea rows="1" cols="60" id="detailSellPriceDesc" readonly />
+    </p>
+    <p>退房规则描述：
+        <br />
+        <textarea rows="1" cols="60" id="detailCheckOutDesc" readonly />
+    </p>
+    <p>房间整体描述：
+        <br />
+        <textarea rows="1" cols="60" id="detailRoomOverallDesc" readonly />
     </p>
 </form>
 </body>

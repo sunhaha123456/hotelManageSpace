@@ -172,7 +172,6 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         }
         param.setLockStartDate(param.getPlanCheckInDate());
         param.setLockEndDate(param.getPlanCheckOutDate());
-        param.setRealCollectMoney(BigDecimal.ZERO);
         param.setProfitMoney(BigDecimal.ZERO);
         hotelCustomerCheckInOrderRepository.save(param);
     }
