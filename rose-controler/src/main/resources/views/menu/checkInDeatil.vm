@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/static/easyui/themes/easy.common.css}"></link>
+    <script th:inline="javascript">
+        var contextPath = [[@{/}]];
+        var interceptorToken = [[${token}]];
+        var interceptorUserId = [[${userId}]];
+    </script>
+    <script th:src="@{/static/easyui/easy.common.js}"></script>
+    <script th:src="@{/static/myFun.js}"></script>
+    <script th:inline="javascript">
+        function dataGridInit() {
+            $('#manager').datagrid({
+                //fit : true,
+                fitColumns : true,
+                striped : true,
+                rownumbers : true,
+                border : false,
+                pagination : true,
+                singleSelect:true,
+                toolbar : '#manager_tool',
+                columns : [[
+                    {
+                        field : 'id',
+                        width : 100,
+                        hidden : true
+                    },
+                    {
+                        field : 'hotelName',
+                        title : '酒店名称',
+                        width : 100,
+                    },
+                    {
+                        field : 'hotelState',
+                        title : '状态',
+                        width : 100,
+                        formatter: function(value,row,index){
+                            if (value == 0){
+                                return "上架";
+                            } else {
+                                return "下架";
+                            }
+                        }
+                    },                        
+                    {
+                        field : 'remark',
+                        title : '备注',
+                        width : 100,
+                    },
+                    {
+                        field : 'createDate',
+                        title : '创建日期',
+                        width : 100,
+                    }
+                ]]
+            });
+        }
+        function searchOrder() {
+            var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", {"page":1, "rows":10});
+            if (result.code == '200') {
+                dataGridPageInit();
+                $('#manager').datagrid('loadData', result.data);
+            } else {
+                alertWarn(result.msg);
+            }
+        }
+        function dataGridPageInit() {
+            var p = $('#manager').datagrid('getPager');
+            $(p).pagination({
+                pageNumber : 1,
+                pageSize : 10,
+                pageList : [10, 20, 30, 40, 50],
+                onSelectPage:function(pageNumber, pageSize){
+                    var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", {"page":pageNumber, "rows":pageSize});
+                    if (result.code == '200') {
+                        $('#manager').datagrid('loadData', result.data);
+                    }
+                },
+            });
+        }
+
+        $(function () {
+            dataGridInit();
+            searchOrder();
+        });
+    </script>
+</head>
+<body>
+<table id="manager">
+
+    <div id="manager_tool">
+        <div style="margin-bottom:5px;">
+            &nbsp;&nbsp;&nbsp;
+            房间编号：<input id="searchRoomNo" class="easyui-validatebox" type="text" style="width:200px;" />&nbsp;&nbsp;&nbsp;&nbsp;
+            客人姓名：<input id="searchCheckInCustomerName" class="easyui-validatebox" type="text" style="width:200px;" />&nbsp;&nbsp;&nbsp;&nbsp;
+            手机号码：<input id="searchCheckInCustomerLinkPhone" class="easyui-validatebox" type="text" style="width:200px;" />&nbsp;&nbsp;&nbsp;&nbsp;
+            手机号码：<input id="searchCheckInCustomerLinkPhone" class="easyui-validatebox" type="text" style="width:200px;" />&nbsp;&nbsp;&nbsp;&nbsp;
+            入住状态：
+            <select class="easyui-combobox" id="searchOrderStatus" style="width:200px;">&nbsp;&nbsp;&nbsp;&nbsp;
+                <option value="0" selected="true">已来到店办理入住</option>
+                <option value="1">未到店办理预定</option>
+            </select>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+
+        <!--/*
+        <div style="padding:0 0 0 7px;color:#333;">
+            角色名：<input type="text" class="textbox" id="unameSearch" style="width:110px" />
+            <a href="#" class="easyui-linkbutton" iconCls="icon-searchForMerchEnter" onclick="searchHotel()">查询</a>
+        </div>
+        */-->
+    </div>
+</table>
+</body>
+</html>

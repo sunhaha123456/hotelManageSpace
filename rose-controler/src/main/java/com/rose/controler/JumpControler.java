@@ -85,4 +85,13 @@ public class JumpControler {
 
         return "menu/handleCheckIn";
     }
+
+    /**
+     * 功能：跳转入住详情页面
+     * @return
+     */
+    @GetMapping(value = "/user/menuManage/toCheckInDeatil")
+    public String toHotelCheckInDeatil() {
+        return "menu/checkInDeatil";
+    }
 }
