@@ -133,8 +133,77 @@
                 var result = ajaxSynchGet("user/checkInDetail/getDetail", {"id":id});
                 if (result.code == '200') {
                     var data = result.data;
-
+                    $("#detailCheckInCustomerName").val(data.checkInCustomerName);
+                    $("#detailCheckInCustomerLinkPhone").val(data.checkInCustomerLinkPhone);
+                    $("#detailRoomNo").val(data.roomNo);
+                    $("#detailRoomTypeName").val(data.roomTypeName);
+                    $("#detailSellPrice").val(data.sellPrice);
+                    if (data.orderStatus == 0) {
+                        $("#detailOrderStatus").val("已入住");
+                    } else if (data.orderStatus == 1) {
+                        $("#detailOrderStatus").val("已退房");
+                    } else if (data.orderStatus == 2) {
+                        $("#detailOrderStatus").val("已预订");
+                    } else if (data.orderStatus == 3) {
+                        $("#detailOrderStatus").val("已取消");
+                    }
+                    $("#detailLockStartDate").val(data.lockStartDate);
+                    $("#detailLockEndDate").val(data.lockEndDate);
+                    $("#detailRealCollectMoney").val(data.realCollectMoney);
+                    $("#detailDepositMoney").val(data.depositMoney);
+                    $("#detailSellPriceDesc").val(data.sellPriceDesc);
+                    $("#detailCheckOutDesc").val(data.checkOutDesc);
+                    $("#detailRoomOverallDesc").val(data.roomOverallDesc);
+                    $("#detailMerchOrderRemark").val(data.merchOrderRemark);
                     $('#manager_detail').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+
+        function showUpdateOrder() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchGet("user/checkInDetail/getDetail", {"id":id});
+                if (result.code == '200') {
+                    var data = result.data;
+                    $("#updateCheckInCustomerName").val(data.checkInCustomerName);
+                    $("#updateCheckInCustomerLinkPhone").val(data.checkInCustomerLinkPhone);
+                    $("#updateRoomNo").val(data.roomNo);
+                    $("#updateRoomTypeName").val(data.roomTypeName);
+                    $("#updateSellPrice").val(data.sellPrice);
+                    $('#updateOrderStatus').combobox('setValue', data.orderStatus);
+                    $('#updateLockStartDate').datetimebox('setValue', data.lockStartDate);
+                    $('#updateLockEndDate').datetimebox('setValue', data.lockEndDate);
+                    $("#updateRealCollectMoney").val(data.realCollectMoney);
+                    $("#updateDepositMoney").val(data.depositMoney);
+                    $("#updateSellPriceDesc").val(data.sellPriceDesc);
+                    $("#updateCheckOutDesc").val(data.checkOutDesc);
+                    $("#updateRoomOverallDesc").val(data.roomOverallDesc);
+                    $('#manager_update').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+
+        function updateCheckInInfoCommit() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchGet("user/checkInDetail/getDetail", {"id":id});
+                if (result.code == '200') {
+                    var data = result.data;
+
+
+
+                    $('#manager_update').dialog('close');
                 } else {
                     alertWarn(result.msg);
                 }
@@ -173,42 +242,43 @@
 </table>
 
 <form id="manager_detail" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:25,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-nav',
+      data-options="top:5,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-nav',
        onClose:function () {
             $('#manager_detail').form('reset');
        }">
     <p>
-        房间编号：<input type="text" id="detailRoomNo" readonly="readonly" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        房间类型：<input type="text" id="detailRoomFloorNum" readonly="readonly" style="width:100px;" />
+        客人姓名：
+        <input type="text" id="detailCheckInCustomerName" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        手机号码：
+        <input type="text" id="detailCheckInCustomerLinkPhone" readonly="readonly" style="width:100px;" />
     </p>
     <p>
-        入住类别：
-        <input type="text" id="detailRoomWcFlag" readonly="readonly" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        钟点房：
-        <input type="text" id="detailHourRoomFlag" readonly="readonly" style="width:100px;" />
+        房间编号：
+        <input type="text" id="detailRoomNo" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        房间类型：<input type="text" id="detailRoomTypeName" readonly="readonly" style="width:100px;" />
     </p>
     <p>
         销售价格：
-        <input type="text" id="detailRoomUpshelfState" readonly="readonly" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        实收金额：
-        <input type="text" id="detailBedNum" readonly="readonly" style="width:100px;" />
-    </p>
-    <p>
-        实收押金：
-        <input type="text" id="detailRoomTypeName" readonly="readonly" style="width:175px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        窗&nbsp;&nbsp;&nbsp;户：
-        <input type="text" id="detailRoomWindowFlag" readonly="readonly" style="width:100px;" />
-    </p>
-    <p>
-        价&nbsp;&nbsp;&nbsp;格：
         <input type="text" id="detailSellPrice" readonly="readonly" style="width:100px;" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        床位=可入住人数：
-        <input type="text" id="detailCalcCheckInNumBedFlag" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        入住状态：
+        <input type="text" id="detailOrderStatus" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        入住时间：
+        <input type="text" id="detailLockStartDate" readonly="readonly" style="width:130px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        退房时间：
+        <input type="text" id="detailLockEndDate" readonly="readonly" style="width:130px;" />
+    </p>
+    <p>
+        实收金额：
+        <input type="text" id="detailRealCollectMoney" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        实收押金：
+        <input type="text" id="detailDepositMoney" readonly="readonly" style="width:100px;" />
     </p>
     <p>销售价格描述：
         <br />
@@ -221,6 +291,85 @@
     <p>房间整体描述：
         <br />
         <textarea rows="1" cols="60" id="detailRoomOverallDesc" readonly />
+    </p>
+    <p>商户备注：
+        <br />
+        <textarea rows="1" cols="60" id="detailMerchOrderRemark" readonly />
+    </p>
+</form>
+
+<form id="manager_update" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:5,width:560,title:'办理入住',modal:true,closed:true,cache:false,iconCls:'icon-nav',
+   onClose:function () {
+        $('#manager_update').form('reset');
+   },
+    buttons:[{
+                text : '提交',
+                iconCls : 'icon-add-green',
+                handler : function () {
+                    updateCheckInInfoCommit();
+                }
+            },{
+                text:'关闭',
+                iconCls : 'icon-redo',
+                handler:function(){
+                    $('#manager_update').dialog('close');
+                }
+            }]">
+    <p>
+        客人姓名：
+        <input type="text" id="updateCheckInCustomerName" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        手机号码：
+        <input type="text" id="updateCheckInCustomerLinkPhone" style="width:100px;" />
+    </p>
+    <p>
+        房间编号：
+        <input type="text" id="updateRoomNo" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        房间类型：<input type="text" id="updateRoomTypeName" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        销售价格：
+        <input type="text" id="updateSellPrice" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        入住状态：
+        <select class="easyui-combobox" id="updateOrderStatus" style="width:100px;">&nbsp;&nbsp;
+            <option value="0">已入住</option>
+            <option value="1">已退房</option>
+            <option value="2">已预订</option>
+            <option value="3">已取消</option>
+        </select>
+    </p>
+    <p>
+        入住时间：
+        <input type="text" id="updateLockStartDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        退房时间：
+        <input type="text" id="updateLockEndDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px;" />
+    </p>
+    <p>
+        实收金额：
+        <input type="text" id="updateRealCollectMoney" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        实收押金：
+        <input type="text" id="updateDepositMoney" style="width:100px;" />
+    </p>
+    <p>销售价格描述：
+        <br />
+        <textarea rows="1" cols="60" id="updateSellPriceDesc" readonly />
+    </p>
+    <p>退房规则描述：
+        <br />
+        <textarea rows="1" cols="60" id="updateCheckOutDesc" readonly />
+    </p>
+    <p>房间整体描述：
+        <br />
+        <textarea rows="1" cols="60" id="updateRoomOverallDesc" readonly />
+    </p>
+    <p>商户备注：
+        <br />
+        <textarea rows="1" cols="60" id="updateMerchOrderRemark" />
     </p>
 </form>
 </body>
