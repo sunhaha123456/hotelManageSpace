@@ -49,14 +49,14 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
             paramList.add(param.getRoomNo());
         }
         if (StringUtil.isNotEmpty(param.getCheckInCustomerName())) {
-            sql.append(" and check_in_customer_name = ? ");
+            sql.append(" and instr(check_in_customer_name, ?) > 0 ");
             paramList.add(param.getCheckInCustomerName());
         }
         if (StringUtil.isNotEmpty(param.getCheckInCustomerLinkPhone())) {
-            sql.append(" and check_in_customer_link_phone = ? ");
+            sql.append(" and instr(check_in_customer_link_phone, ?) > 0 ");
             paramList.add(param.getCheckInCustomerLinkPhone());
         }
-        if (param.getOrderStatus() == null) {
+        if (param.getOrderStatus() != null) {
             sql.append(" and order_status = ? ");
             paramList.add(param.getOrderStatus());
         }

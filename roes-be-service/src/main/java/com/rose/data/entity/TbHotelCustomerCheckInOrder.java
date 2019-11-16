@@ -97,10 +97,6 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     @Column(name = "real_collect_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '实际收取金额'")
     private BigDecimal realCollectMoney;
 
-    // 此单利润
-    @Column(name = "profit_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '此单利润'")
-    private BigDecimal profitMoney;
-
     // 订单类别 0：已到店直接入住类型订单 1：未到店预定入住类型订单
     @Column(name = "order_type", columnDefinition = "int(1) default 0 COMMENT '订单类别'")
     private Integer orderType;

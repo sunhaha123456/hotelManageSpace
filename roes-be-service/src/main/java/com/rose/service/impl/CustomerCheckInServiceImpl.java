@@ -173,13 +173,17 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         }
         param.setLockStartDate(param.getPlanCheckInDate());
         param.setLockEndDate(param.getPlanCheckOutDate());
-        param.setProfitMoney(BigDecimal.ZERO);
         hotelCustomerCheckInOrderRepository.save(param);
     }
 
     @Override
     public PageList<TbHotelCustomerCheckInOrder> searchOrder(CheckInDetailSearchRequest param) throws Exception {
         return hotelCustomerCheckInOrderRepositoryCustom.listByCondition(param);
+    }
+
+    @Override
+    public TbHotelCustomerCheckInOrder getDetail(Long id) {
+        return hotelCustomerCheckInOrderRepository.findOne(id);
     }
 
     private void validateCheckInDateAndCheckOutDate(Date planCheckInDate, Date planCheckOutDate) {

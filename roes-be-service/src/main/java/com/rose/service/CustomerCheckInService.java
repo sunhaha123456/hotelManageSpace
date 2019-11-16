@@ -24,4 +24,6 @@ public interface CustomerCheckInService {
     void handleCustomerCheckIn(TbHotelCustomerCheckInOrder param);
 
     PageList<TbHotelCustomerCheckInOrder> searchOrder(CheckInDetailSearchRequest param) throws Exception;
+
+    TbHotelCustomerCheckInOrder getDetail(Long id);
 }

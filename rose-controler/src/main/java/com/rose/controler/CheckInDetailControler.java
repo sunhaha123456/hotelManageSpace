@@ -5,10 +5,7 @@ import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.to.request.CheckInDetailSearchRequest;
 import com.rose.service.CustomerCheckInService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 
@@ -28,5 +25,10 @@ public class CheckInDetailControler {
     @PostMapping(value= "/searchOrder")
     public PageList<TbHotelCustomerCheckInOrder> searchOrder(@RequestBody CheckInDetailSearchRequest param) throws Exception {
         return customerCheckInService.searchOrder(param);
+    }
+
+    @GetMapping(value= "/getDetail")
+    public TbHotelCustomerCheckInOrder getDetail(@RequestParam Long id) throws Exception {
+        return customerCheckInService.getDetail(id);
     }
 }

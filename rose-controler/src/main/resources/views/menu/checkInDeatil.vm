@@ -12,7 +12,6 @@
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
         function dataGridInit() {
-            alert(222);
             $('#manager').datagrid({
                 //fit : true,
                 fitColumns : true,
@@ -31,103 +30,122 @@
                     {
                         field : 'roomNo',
                         title : '房间编号',
-                        width : 100,
+                        width : 100
                     },
                     {
-                        field : '客人姓名',
-                        title : 'checkInCustomerName',
-                        width : 100,
+                        field : 'checkInCustomerName',
+                        title : '客人姓名',
+                        width : 100
                     },
                     {
-                        field : '联系手机',
-                        title : 'checkInCustomerLinkPhone',
-                        width : 100,
+                        field : 'checkInCustomerLinkPhone',
+                        title : '联系手机',
+                        width : 100
                     },
                     {
-                        field : '入住状态',
-                        title : 'orderStatus',
+                        field : 'orderStatus',
+                        title : '入住状态',
                         width : 100,
                         formatter: function(value,row,index){
                             if (value == 0) {
                                 return "已入住";
                             } else if (value == 1) {
                                 return "已退房";
-                            } eles if (value == 2) {
-                                return "已预订"
+                            } else if (value == 2) {
+                                return "已预订";
                             } else if (value == 3) {
-                                return "已取消"
+                                return "已取消";
                             }
                         }
                     },
                     {
-                        field : '入住开始时间',
-                        title : 'lockStartDate',
-                        width : 100,
+                        field : 'lockStartDate',
+                        title : '入住开始时间',
+                        width : 100
                     },
                     {
-                        field : '入住结束时间',
-                        title : 'lockEndDate',
-                        width : 100,
+                        field : 'lockEndDate',
+                        title : '入住结束时间',
+                        width : 100
                     },
                     {
                         field : 'roomTypeName',
                         title : '房间类别',
-                        width : 100,
+                        width : 100
                     },
                     {
                         field : 'sellPrice',
                         title : '销售价',
-                        width : 100,
+                        width : 100
                     },
                     {
-                        field : '实收金额',
-                        title : 'realCollectMoney',
-                        width : 100,
+                        field : 'realCollectMoney',
+                        title : '实收金额',
+                        width : 100
                     },
                     {
-                        field : '实收押金',
-                        title : 'depositMoney',
-                        width : 100,
+                        field : 'depositMoney',
+                        title : '实收押金',
+                        width : 100
                     }
                 ]]
             });
         }
-//        function searchOrder() {
-//            var param = {
-//                "roomNo": $('#searchRoomNo').val(),
-//                "checkInCustomerName": $('#searchCheckInCustomerName').val(),
-//                "checkInCustomerLinkPhone": $('#searchCheckInCustomerLinkPhone').val(),
-//                "orderStatus": $('#searchOrderStatus').combobox('getValue'),
-//                "page":1, "rows":10
-//            };
-//            var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", param);
-//            if (result.code == '200') {
-//                dataGridPageInit();
-//                $('#manager').datagrid('loadData', result.data);
-//            } else {
-//                alertWarn(result.msg);
-//            }
-//        }
-//        function dataGridPageInit() {
-//            var p = $('#manager').datagrid('getPager');
-//            $(p).pagination({
-//                pageNumber : 1,
-//                pageSize : 10,
-//                pageList : [10, 20, 30, 40, 50],
-//                onSelectPage:function(pageNumber, pageSize){
-//                    var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", {"page":pageNumber, "rows":pageSize});
-//                    if (result.code == '200') {
-//                        $('#manager').datagrid('loadData', result.data);
-//                    }
-//                },
-//            });
-//        }
+        function searchOrder() {
+            var orderStatus = $('#searchOrderStatus').combobox('getValue');
+            if (orderStatus == -1) {
+                orderStatus = null;
+            }
+            var param = {
+                "roomNo": $('#searchRoomNo').val(),
+                "checkInCustomerName": $('#searchCheckInCustomerName').val(),
+                "checkInCustomerLinkPhone": $('#searchCheckInCustomerLinkPhone').val(),
+                "orderStatus": orderStatus,
+                "page":1, "rows":10
+            };
+            var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", param);
+            if (result.code == '200') {
+                dataGridPageInit();
+                $('#manager').datagrid('loadData', result.data);
+            } else {
+                alertWarn(result.msg);
+            }
+        }
+        function dataGridPageInit() {
+            var p = $('#manager').datagrid('getPager');
+            $(p).pagination({
+                pageNumber : 1,
+                pageSize : 10,
+                pageList : [10, 20, 30, 40, 50],
+                onSelectPage:function(pageNumber, pageSize){
+                    var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", {"page":pageNumber, "rows":pageSize});
+                    if (result.code == '200') {
+                        $('#manager').datagrid('loadData', result.data);
+                    }
+                },
+            });
+        }
+
+        function showOrderDetail() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchGet("user/checkInDetail/getDetail", {"id":id});
+                if (result.code == '200') {
+                    var data = result.data;
+
+                    $('#manager_detail').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
 
         $(function () {
-            alert(1);
             dataGridInit();
-            alert(2);
-//            searchOrder();
+            searchOrder();
         });
     </script>
 </head>
@@ -146,10 +164,64 @@
                 <option value="1">已退房</option>
                 <option value="2">已预订</option>
                 <option value="3">已取消</option>
-            </select>
+            </select>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">查询</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showOrderDetail()">查看详情</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="showUpdateOrder()">修改信息</a>
         </div>
     </div>
 </table>
+
+<form id="manager_detail" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:25,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-nav',
+       onClose:function () {
+            $('#manager_detail').form('reset');
+       }">
+    <p>
+        房间编号：<input type="text" id="detailRoomNo" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        房间类型：<input type="text" id="detailRoomFloorNum" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        入住类别：
+        <input type="text" id="detailRoomWcFlag" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        钟点房：
+        <input type="text" id="detailHourRoomFlag" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        销售价格：
+        <input type="text" id="detailRoomUpshelfState" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        实收金额：
+        <input type="text" id="detailBedNum" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        实收押金：
+        <input type="text" id="detailRoomTypeName" readonly="readonly" style="width:175px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        窗&nbsp;&nbsp;&nbsp;户：
+        <input type="text" id="detailRoomWindowFlag" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        价&nbsp;&nbsp;&nbsp;格：
+        <input type="text" id="detailSellPrice" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        床位=可入住人数：
+        <input type="text" id="detailCalcCheckInNumBedFlag" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>销售价格描述：
+        <br />
+        <textarea rows="1" cols="60" id="detailSellPriceDesc" readonly />
+    </p>
+    <p>退房规则描述：
+        <br />
+        <textarea rows="1" cols="60" id="detailCheckOutDesc" readonly />
+    </p>
+    <p>房间整体描述：
+        <br />
+        <textarea rows="1" cols="60" id="detailRoomOverallDesc" readonly />
+    </p>
+</form>
 </body>
 </html>
