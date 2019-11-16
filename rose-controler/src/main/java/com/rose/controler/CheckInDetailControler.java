@@ -1,13 +1,16 @@
 package com.rose.controler;
 
+import com.rose.common.data.base.PageList;
+import com.rose.data.entity.TbHotelCustomerCheckInOrder;
+import com.rose.data.to.request.CheckInDetailSearchRequest;
 import com.rose.service.CustomerCheckInService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * 功能：入住详情 controller
@@ -23,7 +26,7 @@ public class CheckInDetailControler {
 	private CustomerCheckInService customerCheckInService;
 
     @PostMapping(value= "/searchOrder")
-    public List searchOrder() {
-        return customerCheckInService.getFloorList();
+    public PageList<TbHotelCustomerCheckInOrder> searchOrder(@RequestBody CheckInDetailSearchRequest param) throws Exception {
+        return customerCheckInService.searchOrder(param);
     }
 }

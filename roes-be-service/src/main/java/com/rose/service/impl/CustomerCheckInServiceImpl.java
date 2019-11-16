@@ -9,6 +9,7 @@ import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.entity.TbHotelRoomDetail;
 import com.rose.data.entity.TbHotelRoomType;
 import com.rose.data.entity.TbSysUser;
+import com.rose.data.to.request.CheckInDetailSearchRequest;
 import com.rose.data.to.request.HotelRoomRequest;
 import com.rose.repository.*;
 import com.rose.service.CustomerCheckInService;
@@ -174,6 +175,11 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         param.setLockEndDate(param.getPlanCheckOutDate());
         param.setProfitMoney(BigDecimal.ZERO);
         hotelCustomerCheckInOrderRepository.save(param);
+    }
+
+    @Override
+    public PageList<TbHotelCustomerCheckInOrder> searchOrder(CheckInDetailSearchRequest param) throws Exception {
+        return hotelCustomerCheckInOrderRepositoryCustom.listByCondition(param);
     }
 
     private void validateCheckInDateAndCheckOutDate(Date planCheckInDate, Date planCheckOutDate) {

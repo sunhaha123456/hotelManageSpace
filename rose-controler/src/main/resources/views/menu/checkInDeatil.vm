@@ -12,6 +12,7 @@
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
         function dataGridInit() {
+            alert(222);
             $('#manager').datagrid({
                 //fit : true,
                 fitColumns : true,
@@ -28,89 +29,126 @@
                         hidden : true
                     },
                     {
-                        field : 'hotelName',
-                        title : '酒店名称',
+                        field : 'roomNo',
+                        title : '房间编号',
                         width : 100,
                     },
                     {
-                        field : 'hotelState',
-                        title : '状态',
+                        field : '客人姓名',
+                        title : 'checkInCustomerName',
+                        width : 100,
+                    },
+                    {
+                        field : '联系手机',
+                        title : 'checkInCustomerLinkPhone',
+                        width : 100,
+                    },
+                    {
+                        field : '入住状态',
+                        title : 'orderStatus',
                         width : 100,
                         formatter: function(value,row,index){
-                            if (value == 0){
-                                return "上架";
-                            } else {
-                                return "下架";
+                            if (value == 0) {
+                                return "已入住";
+                            } else if (value == 1) {
+                                return "已退房";
+                            } eles if (value == 2) {
+                                return "已预订"
+                            } else if (value == 3) {
+                                return "已取消"
                             }
                         }
-                    },                        
+                    },
                     {
-                        field : 'remark',
-                        title : '备注',
+                        field : '入住开始时间',
+                        title : 'lockStartDate',
                         width : 100,
                     },
                     {
-                        field : 'createDate',
-                        title : '创建日期',
+                        field : '入住结束时间',
+                        title : 'lockEndDate',
+                        width : 100,
+                    },
+                    {
+                        field : 'roomTypeName',
+                        title : '房间类别',
+                        width : 100,
+                    },
+                    {
+                        field : 'sellPrice',
+                        title : '销售价',
+                        width : 100,
+                    },
+                    {
+                        field : '实收金额',
+                        title : 'realCollectMoney',
+                        width : 100,
+                    },
+                    {
+                        field : '实收押金',
+                        title : 'depositMoney',
                         width : 100,
                     }
                 ]]
             });
         }
-        function searchOrder() {
-            var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", {"page":1, "rows":10});
-            if (result.code == '200') {
-                dataGridPageInit();
-                $('#manager').datagrid('loadData', result.data);
-            } else {
-                alertWarn(result.msg);
-            }
-        }
-        function dataGridPageInit() {
-            var p = $('#manager').datagrid('getPager');
-            $(p).pagination({
-                pageNumber : 1,
-                pageSize : 10,
-                pageList : [10, 20, 30, 40, 50],
-                onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", {"page":pageNumber, "rows":pageSize});
-                    if (result.code == '200') {
-                        $('#manager').datagrid('loadData', result.data);
-                    }
-                },
-            });
-        }
+//        function searchOrder() {
+//            var param = {
+//                "roomNo": $('#searchRoomNo').val(),
+//                "checkInCustomerName": $('#searchCheckInCustomerName').val(),
+//                "checkInCustomerLinkPhone": $('#searchCheckInCustomerLinkPhone').val(),
+//                "orderStatus": $('#searchOrderStatus').combobox('getValue'),
+//                "page":1, "rows":10
+//            };
+//            var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", param);
+//            if (result.code == '200') {
+//                dataGridPageInit();
+//                $('#manager').datagrid('loadData', result.data);
+//            } else {
+//                alertWarn(result.msg);
+//            }
+//        }
+//        function dataGridPageInit() {
+//            var p = $('#manager').datagrid('getPager');
+//            $(p).pagination({
+//                pageNumber : 1,
+//                pageSize : 10,
+//                pageList : [10, 20, 30, 40, 50],
+//                onSelectPage:function(pageNumber, pageSize){
+//                    var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", {"page":pageNumber, "rows":pageSize});
+//                    if (result.code == '200') {
+//                        $('#manager').datagrid('loadData', result.data);
+//                    }
+//                },
+//            });
+//        }
 
         $(function () {
+            alert(1);
             dataGridInit();
-            searchOrder();
+            alert(2);
+//            searchOrder();
         });
     </script>
 </head>
 <body>
 <table id="manager">
-
     <div id="manager_tool">
-        <div style="margin-bottom:5px;">
-            &nbsp;&nbsp;&nbsp;
-            房间编号：<input id="searchRoomNo" class="easyui-validatebox" type="text" style="width:200px;" />&nbsp;&nbsp;&nbsp;&nbsp;
-            客人姓名：<input id="searchCheckInCustomerName" class="easyui-validatebox" type="text" style="width:200px;" />&nbsp;&nbsp;&nbsp;&nbsp;
-            手机号码：<input id="searchCheckInCustomerLinkPhone" class="easyui-validatebox" type="text" style="width:200px;" />&nbsp;&nbsp;&nbsp;&nbsp;
-            手机号码：<input id="searchCheckInCustomerLinkPhone" class="easyui-validatebox" type="text" style="width:200px;" />&nbsp;&nbsp;&nbsp;&nbsp;
-            入住状态：
-            <select class="easyui-combobox" id="searchOrderStatus" style="width:200px;">&nbsp;&nbsp;&nbsp;&nbsp;
-                <option value="0" selected="true">已来到店办理入住</option>
-                <option value="1">未到店办理预定</option>
-            </select>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
-
-        <!--/*
         <div style="padding:0 0 0 7px;color:#333;">
-            角色名：<input type="text" class="textbox" id="unameSearch" style="width:110px" />
-            <a href="#" class="easyui-linkbutton" iconCls="icon-searchForMerchEnter" onclick="searchHotel()">查询</a>
+            &nbsp;&nbsp;&nbsp;
+            房间编号：<input id="searchRoomNo" class="easyui-validatebox" type="text" style="width:100px;" />&nbsp;&nbsp;
+            客人姓名：<input id="searchCheckInCustomerName" class="easyui-validatebox" type="text" style="width:100px;" />&nbsp;&nbsp;
+            手机号码：<input id="searchCheckInCustomerLinkPhone" class="easyui-validatebox" type="text" style="width:100px;" />&nbsp;&nbsp;
+            入住状态：
+            <select class="easyui-combobox" id="searchOrderStatus" style="width:100px;">&nbsp;&nbsp;
+                <option value="-1" selected="true">请选择</option>
+                <option value="0">已入住</option>
+                <option value="1">已退房</option>
+                <option value="2">已预订</option>
+                <option value="3">已取消</option>
+            </select>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">查询</a>&nbsp;&nbsp;
         </div>
-        */-->
     </div>
 </table>
 </body>

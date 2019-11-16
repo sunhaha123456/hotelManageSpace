@@ -3,6 +3,7 @@ package com.rose.service;
 import com.rose.common.data.base.PageList;
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.entity.TbHotelRoomDetail;
+import com.rose.data.to.request.CheckInDetailSearchRequest;
 import com.rose.data.to.request.HotelRoomRequest;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface CustomerCheckInService {
     List<TbHotelCustomerCheckInOrder> getRoomCheckInDetail(Long roomId) throws Exception;
 
     void handleCustomerCheckIn(TbHotelCustomerCheckInOrder param);
+
+    PageList<TbHotelCustomerCheckInOrder> searchOrder(CheckInDetailSearchRequest param) throws Exception;
 }
