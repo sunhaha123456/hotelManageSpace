@@ -32,8 +32,23 @@ public class CheckInDetailControler {
         return customerCheckInService.getDetail(id);
     }
 
-    @PostMapping(value= "/updateOrder")
-    public void updateOrder(@RequestBody TbHotelCustomerCheckInOrder param) throws Exception {
-        customerCheckInService.updateOrder(param);
+    /**
+     * 功能：调整入住信息
+     * @param param
+     * @throws Exception
+     */
+    @PostMapping(value= "/updateOrderInfo")
+    public void updateOrderInfo(@RequestBody TbHotelCustomerCheckInOrder param) throws Exception {
+        customerCheckInService.updateOrderInfo(param);
+    }
+
+    /**
+     * 功能：取消
+     * @param id
+     * @throws Exception
+     */
+    @GetMapping(value= "/cancleOrder")
+    public void cancleOrder(@RequestParam Long id) {
+        customerCheckInService.cancleOrder(id);
     }
 }

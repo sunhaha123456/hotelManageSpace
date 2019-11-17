@@ -27,5 +27,7 @@ public interface CustomerCheckInService {
 
     TbHotelCustomerCheckInOrder getDetail(Long id);
 
-    void updateOrder(TbHotelCustomerCheckInOrder param);
+    void updateOrderInfo(TbHotelCustomerCheckInOrder param);
+
+    void cancleOrder(Long id);
 }

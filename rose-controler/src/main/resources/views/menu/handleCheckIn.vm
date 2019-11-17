@@ -376,7 +376,7 @@
 </div>
 
 <form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:25,width:360,title:'办理入住',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:25,width:390,title:'办理入住',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
        onClose:function () {
             $('#manager_add').form('reset');
        },
@@ -409,7 +409,7 @@
     </p>
     <p>商户备注：
         <br />
-        <textarea rows="1" cols="60" id="handleMerchOrderRemark" />
+        <textarea rows="1" cols="38" id="handleMerchOrderRemark" />
     </p>
 </form>
 
