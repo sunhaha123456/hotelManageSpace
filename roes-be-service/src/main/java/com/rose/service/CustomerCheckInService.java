@@ -30,4 +30,6 @@ public interface CustomerCheckInService {
     void updateOrderInfo(TbHotelCustomerCheckInOrder param);
 
     void cancleOrder(Long id);
+
+    void checkInCheckOut(TbHotelCustomerCheckInOrder param);
 }

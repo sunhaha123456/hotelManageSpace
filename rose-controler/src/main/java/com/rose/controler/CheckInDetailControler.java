@@ -51,4 +51,14 @@ public class CheckInDetailControler {
     public void cancleOrder(@RequestParam Long id) {
         customerCheckInService.cancleOrder(id);
     }
+
+    /**
+     * 功能：已入住退房
+     * @param param
+     * @throws Exception
+     */
+    @PostMapping(value= "/checkInCheckOut")
+    public void checkInCheckOut(@RequestBody TbHotelCustomerCheckInOrder param) throws Exception {
+        customerCheckInService.checkInCheckOut(param);
+    }
 }

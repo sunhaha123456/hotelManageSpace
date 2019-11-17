@@ -229,7 +229,27 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void cancleOrder(Long id) {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        TbHotelCustomerCheckInOrder order = hotelCustomerCheckInOrderRepository.findOne(id);
+        if (!user.getHotelId().equals(order.getHotelId())) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        Integer orderStatusOld = order.getOrderStatus();
+        if (!Arrays.asList(0, 2).contains(orderStatusOld)) {
+            throw new BusinessException("只有已入住或已预订，才能取消！");
+        }
+        int c = hotelCustomerCheckInOrderRepository.updateStatus(id, 3, orderStatusOld);
+        if (c <= 0) {
+            throw new BusinessException(ResponseResultCode.OPERT_ERROR);
+        }
+    }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void checkInCheckOut(TbHotelCustomerCheckInOrder param) {
 
 
 
