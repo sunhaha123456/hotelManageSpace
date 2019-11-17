@@ -199,18 +199,32 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         }
         Integer orderStatusParam = param.getOrderStatus();
         Integer orderStatusOld = order.getOrderStatus();
-        if (!orderStatusParam.equals(orderStatusOld)) {} {
-            if (orderStatusOld == 1) {
-                throw new BusinessException("已退房订单，不能再做变更！");
+        switch (orderStatusOld) {
+            case 0: { // 已入住
+                if (orderStatusParam == 1) { // 修改成 已退房
+
+                } else if (orderStatusParam == 3) { // 修改成 已取消
+
+                }
+                break;
             }
-            if (orderStatusOld == 3) {
-                throw new BusinessException("已取消订单，不能再做变更！");
+            case 1: { // 已退房
+                throw new BusinessException("已退房订单，不能变更！");
             }
+            case 2: { // 已预订
+                if (orderStatusParam == 1) { // 修改成 已入住
+
+                } else if (orderStatusParam == 3) { // 修改成 已取消
+
+                }
+                break;
+            }
+            case 3: { // 已取消
+                throw new BusinessException("已取消订单，不能变更！");
+            }
+            default:
+                throw new BusinessException(ResponseResultCode.PARAM_ERROR);
         }
-
-
-
-
     }
 
 

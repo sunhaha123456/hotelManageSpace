@@ -258,7 +258,7 @@
 <body>
 <table id="manager">
     <div id="manager_tool">
-        <div style="padding:0 0 0 7px;color:#333;">
+        <div style="margin-bottom:5px;">
             &nbsp;&nbsp;&nbsp;
             房间编号：<input id="searchRoomNo" class="easyui-validatebox" type="text" style="width:100px;" />&nbsp;&nbsp;
             客人姓名：<input id="searchCheckInCustomerName" class="easyui-validatebox" type="text" style="width:100px;" />&nbsp;&nbsp;
@@ -271,9 +271,11 @@
                 <option value="2">已预订</option>
                 <option value="3">已取消</option>
             </select>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">查询</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showOrderDetail()">查看详情</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showOrderRemark()">修改备注</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">查询</a>
+        </div>
+        <div style="padding:0 0 0 7px;color:#333;">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showOrderDetail()">查看详情</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showOrderRemark()">修改备注</a>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="showUpdateOrder()">修改订单</a>&nbsp;&nbsp;
         </div>
     </div>
