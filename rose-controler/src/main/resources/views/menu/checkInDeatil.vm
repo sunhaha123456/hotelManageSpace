@@ -220,7 +220,7 @@
                     if (flag) {
                         var id = rows[0].id;
                         $('#manager').datagrid('loading');
-                        var result = ajaxSynchGet("user/checkInDetail/cancleOrder", {"id": id, "state": state});
+                        var result = ajaxSynchGet("user/checkInDetail/cancleOrder", {"id": id});
                         $('#manager').datagrid('loaded');
                         alertInfo(result.msg);
                         searchOrder();
