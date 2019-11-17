@@ -186,6 +186,48 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         return hotelCustomerCheckInOrderRepository.findOne(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateOrder(TbHotelCustomerCheckInOrder param) {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        TbHotelCustomerCheckInOrder order = hotelCustomerCheckInOrderRepository.findOne(param.getId());
+        if (!user.getHotelId().equals(order.getHotelId())) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        Integer orderStatusParam = param.getOrderStatus();
+        Integer orderStatusOld = order.getOrderStatus();
+        if (!orderStatusParam.equals(orderStatusOld)) {} {
+            if (orderStatusOld == 1) {
+                throw new BusinessException("已退房订单，不能再做变更！");
+            }
+            if (orderStatusOld == 3) {
+                throw new BusinessException("已取消订单，不能再做变更！");
+            }
+        }
+
+
+
+
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateOrderRemark(TbHotelCustomerCheckInOrder param) {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        TbHotelCustomerCheckInOrder order = hotelCustomerCheckInOrderRepository.findOne(param.getId());
+        if (!user.getHotelId().equals(order.getHotelId())) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        hotelCustomerCheckInOrderRepository.updateRemark(param.getId(), param.getMerchOrderRemark());
+    }
+
     private void validateCheckInDateAndCheckOutDate(Date planCheckInDate, Date planCheckOutDate) {
         if (planCheckInDate == null) {
             throw new BusinessException("请选择入住时间！");

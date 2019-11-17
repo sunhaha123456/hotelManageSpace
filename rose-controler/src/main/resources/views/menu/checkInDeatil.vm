@@ -196,14 +196,51 @@
         function updateCheckInInfoCommit() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
+                var param = {
+                    "id": id,
+                    "orderStatus": $('#updateOrderStatus').combobox('getValue'),
+                    "lockStartDate": $('#updateLockStartDate').datetimebox('getValue'),
+                    "lockEndDate": $('#updateLockEndDate').datetimebox('getValue'),
+                    "realCollectMoney": $('#updateRealCollectMoney').val(),
+                    "depositMoney": $('#updateDepositMoney').val(),
+                    "merchOrderRemark": $('#updateMerchOrderRemark').val()
+                };
+                var result = ajaxSynchPostJson("user/checkInDetail/updateOrder", param);
+                if (result.code == '200') {
+                    searchOrder();
+                    $('#manager_update').dialog('close');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+
+        function showOrderRemark() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
                 var id = rows[0].id;
                 var result = ajaxSynchGet("user/checkInDetail/getDetail", {"id":id});
                 if (result.code == '200') {
                     var data = result.data;
+                    $("#remarkMerchOrderRemark").val(data.merchOrderRemark);
+                    $('#manager_detail_remark').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
 
-
-
-                    $('#manager_update').dialog('close');
+        function updaterderRemark() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchPostJson("user/checkInDetail/updateOrderRemark", {"id":id, "merchOrderRemark":$("#remarkMerchOrderRemark").val()});
+                if (result.code == '200') {
+                    $('#manager_detail_remark').dialog('close');
                 } else {
                     alertWarn(result.msg);
                 }
@@ -236,7 +273,8 @@
             </select>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">查询</a>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showOrderDetail()">查看详情</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="showUpdateOrder()">修改信息</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showOrderRemark()">修改备注</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="showUpdateOrder()">修改订单</a>&nbsp;&nbsp;
         </div>
     </div>
 </table>
@@ -318,10 +356,10 @@
             }]">
     <p>
         客人姓名：
-        <input type="text" id="updateCheckInCustomerName" style="width:100px;" />
+        <input type="text" id="updateCheckInCustomerName" readonly="readonly" style="width:100px;" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         手机号码：
-        <input type="text" id="updateCheckInCustomerLinkPhone" style="width:100px;" />
+        <input type="text" id="updateCheckInCustomerLinkPhone" readonly="readonly" style="width:100px;" />
     </p>
     <p>
         房间编号：
@@ -370,6 +408,30 @@
     <p>商户备注：
         <br />
         <textarea rows="1" cols="60" id="updateMerchOrderRemark" />
+    </p>
+</form>
+
+<form id="manager_detail_remark" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:5,width:560,title:'设置备注',modal:true,closed:true,cache:false,iconCls:'icon-nav',
+   onClose:function () {
+        $('#manager_detail_remark').form('reset');
+   },
+    buttons:[{
+                text : '提交',
+                iconCls : 'icon-add-green',
+                handler : function () {
+                    updaterderRemark();
+                }
+            },{
+                text:'关闭',
+                iconCls : 'icon-redo',
+                handler:function(){
+                    $('#manager_detail_remark').dialog('close');
+                }
+            }]">
+    <p>商户备注：
+        <br />
+        <textarea rows="1" cols="60" id="remarkMerchOrderRemark" />
     </p>
 </form>
 </body>
