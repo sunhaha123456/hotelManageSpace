@@ -1,7 +1,6 @@
 package com.rose.repository;
 
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -18,8 +17,4 @@ public interface HotelCustomerCheckInOrderRepository extends CrudRepository<TbHo
                                                          @Param("roomIdList") List<Long> roomIdList,
                                                          @Param("planCheckInDate") Date planCheckInDate,
                                                          @Param("planCheckOutDate") Date planCheckOutDate);
-
-    @Modifying
-    @Query(value = "update tb_hotel_customer_check_in_order set merch_order_remark = :merchOrderRemark where id = :id", nativeQuery = true)
-    int updateRemark(@Param(value = "id") Long id, @Param(value = "merchOrderRemark") String merchOrderRemark);
 }

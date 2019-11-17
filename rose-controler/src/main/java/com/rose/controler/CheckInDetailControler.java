@@ -36,9 +36,4 @@ public class CheckInDetailControler {
     public void updateOrder(@RequestBody TbHotelCustomerCheckInOrder param) throws Exception {
         customerCheckInService.updateOrder(param);
     }
-
-    @PostMapping(value= "/updateOrderRemark")
-    public void updateOrderRemark(@RequestBody TbHotelCustomerCheckInOrder param) throws Exception {
-        customerCheckInService.updateOrderRemark(param);
-    }
 }

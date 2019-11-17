@@ -227,21 +227,6 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         }
     }
 
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void updateOrderRemark(TbHotelCustomerCheckInOrder param) {
-        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
-        if (user == null || user.getHotelId() == null) {
-            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
-        }
-        TbHotelCustomerCheckInOrder order = hotelCustomerCheckInOrderRepository.findOne(param.getId());
-        if (!user.getHotelId().equals(order.getHotelId())) {
-            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
-        }
-        hotelCustomerCheckInOrderRepository.updateRemark(param.getId(), param.getMerchOrderRemark());
-    }
-
     private void validateCheckInDateAndCheckOutDate(Date planCheckInDate, Date planCheckOutDate) {
         if (planCheckInDate == null) {
             throw new BusinessException("请选择入住时间！");

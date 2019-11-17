@@ -164,7 +164,7 @@
             }
         }
 
-        function showUpdateOrder() {
+        function showUpdateOrderInfo() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
@@ -193,7 +193,7 @@
             }
         }
 
-        function updateCheckInInfoCommit() {
+        function updateOrderInfoCommit() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var param = {
@@ -209,38 +209,6 @@
                 if (result.code == '200') {
                     searchOrder();
                     $('#manager_update').dialog('close');
-                } else {
-                    alertWarn(result.msg);
-                }
-            } else {
-                alertWarn("请先选择记录！");
-            }
-        }
-
-        function showOrderRemark() {
-            var rows = $('#manager').datagrid('getSelections');
-            if (rows.length > 0) {
-                var id = rows[0].id;
-                var result = ajaxSynchGet("user/checkInDetail/getDetail", {"id":id});
-                if (result.code == '200') {
-                    var data = result.data;
-                    $("#remarkMerchOrderRemark").val(data.merchOrderRemark);
-                    $('#manager_detail_remark').dialog('open');
-                } else {
-                    alertWarn(result.msg);
-                }
-            } else {
-                alertWarn("请先选择记录！");
-            }
-        }
-
-        function updaterRemarkCommit() {
-            var rows = $('#manager').datagrid('getSelections');
-            if (rows.length > 0) {
-                var id = rows[0].id;
-                var result = ajaxSynchPostJson("user/checkInDetail/updateOrderRemark", {"id":id, "merchOrderRemark":$("#remarkMerchOrderRemark").val()});
-                if (result.code == '200') {
-                    $('#manager_detail_remark').dialog('close');
                 } else {
                     alertWarn(result.msg);
                 }
@@ -275,8 +243,10 @@
         </div>
         <div style="padding:0 0 0 7px;color:#333;">
             <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showOrderDetail()">查看详情</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showOrderRemark()">修改备注</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showUpdateOrder()">修改订单</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showCheckInCheckOut()">已入住退房</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showReserveCheckIn()">未入住入住</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showUpdateOrderInfo()">调整入住信息</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showCancelOrder()">办理取消</a>
         </div>
     </div>
 </table>
@@ -338,16 +308,16 @@
     </p>
 </form>
 
-<form id="manager_update" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+<form id="manager_update_info" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
       data-options="top:5,width:560,title:'办理入住',modal:true,closed:true,cache:false,iconCls:'icon-nav',
    onClose:function () {
-        $('#manager_update').form('reset');
+        $('#manager_update_info').form('reset');
    },
     buttons:[{
                 text : '提交',
                 iconCls : 'icon-add-green',
                 handler : function () {
-                    updateCheckInInfoCommit();
+                    updateOrderInfoCommit();
                 }
             },{
                 text:'关闭',
