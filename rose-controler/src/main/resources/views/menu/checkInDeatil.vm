@@ -234,7 +234,7 @@
             }
         }
 
-        function updaterderRemark() {
+        function updaterRemarkCommit() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
@@ -276,7 +276,7 @@
         <div style="padding:0 0 0 7px;color:#333;">
             <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showOrderDetail()">查看详情</a>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showOrderRemark()">修改备注</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="showUpdateOrder()">修改订单</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showUpdateOrder()">修改订单</a>&nbsp;&nbsp;
         </div>
     </div>
 </table>
@@ -422,7 +422,7 @@
                 text : '提交',
                 iconCls : 'icon-add-green',
                 handler : function () {
-                    updaterderRemark();
+                    updaterRemarkCommit();
                 }
             },{
                 text:'关闭',
