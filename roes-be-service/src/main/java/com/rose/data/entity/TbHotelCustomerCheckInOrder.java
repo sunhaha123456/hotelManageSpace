@@ -65,26 +65,6 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "plan_check_in_date", columnDefinition = "datetime COMMENT '计划入住时间'")
-    private Date planCheckInDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "plan_check_out_date", columnDefinition = "datetime COMMENT '计划退房时间'")
-    private Date planCheckOutDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "real_check_in_date", columnDefinition = "datetime COMMENT '实际入住时间'")
-    private Date realCheckInDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "real_check_out_date", columnDefinition = "datetime COMMENT '实际退房时间'")
-    private Date realCheckOutDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "lock_start_date", columnDefinition = "datetime COMMENT '房间锁定开始时间'")
     private Date lockStartDate;
 
@@ -112,4 +92,12 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     // 商户对此订单备注
     @Column(name = "merch_order_remark", columnDefinition = "varchar(800) COMMENT '商户对此订单备注'")
     private String merchOrderRemark;
+
+    // 计划入住时间
+    @Transient
+    private Date planCheckInDate;
+
+    // 计划退房时间
+    @Transient
+    private Date planCheckOutDate;
 }

@@ -59,7 +59,15 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     public PageList<TbHotelRoomDetail> searchByFloor(HotelRoomRequest param) throws Exception {
         Date planCheckInDate = param.getPlanCheckInDate();
         Date planCheckOutDate = param.getPlanCheckOutDate();
-        validateCheckInDateAndCheckOutDate(planCheckInDate, planCheckOutDate);
+        if (planCheckInDate == null) {
+            throw new BusinessException("请选择入住时间！");
+        }
+        if (planCheckOutDate == null) {
+            throw new BusinessException("请选择退房时间！");
+        }
+        if (planCheckOutDate.getTime() <= planCheckInDate.getTime()) {
+            throw new BusinessException("退房时间必须晚于入住时间！");
+        }
 
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
@@ -120,7 +128,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     public void handleCustomerCheckIn(TbHotelCustomerCheckInOrder param) {
         Date planCheckInDate = param.getPlanCheckInDate();
         Date planCheckOutDate = param.getPlanCheckOutDate();
-        validateCheckInDateAndCheckOutDate(planCheckInDate, planCheckOutDate);
+        validateDateForCheckIn(planCheckInDate, planCheckOutDate);
 
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
@@ -162,12 +170,8 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         param.setCheckOutDesc(room.getCheckOutDesc());
         param.setRoomOverallDesc(room.getRoomOverallDesc());
         if (param.getOrderType() == 0) { // 已到店直接入住类型订单
-            param.setRealCheckInDate(param.getPlanCheckInDate());
-            param.setRealCheckOutDate(null);
             param.setOrderStatus(0);
         } else { // 未到店预定入住类型订单
-            param.setRealCheckInDate(null);
-            param.setRealCheckOutDate(null);
             param.setOrderStatus(2);
         }
         param.setLockStartDate(planCheckInDate);
@@ -251,6 +255,18 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void checkInCheckOut(TbHotelCustomerCheckInOrder param) {
+        Date checkInDate = param.getLockStartDate();
+        Date checkOutDate = param.getLockEndDate();
+        if (checkInDate == null) {
+            throw new BusinessException("请选择入住时间！");
+        }
+        if (checkOutDate == null) {
+            throw new BusinessException("请选择退房时间！");
+        }
+        if (checkOutDate.getTime() <= checkInDate.getTime()) {
+            throw new BusinessException("退房时间必须晚于入住时间！");
+        }
+
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
@@ -266,31 +282,30 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         order.setCheckInCustomerName(param.getCheckInCustomerName());
         order.setCheckInCustomerLinkPhone(param.getCheckInCustomerLinkPhone());
         order.setCheckInCustomerIdNo(param.getCheckInCustomerIdNo());
-        order.setRealCheckInDate(param.getLockStartDate());
-        order.setRealCheckOutDate(param.getLockEndDate());
-        order.setLockStartDate(param.getLockStartDate());
-        order.setLockEndDate(param.getLockEndDate());
+        order.setLockStartDate(checkInDate);
+        order.setLockEndDate(checkOutDate);
         order.setDepositMoney(param.getDepositMoney());
         order.setRealCollectMoney(param.getRealCollectMoney());
         order.setMerchOrderRemark(param.getMerchOrderRemark());
         hotelCustomerCheckInOrderRepository.save(order);
     }
 
-    private void validateCheckInDateAndCheckOutDate(Date planCheckInDate, Date planCheckOutDate) {
-        if (planCheckInDate == null) {
+    // 功能：办理入住时，校验入住时间
+    private void validateDateForCheckIn(Date checkInDate, Date checkOutDate) {
+        if (checkInDate == null) {
             throw new BusinessException("请选择入住时间！");
         }
-        if (planCheckOutDate == null) {
+        if (checkOutDate == null) {
             throw new BusinessException("请选择退房时间！");
         }
         Date todayMinDate = DateUtil.formatStr2Time(DateUtil.getCurrentDate() + " 00:00:00");
-        if (planCheckInDate.getTime() <= todayMinDate.getTime()) {
+        if (checkInDate.getTime() <= todayMinDate.getTime()) {
             throw new BusinessException("入住时间必须是今天及以后时间！");
         }
-        if (planCheckOutDate.getTime() <= new Date().getTime()) {
+        if (checkOutDate.getTime() <= new Date().getTime()) {
             throw new BusinessException("退房时间必须晚于当前时间！");
         }
-        if (planCheckOutDate.getTime() <= planCheckInDate.getTime()) {
+        if (checkOutDate.getTime() <= checkInDate.getTime()) {
             throw new BusinessException("退房时间必须晚于入住时间！");
         }
     }
