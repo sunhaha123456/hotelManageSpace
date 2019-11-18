@@ -170,8 +170,9 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
             param.setRealCheckOutDate(null);
             param.setOrderStatus(2);
         }
-        param.setLockStartDate(param.getPlanCheckInDate());
-        param.setLockEndDate(param.getPlanCheckOutDate());
+        param.setLockStartDate(planCheckInDate);
+        param.setLockEndDate(planCheckOutDate);
+
         hotelCustomerCheckInOrderRepository.save(param);
     }
 
@@ -250,11 +251,29 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void checkInCheckOut(TbHotelCustomerCheckInOrder param) {
-
-
-
-
-
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        TbHotelCustomerCheckInOrder order = hotelCustomerCheckInOrderRepository.findOne(param.getId());
+        if (!user.getHotelId().equals(order.getHotelId())) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        if (order.getOrderStatus() != 0) {
+            throw new BusinessException("非已入住状态，不能办理退房！");
+        }
+        order.setLastModified(new Date());
+        order.setCheckInCustomerName(param.getCheckInCustomerName());
+        order.setCheckInCustomerLinkPhone(param.getCheckInCustomerLinkPhone());
+        order.setCheckInCustomerIdNo(param.getCheckInCustomerIdNo());
+        order.setRealCheckInDate(param.getLockStartDate());
+        order.setRealCheckOutDate(param.getLockEndDate());
+        order.setLockStartDate(param.getLockStartDate());
+        order.setLockEndDate(param.getLockEndDate());
+        order.setDepositMoney(param.getDepositMoney());
+        order.setRealCollectMoney(param.getRealCollectMoney());
+        order.setMerchOrderRemark(param.getMerchOrderRemark());
+        hotelCustomerCheckInOrderRepository.save(order);
     }
 
     private void validateCheckInDateAndCheckOutDate(Date planCheckInDate, Date planCheckOutDate) {
