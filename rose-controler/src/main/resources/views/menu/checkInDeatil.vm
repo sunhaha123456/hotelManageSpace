@@ -28,6 +28,11 @@
                         hidden : true
                     },
                     {
+                        field : 'orderNo',
+                        title : '订单编号',
+                        width : 170
+                    },
+                    {
                         field : 'roomNo',
                         title : '房间编号',
                         width : 100

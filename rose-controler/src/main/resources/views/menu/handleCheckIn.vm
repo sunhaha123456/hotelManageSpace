@@ -205,6 +205,7 @@
                         border : false,
                         columns:[[
                             {field:'roomNo',title:'房间编号',width:100},
+                            {field:'orderNo',title:'订单编号',width:170},
                             {
                                 field:'orderStatus',
                                 title:'订单状态',
@@ -221,8 +222,8 @@
                             {field:'depositMoney',title:'实收押金',width:100},
                             {field:'checkInCustomerName',title:'客人姓名',width:120},
                             {field:'checkInCustomerLinkPhone',title:'客人手机',width:100},
-                            {field:'lockStartDate',title:'开始时间',width:145},
-                            {field:'lockEndDate',title:'结束时间',width:145}
+                            {field:'lockStartDate',title:'开始时间',width:150},
+                            {field:'lockEndDate',title:'结束时间',width:150}
                         ]]
                     });
                     $('#roomCheckInDeatilDataGrid').datagrid('loadData', result.data);
@@ -371,7 +372,7 @@
     </div>
 </table>
 
-<div id="roomCheckInDeatilWindow" class="easyui-window" title="房间入住详情" data-options="modal:true,closed:true,minimizable:false,maximizable:false,iconCls:'icon-nav'" style="width:1000px;height:450px;padding:10px;">
+<div id="roomCheckInDeatilWindow" class="easyui-window" title="房间入住详情" data-options="modal:true,closed:true,minimizable:false,maximizable:false,iconCls:'icon-nav'" style="width:990px;height:450px;padding:10px;">
     <table id="roomCheckInDeatilDataGrid" style="width:950px;"></table>
 </div>
 

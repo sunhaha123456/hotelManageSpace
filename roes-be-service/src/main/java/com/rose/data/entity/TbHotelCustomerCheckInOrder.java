@@ -18,6 +18,10 @@ import java.util.Date;
 @Table(name = "tb_hotel_customer_check_in_order")
 public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
 
+    // 订单编号
+    @Column(name = "order_no", columnDefinition = "varchar(255) COMMENT '订单编号'")
+    private String orderNo;
+
     // 酒店id
     @Column(name = "hotel_id", columnDefinition = "Int(20) COMMENT '酒店id'")
     private Long hotelId;
@@ -94,10 +98,12 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     private String merchOrderRemark;
 
     // 计划入住时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Transient
     private Date planCheckInDate;
 
     // 计划退房时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Transient
     private Date planCheckOutDate;
 }

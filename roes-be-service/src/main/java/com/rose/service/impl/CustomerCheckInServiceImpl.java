@@ -4,6 +4,7 @@ import com.rose.common.data.base.PageList;
 import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
 import com.rose.common.util.DateUtil;
+import com.rose.common.util.OrderNoUtil;
 import com.rose.common.util.ValueHolder;
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.entity.TbHotelRoomDetail;
@@ -177,7 +178,11 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         param.setLockStartDate(planCheckInDate);
         param.setLockEndDate(planCheckOutDate);
 
-        hotelCustomerCheckInOrderRepository.save(param);
+        TbHotelCustomerCheckInOrder res = hotelCustomerCheckInOrderRepository.save(param);
+        if (res == null) {
+            throw new BusinessException(ResponseResultCode.OPERT_ERROR);
+        }
+        param.setOrderNo(OrderNoUtil.getNoHotel(res.getId()));
     }
 
     @Override

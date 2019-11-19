@@ -34,6 +34,6 @@ public interface HotelCustomerCheckInOrderRepository extends CrudRepository<TbHo
     int updateStatus(@Param("id") Long id, @Param("orderStatusNew") Integer orderStatusNew, @Param("orderStatusOld") Integer orderStatusOld);
 
     @Modifying
-    @Query(value = "update tb_hotel_customer_check_in_order set order_status = 3 where id = :id and order_status in (0, 1, 2) ", nativeQuery = true)
-    int cancelOrder(@Param("id") Long id, @Param("orderStatusOld") String orderStatusOld);
+    @Query(value = "update tb_hotel_customer_check_in_order set order_status = 3, merch_order_remark = :merchRemark where id = :id and order_status in (0, 1, 2) ", nativeQuery = true)
+    int cancelOrder(@Param("id") Long id, @Param("merchRemark") String merchRemark);
 }

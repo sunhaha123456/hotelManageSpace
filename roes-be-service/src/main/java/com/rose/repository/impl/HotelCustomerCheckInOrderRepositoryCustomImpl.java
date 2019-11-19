@@ -22,7 +22,7 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
     public List<TbHotelCustomerCheckInOrder> listByHotelIdAndRoomId(Long hotelId, Long roomId) {
         StringBuilder sql = new StringBuilder();
         List<Object> paramList = new ArrayList();
-        sql.append(" SELECT id, room_no roomNo, sell_price sellPrice, deposit_money depositMoney, ");
+        sql.append(" SELECT id, order_no orderNo, room_no roomNo, sell_price sellPrice, deposit_money depositMoney, ");
         sql.append(" check_in_customer_name checkInCustomerName, check_in_customer_link_phone checkInCustomerLinkPhone, ");
         sql.append(" order_type orderType, order_status orderStatus, ");
         sql.append(" lock_start_date lockStartDate, create_date createDate ");
@@ -38,7 +38,7 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
     public PageList<TbHotelCustomerCheckInOrder> listByCondition(CheckInDetailSearchRequest param) throws Exception {
         StringBuilder sql = new StringBuilder();
         List<Object> paramList = new ArrayList();
-        sql.append(" SELECT id, room_no roomNo, sell_price sellPrice, deposit_money depositMoney, ");
+        sql.append(" SELECT id, order_no orderNo, room_no roomNo, sell_price sellPrice, deposit_money depositMoney, ");
         sql.append(" check_in_customer_name checkInCustomerName, check_in_customer_link_phone checkInCustomerLinkPhone, ");
         sql.append(" order_type orderType, order_status orderStatus, lock_start_date lockStartDate, real_collect_money realCollectMoney, ");
         sql.append(" create_date createDate ");
