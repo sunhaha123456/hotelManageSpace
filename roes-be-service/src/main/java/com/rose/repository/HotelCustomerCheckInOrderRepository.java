@@ -14,10 +14,20 @@ public interface HotelCustomerCheckInOrderRepository extends CrudRepository<TbHo
     @Query(value = "select * from tb_hotel_customer_check_in_order where hotel_id = :hotelId and room_id in :roomIdList " +
                    "and order_status in(0,2) and :planCheckInDate < lock_end_date and :planCheckOutDate > lock_start_date " +
                    "order by room_id,lock_start_date", nativeQuery = true)
-    List<TbHotelCustomerCheckInOrder> listByCheckOutDate(@Param("hotelId") Long hotelId,
-                                                         @Param("roomIdList") List<Long> roomIdList,
-                                                         @Param("planCheckInDate") Date planCheckInDate,
-                                                         @Param("planCheckOutDate") Date planCheckOutDate);
+    List<TbHotelCustomerCheckInOrder> listByCheckInOutDate(@Param("hotelId") Long hotelId,
+                                                           @Param("roomIdList") List<Long> roomIdList,
+                                                           @Param("planCheckInDate") Date planCheckInDate,
+                                                           @Param("planCheckOutDate") Date planCheckOutDate);
+
+    @Query(value =  "select * from tb_hotel_customer_check_in_order where hotel_id = :hotelId and room_id in :roomIdList " +
+                    "and order_status in(0,2) and :planCheckInDate < lock_end_date and :planCheckOutDate > lock_start_date " +
+                    "and id != :orderId " +
+                    "order by room_id,lock_start_date", nativeQuery = true)
+    List<TbHotelCustomerCheckInOrder> listByCheckInOutDate(@Param("hotelId") Long hotelId,
+                                                           @Param("roomIdList") List<Long> roomIdList,
+                                                           @Param("planCheckInDate") Date planCheckInDate,
+                                                           @Param("planCheckOutDate") Date planCheckOutDate,
+                                                           @Param("orderId") Long orderId);
 
     @Modifying
     @Query(value = "update tb_hotel_customer_check_in_order set order_status = :orderStatusNew where id = :id and order_status = :orderStatusOld", nativeQuery = true)

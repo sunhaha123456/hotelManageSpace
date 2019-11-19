@@ -14,10 +14,12 @@ import com.rose.data.to.request.HotelRoomRequest;
 import com.rose.repository.*;
 import com.rose.service.CustomerCheckInService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,7 +81,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
             List<TbHotelRoomDetail> pageList = page.getRows();
             if (pageList != null && pageList.size() > 0) {
                 List<Long> roomIdList = pageList.stream().map(TbHotelRoomDetail::getId).collect(Collectors.toList());
-                List<TbHotelCustomerCheckInOrder> orderList = hotelCustomerCheckInOrderRepository.listByCheckOutDate(param.getHotelId(), roomIdList, planCheckInDate, planCheckOutDate);
+                List<TbHotelCustomerCheckInOrder> orderList = hotelCustomerCheckInOrderRepository.listByCheckInOutDate(param.getHotelId(), roomIdList, planCheckInDate, planCheckOutDate);
                 if (orderList == null || orderList.size() == 0) { // 当没查找到入住、预订记录
                     pageList.stream().forEach(o -> o.setCheckInState(0));
                 } else { // 当查找到入住、预订记录
@@ -128,7 +130,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     public void handleCustomerCheckIn(TbHotelCustomerCheckInOrder param) {
         Date planCheckInDate = param.getPlanCheckInDate();
         Date planCheckOutDate = param.getPlanCheckOutDate();
-        validateDateForCheckIn(planCheckInDate, planCheckOutDate);
+        checkInValidateDate(planCheckInDate, planCheckOutDate);
 
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
@@ -138,13 +140,13 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         if (room == null || room.getRoomUpshelfState() != 0 || !user.getHotelId().equals(room.getHotelId())) {
             throw new BusinessException("所选房间已下架！");
         }
-        List<TbHotelCustomerCheckInOrder> orderList = hotelCustomerCheckInOrderRepository.listByCheckOutDate(room.getHotelId(), Arrays.asList(room.getId()), planCheckInDate, planCheckOutDate);
+        List<TbHotelCustomerCheckInOrder> orderList = hotelCustomerCheckInOrderRepository.listByCheckInOutDate(room.getHotelId(), Arrays.asList(room.getId()), planCheckInDate, planCheckOutDate);
         if (orderList != null && orderList.size() > 0) {
             if (room.getCalcCheckInNumBedFlag() == 0) { // 不是根据床位计算可入住人数
-                throw new BusinessException("所选时间已有客人入住或预定！");
+                throw new BusinessException("所选住宿时间段已被他人预留！");
             } else { // 是根据床位计算可入住人数
                 if ((orderList.size() + 1) > room.getBedNum()) {
-                    throw new BusinessException("所选时间床位已满！");
+                    throw new BusinessException("所选住宿时间段床位已满！");
                 }
             }
         }
@@ -201,34 +203,65 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         if (!user.getHotelId().equals(order.getHotelId())) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
-        Integer orderStatusParam = param.getOrderStatus();
+
         Integer orderStatusOld = order.getOrderStatus();
-        switch (orderStatusOld) {
-            case 0: { // 已入住
-                if (orderStatusParam == 1) { // 修改成 已退房
-
-                } else if (orderStatusParam == 3) { // 修改成 已取消
-
-                }
-                break;
-            }
-            case 1: { // 已退房
-                throw new BusinessException("已退房订单，不能变更！");
-            }
-            case 2: { // 已预订
-                if (orderStatusParam == 1) { // 修改成 已入住
-
-                } else if (orderStatusParam == 3) { // 修改成 已取消
-
-                }
-                break;
-            }
-            case 3: { // 已取消
-                throw new BusinessException("已取消订单，不能变更！");
-            }
-            default:
-                throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+        if (orderStatusOld == 1) {
+            throw new BusinessException("已退房订单，不能变更！");
         }
+        if (orderStatusOld == 3) {
+            throw new BusinessException("已取消订单，不能变更！");
+        }
+
+        String checkInCustomerName = param.getCheckInCustomerName();
+        String checkInCustomerLinkPhone = param.getCheckInCustomerLinkPhone();
+        String checkInCustomerIdNo = param.getCheckInCustomerIdNo();
+        Date lockStartDate = param.getLockStartDate();
+        Date lockEndDate = param.getLockEndDate();
+        BigDecimal depositMoney = param.getDepositMoney();
+        BigDecimal realCollectMoney = param.getRealCollectMoney();
+        String merchOrderRemark = param.getMerchOrderRemark();
+
+        if (!order.getLockStartDate().equals(lockStartDate) || !order.getLockEndDate().equals(lockEndDate)) {
+            if (orderStatusOld == 0) { // 已入住
+                if (lockStartDate == null) {
+                    throw new BusinessException("请选择入住时间！");
+                }
+                if (lockEndDate == null) {
+                    throw new BusinessException("请选择退房时间！");
+                }
+                if (lockEndDate.getTime() <= lockStartDate.getTime()) {
+                    throw new BusinessException("退房时间必须晚于入住时间！");
+                }
+            } else if (orderStatusOld == 2) { // 已预订
+                checkInValidateDate(lockStartDate, lockEndDate);
+            }
+
+            TbHotelRoomDetail room = hotelRoomDetailRepository.findOne(order.getRoomId());
+            List<TbHotelCustomerCheckInOrder> orderList = hotelCustomerCheckInOrderRepository.listByCheckInOutDate(order.getHotelId(), Arrays.asList(order.getRoomId()), lockStartDate, lockEndDate, order.getId());
+            if (orderList != null && orderList.size() > 0) {
+                if (room.getCalcCheckInNumBedFlag() == 0) { // 不是根据床位计算可入住人数
+                    throw new BusinessException("所选住宿时间段已被他人预留！");
+                } else { // 是根据床位计算可入住人数
+                    if ((orderList.size() + 1) > room.getBedNum()) {
+                        throw new BusinessException("所选住宿时间段已被他人预留！");
+                    }
+                }
+            }
+        }
+
+        BeanUtils.copyProperties(order, param);
+        param.setLastModified(new Date());
+        param.setCheckInCustomerName(checkInCustomerName);
+        param.setCheckInCustomerLinkPhone(checkInCustomerLinkPhone);
+        param.setCheckInCustomerIdNo(checkInCustomerIdNo);
+        param.setLockStartDate(lockStartDate);
+        param.setLockEndDate(lockEndDate);
+        param.setDepositMoney(depositMoney);
+        param.setLockEndDate(lockEndDate);
+        param.setRealCollectMoney(realCollectMoney);
+        param.setMerchOrderRemark(merchOrderRemark);
+
+        hotelCustomerCheckInOrderRepository.save(param);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -243,6 +276,9 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
         Integer orderStatusOld = order.getOrderStatus();
+        if (orderStatusOld == 1) {
+            throw new BusinessException("已退房订单不能办理取消！");
+        }
         if (orderStatusOld == 3) {
             throw new BusinessException("已取消订单不能再次取消！");
         }
@@ -291,7 +327,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     }
 
     // 功能：办理入住时，校验入住时间
-    private void validateDateForCheckIn(Date checkInDate, Date checkOutDate) {
+    private void checkInValidateDate(Date checkInDate, Date checkOutDate) {
         if (checkInDate == null) {
             throw new BusinessException("请选择入住时间！");
         }
