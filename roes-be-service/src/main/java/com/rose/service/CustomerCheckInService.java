@@ -32,4 +32,6 @@ public interface CustomerCheckInService {
     void cancleOrder(Long id, String merchRemark);
 
     void checkInCheckOut(TbHotelCustomerCheckInOrder param);
+
+    void reserveOrderCheckIn(TbHotelCustomerCheckInOrder param);
 }

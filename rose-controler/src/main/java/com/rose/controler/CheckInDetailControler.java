@@ -61,4 +61,14 @@ public class CheckInDetailControler {
     public void checkInCheckOut(@RequestBody TbHotelCustomerCheckInOrder param) throws Exception {
         customerCheckInService.checkInCheckOut(param);
     }
+
+    /**
+     * 功能：办理预订单入住
+     * @param param
+     * @throws Exception
+     */
+    @PostMapping(value= "/reserveOrderCheckIn")
+    public void reserveOrderCheckIn(@RequestBody TbHotelCustomerCheckInOrder param) throws Exception {
+        customerCheckInService.reserveOrderCheckIn(param);
+    }
 }

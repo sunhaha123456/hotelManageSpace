@@ -14,12 +14,10 @@ import com.rose.data.to.request.HotelRoomRequest;
 import com.rose.repository.*;
 import com.rose.service.CustomerCheckInService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -212,15 +210,8 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
             throw new BusinessException("已取消订单，不能变更！");
         }
 
-        String checkInCustomerName = param.getCheckInCustomerName();
-        String checkInCustomerLinkPhone = param.getCheckInCustomerLinkPhone();
-        String checkInCustomerIdNo = param.getCheckInCustomerIdNo();
         Date lockStartDate = param.getLockStartDate();
         Date lockEndDate = param.getLockEndDate();
-        BigDecimal depositMoney = param.getDepositMoney();
-        BigDecimal realCollectMoney = param.getRealCollectMoney();
-        String merchOrderRemark = param.getMerchOrderRemark();
-
         if (!order.getLockStartDate().equals(lockStartDate) || !order.getLockEndDate().equals(lockEndDate)) {
             if (orderStatusOld == 0) { // 已入住
                 if (lockStartDate == null) {
@@ -249,19 +240,17 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
             }
         }
 
-        BeanUtils.copyProperties(order, param);
-        param.setLastModified(new Date());
-        param.setCheckInCustomerName(checkInCustomerName);
-        param.setCheckInCustomerLinkPhone(checkInCustomerLinkPhone);
-        param.setCheckInCustomerIdNo(checkInCustomerIdNo);
-        param.setLockStartDate(lockStartDate);
-        param.setLockEndDate(lockEndDate);
-        param.setDepositMoney(depositMoney);
-        param.setLockEndDate(lockEndDate);
-        param.setRealCollectMoney(realCollectMoney);
-        param.setMerchOrderRemark(merchOrderRemark);
+        order.setLastModified(new Date());
+        order.setCheckInCustomerName(param.getCheckInCustomerName());
+        order.setCheckInCustomerLinkPhone(param.getCheckInCustomerLinkPhone());
+        order.setCheckInCustomerIdNo(param.getCheckInCustomerIdNo());
+        order.setLockStartDate(lockStartDate);
+        order.setLockEndDate(lockEndDate);
+        order.setDepositMoney(param.getDepositMoney());
+        order.setRealCollectMoney(param.getRealCollectMoney());
+        order.setMerchOrderRemark(param.getMerchOrderRemark());
 
-        hotelCustomerCheckInOrderRepository.save(param);
+        hotelCustomerCheckInOrderRepository.save(order);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -291,18 +280,6 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void checkInCheckOut(TbHotelCustomerCheckInOrder param) {
-        Date checkInDate = param.getLockStartDate();
-        Date checkOutDate = param.getLockEndDate();
-        if (checkInDate == null) {
-            throw new BusinessException("请选择入住时间！");
-        }
-        if (checkOutDate == null) {
-            throw new BusinessException("请选择退房时间！");
-        }
-        if (checkOutDate.getTime() <= checkInDate.getTime()) {
-            throw new BusinessException("退房时间必须晚于入住时间！");
-        }
-
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
@@ -314,6 +291,21 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         if (order.getOrderStatus() != 0) {
             throw new BusinessException("非已入住状态，不能办理退房！");
         }
+
+        Date checkInDate = param.getLockStartDate();
+        Date checkOutDate = param.getLockEndDate();
+        if (!order.getLockStartDate().equals(checkInDate) || !order.getLockEndDate().equals(checkOutDate)) {
+            if (checkInDate == null) {
+                throw new BusinessException("请选择入住时间！");
+            }
+            if (checkOutDate == null) {
+                throw new BusinessException("请选择退房时间！");
+            }
+            if (checkOutDate.getTime() <= checkInDate.getTime()) {
+                throw new BusinessException("退房时间必须晚于入住时间！");
+            }
+        }
+
         order.setLastModified(new Date());
         order.setCheckInCustomerName(param.getCheckInCustomerName());
         order.setCheckInCustomerLinkPhone(param.getCheckInCustomerLinkPhone());
@@ -323,6 +315,43 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         order.setDepositMoney(param.getDepositMoney());
         order.setRealCollectMoney(param.getRealCollectMoney());
         order.setMerchOrderRemark(param.getMerchOrderRemark());
+        order.setOrderStatus(1);
+
+        hotelCustomerCheckInOrderRepository.save(order);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void reserveOrderCheckIn(TbHotelCustomerCheckInOrder param) {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        TbHotelCustomerCheckInOrder order = hotelCustomerCheckInOrderRepository.findOne(param.getId());
+        if (!user.getHotelId().equals(order.getHotelId())) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        if (order.getOrderStatus() != 2) {
+            throw new BusinessException("非已预定状态，不能办理入住！");
+        }
+
+        Date checkInDate = param.getLockStartDate();
+        Date checkOutDate = param.getLockEndDate();
+        if (!order.getLockStartDate().equals(checkInDate) || !order.getLockEndDate().equals(checkOutDate)) {
+            checkInValidateDate(checkInDate, checkOutDate);
+        }
+
+        order.setLastModified(new Date());
+        order.setCheckInCustomerName(param.getCheckInCustomerName());
+        order.setCheckInCustomerLinkPhone(param.getCheckInCustomerLinkPhone());
+        order.setCheckInCustomerIdNo(param.getCheckInCustomerIdNo());
+        order.setLockStartDate(checkInDate);
+        order.setLockEndDate(checkOutDate);
+        order.setDepositMoney(param.getDepositMoney());
+        order.setRealCollectMoney(param.getRealCollectMoney());
+        order.setMerchOrderRemark(param.getMerchOrderRemark());
+        order.setOrderStatus(0);
+
         hotelCustomerCheckInOrderRepository.save(order);
     }
 

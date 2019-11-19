@@ -292,7 +292,18 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchPostJson("user/checkInDetail/cancleOrder", {"id":id, "merchOrderRemark":$("#cancelMerchOrderRemark").val()});
+                var param = {
+                    "id": id,
+                    "checkInCustomerName": $('#cancelCheckInCustomerName').datetimebox('getValue'),
+                    "checkInCustomerLinkPhone": $('#cancelCheckInCustomerLinkPhone').datetimebox('getValue'),
+                    "checkInCustomerIdNo": $('#cancelInCheckOutCheckInCustomerIdNo').datetimebox('getValue'),
+                    "lockStartDate": $('#cancelLockStartDate').datetimebox('getValue'),
+                    "lockEndDate": $('#cancelLockEndDate').datetimebox('getValue'),
+                    "depositMoney": $('#cancelDepositMoney').val(),
+                    "realCollectMoney": $('#cancelRealCollectMoney').val(),
+                    "merchOrderRemark": $('#cancelMerchOrderRemark').val()
+                };
+                var result = ajaxSynchPostJson("user/checkInDetail/cancleOrder", param);
                 if (result.code == '200') {
                     $('#manager_cancel').dialog('close');
                 } else {
@@ -304,7 +315,53 @@
         }
 
         function showReserveCheckIn() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchGet("user/checkInDetail/getDetail", {"id":id});
+                if (result.code == '200') {
+                    var data = result.data;
+                    $("#reserveCheckInCustomerName").val(data.checkInCustomerName);
+                    $("#reserveCheckInCustomerLinkPhone").val(data.checkInCustomerLinkPhone);
+                    $("#reserveCheckInCustomerIdNo").val(data.checkInCustomerIdNo);
+                    $('#reserveLockStartDate').datetimebox('setValue', data.lockStartDate);
+                    $('#reserveLockEndDate').datetimebox('setValue', data.lockEndDate);
+                    $("#reserveDepositMoney").val(data.depositMoney);
+                    $("#reserveRealCollectMoney").val(data.realCollectMoney);
+                    $("#reserveMerchOrderRemark").val(data.merchOrderRemark);
+                    $('#manager_reserve_check_in').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
 
+        function reserveOrderCheckInCommit() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var param = {
+                    "id": id,
+                    "checkInCustomerName": $('#reserveCheckInCustomerName').datetimebox('getValue'),
+                    "checkInCustomerLinkPhone": $('#reserveCheckInCustomerLinkPhone').datetimebox('getValue'),
+                    "checkInCustomerIdNo": $('#reserveCheckInCustomerIdNo').datetimebox('getValue'),
+                    "lockStartDate": $('#reserveLockStartDate').datetimebox('getValue'),
+                    "lockEndDate": $('#reserveLockEndDate').datetimebox('getValue'),
+                    "depositMoney": $('#reserveDepositMoney').val(),
+                    "realCollectMoney": $('#reserveRealCollectMoney').val(),
+                    "merchOrderRemark": $('#reserveMerchOrderRemark').val()
+                };
+                var result = ajaxSynchPostJson("user/checkInDetail/reserveOrderCheckIn", param);
+                if (result.code == '200') {
+                    $('#manager_cancel').dialog('close');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
         }
 
         $(function () {
@@ -488,6 +545,37 @@
     <p>商户备注：
         <br />
         <textarea rows="1" cols="38" id="cancelMerchOrderRemark" />
+    </p>
+</form>
+
+<form id="manager_reserve_check_in" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:5,width:390,title:'未入住入住',modal:true,closed:true,cache:false,iconCls:'icon-nav',
+   onClose:function () {
+        $('#manager_reserve_check_in').form('reset');
+   },
+    buttons:[{
+                text : '提交',
+                iconCls : 'icon-add-green',
+                handler : function () {
+                    reserveOrderCheckInCommit();
+                }
+            },{
+                text:'关闭',
+                iconCls : 'icon-redo',
+                handler:function(){
+                    $('#manager_reserve_check_in').dialog('close');
+                }
+            }]">
+    <p>客人姓名：<input id="reserveCheckInCustomerName" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入用户名',invalidMessage:'用户名长度至少为1位'," type="text" style="width:200px;" /></p>
+    <p>手机号码：<input id="reserveCheckInCustomerLinkPhone" class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入手机',invalidMessage:'长度至少为1位'," type="text" style="width:200px;" /></p>
+    <p>身份证号：<input type="text" id="reserveCheckInCustomerIdNo" style="width:200px;" /></p>
+    <p>入住时间：<input type="text" id="reserveLockStartDate" class="easyui-datetimebox" data-options="editable:false" style="width:200px;" /></p>
+    <p>退房时间：<input type="text" id="reserveLockEndDate" class="easyui-datetimebox" data-options="editable:false" style="width:200px;" /></p>
+    <p>实收押金：<input id="reserveDepositMoney" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'押金只能是数字'" type="text" style="width:200px;" /></p>
+    <p>实收房费：<input id="reserveRealCollectMoney" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'房费只能是数字'" type="text" style="width:200px;" /></p>
+    <p>商户备注：
+        <br />
+        <textarea rows="1" cols="38" id="reserveMerchOrderRemark" />
     </p>
 </form>
 </body>
