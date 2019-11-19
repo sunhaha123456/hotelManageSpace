@@ -94,4 +94,13 @@ public class JumpControler {
     public String toHotelCheckInDeatil() {
         return "menu/checkInDeatil";
     }
+
+    /**
+     * 功能：跳转营收统计页面
+     * @return
+     */
+    @GetMapping(value = "/user/menuManage/toProfitStatis")
+    public String toProfitStatis() {
+        return "menu/profitStatis";
+    }
 }
