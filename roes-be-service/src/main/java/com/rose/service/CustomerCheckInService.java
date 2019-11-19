@@ -29,7 +29,7 @@ public interface CustomerCheckInService {
 
     void updateOrderInfo(TbHotelCustomerCheckInOrder param);
 
-    void cancleOrder(Long id);
+    void cancleOrder(Long id, String merchRemark);
 
     void checkInCheckOut(TbHotelCustomerCheckInOrder param);
 }

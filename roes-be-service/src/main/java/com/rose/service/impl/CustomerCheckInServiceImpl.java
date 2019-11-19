@@ -233,7 +233,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void cancleOrder(Long id) {
+    public void cancleOrder(Long id, String merchRemark) {
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
@@ -243,10 +243,10 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
         Integer orderStatusOld = order.getOrderStatus();
-        if (!Arrays.asList(0, 2).contains(orderStatusOld)) {
-            throw new BusinessException("只有已入住或已预订，才能取消！");
+        if (orderStatusOld == 3) {
+            throw new BusinessException("已取消订单不能再次取消！");
         }
-        int c = hotelCustomerCheckInOrderRepository.updateStatus(id, 3, orderStatusOld);
+        int c = hotelCustomerCheckInOrderRepository.cancelOrder(id, merchRemark);
         if (c <= 0) {
             throw new BusinessException(ResponseResultCode.OPERT_ERROR);
         }

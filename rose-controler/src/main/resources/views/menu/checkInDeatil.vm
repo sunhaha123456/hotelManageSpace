@@ -264,19 +264,54 @@
             }
         }
 
-        function cancelOrder() {
+        function showCancelOrder() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
-                $.messager.confirm('确定操作', showMsg, function (flag) {
-                    if (flag) {
-                        var id = rows[0].id;
-                        $('#manager').datagrid('loading');
-                        var result = ajaxSynchGet("user/checkInDetail/cancleOrder", {"id": id});
-                        $('#manager').datagrid('loaded');
-                        alertInfo(result.msg);
-                        searchOrder();
+                var id = rows[0].id;
+                var result = ajaxSynchGet("user/checkInDetail/getDetail", {"id":id});
+                if (result.code == '200') {
+                    var data = result.data;
+                    $("#cancelCheckInCustomerName").val(data.checkInCustomerName);
+                    $("#cancelCheckInCustomerLinkPhone").val(data.checkInCustomerLinkPhone);
+                    $("#cancelRoomNo").val(data.roomNo);
+                    $("#cancelRoomTypeName").val(data.roomTypeName);
+                    $("#cancelSellPrice").val(data.sellPrice);
+                    if (data.orderStatus == 0) {
+                        $("#cancelOrderStatus").val("已入住");
+                    } else if (data.orderStatus == 1) {
+                        $("#cancelOrderStatus").val("已退房");
+                    } else if (data.orderStatus == 2) {
+                        $("#cancelOrderStatus").val("已预订");
+                    } else if (data.orderStatus == 3) {
+                        $("#cancelOrderStatus").val("已取消");
                     }
-                });
+                    $("#cancelLockStartDate").val(data.lockStartDate);
+                    $("#cancelLockEndDate").val(data.lockEndDate);
+                    $("#cancelRealCollectMoney").val(data.realCollectMoney);
+                    $("#cancelDepositMoney").val(data.depositMoney);
+                    $("#cancelSellPriceDesc").val(data.sellPriceDesc);
+                    $("#cancelCheckOutDesc").val(data.checkOutDesc);
+                    $("#cancelRoomOverallDesc").val(data.roomOverallDesc);
+                    $("#cancelMerchOrderRemark").val(data.merchOrderRemark);
+                    $('#manager_detail').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+
+        function cancelOrderCommit() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchPostJson("user/checkInDetail/cancleOrder", {"id":id, "merchOrderRemark":$("#cancelMerchOrderRemark").val()});
+                if (result.code == '200') {
+                    $('#manager_cancel').dialog('close');
+                } else {
+                    alertWarn(result.msg);
+                }
             } else {
                 alertWarn("请先选择记录！");
             }
@@ -311,7 +346,7 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showCheckInCheckOut()">已入住退房</a>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showReserveCheckIn()">未入住入住</a>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showUpdateOrderInfo()">调整入住信息</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="cancelOrder()">办理取消</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showCancelOrder()">办理取消</a>
         </div>
     </div>
 </table>
@@ -432,6 +467,76 @@
     <p>商户备注：
         <br />
         <textarea rows="1" cols="38" id="checkInCheckOutMerchOrderRemark" />
+    </p>
+</form>
+
+<form id="manager_cancel" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:5,width:390,title:'办理取消',modal:true,closed:true,cache:false,iconCls:'icon-nav',
+   onClose:function () {
+        $('#manager_cancel').form('reset');
+   },
+    buttons:[{
+                text : '提交',
+                iconCls : 'icon-add-green',
+                handler : function () {
+                    cancelOrderCommit();
+                }
+            },{
+                text:'关闭',
+                iconCls : 'icon-redo',
+                handler:function(){
+                    $('#manager_cancel').dialog('close');
+                }
+            }]">
+    <p>
+        客人姓名：
+        <input type="text" id="cancelCheckInCustomerName" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        手机号码：
+        <input type="text" id="cancelCheckInCustomerLinkPhone" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        房间编号：
+        <input type="text" id="cancelRoomNo" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        房间类型：<input type="text" id="cancelRoomTypeName" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        销售价格：
+        <input type="text" id="cancelSellPrice" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        入住状态：
+        <input type="text" id="cancelOrderStatus" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>
+        入住时间：
+        <input type="text" id="cancelLockStartDate" readonly="readonly" style="width:130px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        退房时间：
+        <input type="text" id="cancelLockEndDate" readonly="readonly" style="width:130px;" />
+    </p>
+    <p>
+        实收金额：
+        <input type="text" id="cancelRealCollectMoney" readonly="readonly" style="width:100px;" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        实收押金：
+        <input type="text" id="cancelDepositMoney" readonly="readonly" style="width:100px;" />
+    </p>
+    <p>销售价格描述：
+        <br />
+        <textarea rows="1" cols="60" id="cancelSellPriceDesc" readonly />
+    </p>
+    <p>退房规则描述：
+        <br />
+        <textarea rows="1" cols="60" id="cancelCheckOutDesc" readonly />
+    </p>
+    <p>房间整体描述：
+        <br />
+        <textarea rows="1" cols="60" id="cancelRoomOverallDesc" readonly />
+    </p>
+    <p>商户备注：
+        <br />
+        <textarea rows="1" cols="60" id="cancelMerchOrderRemark" />
     </p>
 </form>
 </body>

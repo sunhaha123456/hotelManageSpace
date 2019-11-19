@@ -44,12 +44,12 @@ public class CheckInDetailControler {
 
     /**
      * 功能：取消
-     * @param id
+     * @param param
      * @throws Exception
      */
-    @GetMapping(value= "/cancleOrder")
-    public void cancleOrder(@RequestParam Long id) {
-        customerCheckInService.cancleOrder(id);
+    @PostMapping(value= "/cancleOrder")
+    public void cancleOrder(@RequestBody TbHotelCustomerCheckInOrder param) {
+        customerCheckInService.cancleOrder(param.getId(), param.getMerchOrderRemark());
     }
 
     /**
