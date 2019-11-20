@@ -26,7 +26,7 @@ public interface CustomerCheckInService {
 
     PageList<TbHotelCustomerCheckInOrder> searchOrder(CheckInDetailSearchRequest param) throws Exception;
 
-    Map<String, Object> searchOrderForProfitStatis(CheckInDetailSearchRequest param) throws Exception;
+    Map<String, Object> getStatis(CheckInDetailSearchRequest param) throws Exception;
 
     TbHotelCustomerCheckInOrder getDetail(Long id);
 

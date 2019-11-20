@@ -1,5 +1,6 @@
 package com.rose.controler;
 
+import com.rose.common.data.base.PageList;
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.to.request.CheckInDetailSearchRequest;
 import com.rose.service.CustomerCheckInService;
@@ -23,8 +24,13 @@ public class ProfitStatisControler {
 	private CustomerCheckInService customerCheckInService;
 
     @PostMapping(value= "/searchOrder")
-    public Map<String, Object> searchOrder(@RequestBody CheckInDetailSearchRequest param) throws Exception {
-        return customerCheckInService.searchOrderForProfitStatis(param);
+    public PageList<TbHotelCustomerCheckInOrder> searchOrder(@RequestBody CheckInDetailSearchRequest param) throws Exception {
+        return customerCheckInService.searchOrder(param);
+    }
+
+    @PostMapping(value= "/getStatis")
+    public Map<String, Object> getStatis(@RequestBody CheckInDetailSearchRequest param) throws Exception {
+        return customerCheckInService.getStatis(param);
     }
 
     @GetMapping(value= "/getDetail")

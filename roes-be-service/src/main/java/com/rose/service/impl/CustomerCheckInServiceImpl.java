@@ -191,11 +191,11 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     }
 
     @Override
-    public Map<String, Object> searchOrderForProfitStatis(CheckInDetailSearchRequest param) throws Exception {
+    public Map<String, Object> getStatis(CheckInDetailSearchRequest param) throws Exception {
         Map<String, Object> res = new HashMap<String, Object>();
-        PageList<TbHotelCustomerCheckInOrder> page = hotelCustomerCheckInOrderRepositoryCustom.listByCondition(param);
+        String totalOrderCount = hotelCustomerCheckInOrderRepositoryCustom.getTotalRealCollectMoneyByCondition(param);
         String totalRealCollectMoney = hotelCustomerCheckInOrderRepositoryCustom.getTotalRealCollectMoneyByCondition(param);
-        res.put("pageData", page);
+        res.put("totalOrderCount", totalOrderCount);
         res.put("totalRealCollectMoney", totalRealCollectMoney);
         return res;
     }

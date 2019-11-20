@@ -98,16 +98,23 @@
         }
         function searchOrder() {
             var param = {
-                "profitStatisStartDate": $('#searchStartDate').val(),
-                "profitStatisEndDate": $('#searchEndDate').val(),
+                "profitStatisStartDate": $('#profitStatisStartDate').datetimebox('getValue'),
+                "profitStatisEndDate": $('#profitStatisEndDate').datetimebox('getValue'),
                 "orderStatus": 1,
                 "page":1, "rows":10
             };
             var result = ajaxSynchPostJson("user/profitStatis/searchOrder", param);
             if (result.code == '200') {
                 dataGridPageInit();
-                $('#manager').datagrid('loadData', result.data.pageData);
-                $('#totalRealCollectMoney').val(result.data.totalRealCollectMoney);
+                $('#manager').datagrid('loadData', result.data);
+
+                var result = ajaxSynchPostJson("user/profitStatis/getStatis", param);
+                if (result.code == '200') {
+                    $('#totalOrderCount').text(result.data.totalOrderCount);
+                    $('#totalRealCollectMoney').text(result.data.totalRealCollectMoney);
+                } else {
+                    alertWarn(result.msg);
+                }
             } else {
                 alertWarn(result.msg);
             }
@@ -120,15 +127,14 @@
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
                     var param = {
-                        "profitStatisStartDate": $('#searchStartDate').val(),
-                        "profitStatisEndDate": $('#searchEndDate').val(),
+                        "profitStatisStartDate": $('#profitStatisStartDate').datetimebox('getValue'),
+                        "profitStatisEndDate": $('#profitStatisEndDate').datetimebox('getValue'),
                         "orderStatus": 1,
                         "page":pageNumber, "rows":pageSize
                     };
                     var result = ajaxSynchPostJson("user/profitStatis/searchOrder", param);
                     if (result.code == '200') {
-                        $('#manager').datagrid('loadData', result.data.pageData);
-                        $('#totalRealCollectMoney').val(result.data.totalRealCollectMoney);
+                        $('#manager').datagrid('loadData', result.data);
                     }
                 },
             });
@@ -173,17 +179,9 @@
         }
 
         $(function () {
-            alert(1);
-
             var nowStr = getNowDatetime();
-
-            alert(nowStr);
-
             $('#profitStatisStartDate').datetimebox('setValue', nowStr);
-            $('#profitStatisEndDate').datetimebox('setValue', nowStr;
-
-
-
+            $('#profitStatisEndDate').datetimebox('setValue', nowStr);
             dataGridInit();
             searchOrder();
         });
@@ -194,15 +192,15 @@
     <div id="manager_tool">
         <div style="margin-bottom:5px;">
             &nbsp;&nbsp;&nbsp;
-            已退房订单->
-            &nbsp;&nbsp;&nbsp;&nbsp;
             开始时间：<input id="profitStatisStartDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;
             结束时间：<input id="profitStatisEndDate" class="easyui-datetimebox" data-options="editable:false" style="width:150px" />&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">查询</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" plain="true" onclick="showOrderDetail()">查看详情</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchOrder()">已退房订单查询</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-nav" onclick="showOrderDetail()">查看详情</a>&nbsp;&nbsp;
         </div>
-        <div style="padding:0 0 0 7px;color:#333;">
-            总营收金额：<span id="totalRealCollectMoney"></span>
+        <div style="margin-bottom:5px;">
+            &nbsp;&nbsp;&nbsp;
+            订单总数：<span id="totalOrderCount" style="padding-right: 135px"></span>
+            营收总额：<span id="totalRealCollectMoney"></span>
         </div>
     </div>
 </table>

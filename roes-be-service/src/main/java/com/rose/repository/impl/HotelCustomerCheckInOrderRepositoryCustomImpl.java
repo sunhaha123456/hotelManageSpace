@@ -105,6 +105,42 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
             sql.append(" and lock_end_date <= ? ");
             paramList.add(DateUtil.formatStrTime(param.getProfitStatisEndDate()));
         }
-        return queryOneObjAttr(sql.toString(), paramList.toArray());
+        String res = queryOneObjAttr(sql.toString(), paramList.toArray());
+        return StringUtil.isNotEmpty(res) ? res : "0.00";
+    }
+
+    @Override
+    public String countOrderByCondition(CheckInDetailSearchRequest param) throws Exception {
+        StringBuilder sql = new StringBuilder();
+        List<Object> paramList = new ArrayList();
+        sql.append(" SELECT count(1) totalRealCollectMoney ");
+        sql.append(" FROM tb_hotel_customer_check_in_order ");
+        sql.append(" WHERE 1 = 1 ");
+        if (StringUtil.isNotEmpty(param.getRoomNo())) {
+            sql.append(" and room_no = ? ");
+            paramList.add(param.getRoomNo());
+        }
+        if (StringUtil.isNotEmpty(param.getCheckInCustomerName())) {
+            sql.append(" and instr(check_in_customer_name, ?) > 0 ");
+            paramList.add(param.getCheckInCustomerName());
+        }
+        if (StringUtil.isNotEmpty(param.getCheckInCustomerLinkPhone())) {
+            sql.append(" and instr(check_in_customer_link_phone, ?) > 0 ");
+            paramList.add(param.getCheckInCustomerLinkPhone());
+        }
+        if (param.getOrderStatus() != null) {
+            sql.append(" and order_status = ? ");
+            paramList.add(param.getOrderStatus());
+        }
+        if (StringUtil.isNotEmpty(param.getProfitStatisStartDate())) {
+            sql.append(" and lock_end_date >= ? ");
+            paramList.add(DateUtil.formatStrTime(param.getProfitStatisStartDate()));
+        }
+        if (StringUtil.isNotEmpty(param.getProfitStatisEndDate())) {
+            sql.append(" and lock_end_date <= ? ");
+            paramList.add(DateUtil.formatStrTime(param.getProfitStatisEndDate()));
+        }
+        String res = queryOneObjAttr(sql.toString(), paramList.toArray());
+        return StringUtil.isNotEmpty(res) ? res : "0";
     }
 }

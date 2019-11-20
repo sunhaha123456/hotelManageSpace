@@ -24,8 +24,14 @@ public interface HotelCustomerCheckInOrderRepositoryCustom extends BaseRepositor
     PageList<TbHotelCustomerCheckInOrder> listByCondition(CheckInDetailSearchRequest param) throws Exception;
 
     /**
-     * 功能：查询营收金额
+     * 功能：查询指定条件下 营收金额
      * @return
      */
     String getTotalRealCollectMoneyByCondition(CheckInDetailSearchRequest param) throws Exception;
+
+    /**
+     * 功能：查询指定条件下 订单数量
+     * @return
+     */
+    String countOrderByCondition(CheckInDetailSearchRequest param) throws Exception;
 }
