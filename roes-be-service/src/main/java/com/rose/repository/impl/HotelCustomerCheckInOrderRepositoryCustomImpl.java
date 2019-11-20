@@ -45,6 +45,10 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
         sql.append(" create_date createDate ");
         sql.append(" FROM tb_hotel_customer_check_in_order ");
         sql.append(" WHERE 1 = 1 ");
+        if (param.getHotelId() != null) {
+            sql.append(" and hotel_id = ? ");
+            paramList.add(param.getHotelId());
+        }
         if (StringUtil.isNotEmpty(param.getRoomNo())) {
             sql.append(" and room_no = ? ");
             paramList.add(param.getRoomNo());
@@ -81,6 +85,10 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
         sql.append(" SELECT sum(real_collect_money) totalRealCollectMoney ");
         sql.append(" FROM tb_hotel_customer_check_in_order ");
         sql.append(" WHERE 1 = 1 ");
+        if (param.getHotelId() != null) {
+            sql.append(" and hotel_id = ? ");
+            paramList.add(param.getHotelId());
+        }
         if (StringUtil.isNotEmpty(param.getRoomNo())) {
             sql.append(" and room_no = ? ");
             paramList.add(param.getRoomNo());
@@ -116,6 +124,10 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
         sql.append(" SELECT count(1) totalRealCollectMoney ");
         sql.append(" FROM tb_hotel_customer_check_in_order ");
         sql.append(" WHERE 1 = 1 ");
+        if (param.getHotelId() != null) {
+            sql.append(" and hotel_id = ? ");
+            paramList.add(param.getHotelId());
+        }
         if (StringUtil.isNotEmpty(param.getRoomNo())) {
             sql.append(" and room_no = ? ");
             paramList.add(param.getRoomNo());

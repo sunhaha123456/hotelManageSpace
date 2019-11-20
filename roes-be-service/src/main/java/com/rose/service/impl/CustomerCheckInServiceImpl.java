@@ -187,11 +187,22 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
 
     @Override
     public PageList<TbHotelCustomerCheckInOrder> searchOrder(CheckInDetailSearchRequest param) throws Exception {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        param.setHotelId(user.getHotelId());
         return hotelCustomerCheckInOrderRepositoryCustom.listByCondition(param);
     }
 
     @Override
     public Map<String, Object> getStatis(CheckInDetailSearchRequest param) throws Exception {
+        TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
+        if (user == null || user.getHotelId() == null) {
+            throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
+        }
+        param.setHotelId(user.getHotelId());
+
         Map<String, Object> res = new HashMap<String, Object>();
         String totalOrderCount = hotelCustomerCheckInOrderRepositoryCustom.countOrderByCondition(param);
         String totalRealCollectMoney = hotelCustomerCheckInOrderRepositoryCustom.getTotalRealCollectMoneyByCondition(param);

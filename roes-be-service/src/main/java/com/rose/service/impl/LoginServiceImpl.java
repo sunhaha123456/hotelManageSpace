@@ -63,6 +63,9 @@ public class LoginServiceImpl implements LoginService {
         if (sysUser.getUserState() == 2) {
             throw new BusinessException("用户已被注销！");
         }
+        if (sysUser.getRoleGroupId() == null) {
+            throw new BusinessException("用户未分配角色！");
+        }
         TbRoleGroup role = roleGroupRepository.findOne(sysUser.getRoleGroupId());
         if (role == null) {
             log.error("【接口 -/login/verify】【登录失败，用户所属角色组未查找到！】【用户信息：{}】", JsonUtil.objectToJson(sysUser));

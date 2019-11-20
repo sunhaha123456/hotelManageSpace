@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class CheckInDetailSearchRequest extends PageParam {
+    private Long hotelId;
     private String roomNo;
     private String checkInCustomerName;
     private String checkInCustomerLinkPhone;

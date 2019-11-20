@@ -187,6 +187,7 @@
                     if (list.indexOf(9) < 0) {
                         $("#floor_9").remove();
                     }
+                    searchRoom();
                 }
             } else {
                 alertWarn(result.msg);
@@ -340,7 +341,6 @@
         $(function () {
             dataGridInit();
             webPageInit();
-            searchRoom();
         });
     </script>
 </head>
