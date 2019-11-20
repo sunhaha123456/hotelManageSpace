@@ -193,7 +193,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     @Override
     public Map<String, Object> getStatis(CheckInDetailSearchRequest param) throws Exception {
         Map<String, Object> res = new HashMap<String, Object>();
-        String totalOrderCount = hotelCustomerCheckInOrderRepositoryCustom.getTotalRealCollectMoneyByCondition(param);
+        String totalOrderCount = hotelCustomerCheckInOrderRepositoryCustom.countOrderByCondition(param);
         String totalRealCollectMoney = hotelCustomerCheckInOrderRepositoryCustom.getTotalRealCollectMoneyByCondition(param);
         res.put("totalOrderCount", totalOrderCount);
         res.put("totalRealCollectMoney", totalRealCollectMoney);
