@@ -3,6 +3,7 @@ package com.rose.repository.impl;
 import com.rose.common.data.base.PageList;
 import com.rose.common.data.base.PageUtil;
 import com.rose.common.repository.impl.BaseRepositoryImpl;
+import com.rose.common.util.DateUtil;
 import com.rose.common.util.StringUtil;
 import com.rose.data.entity.TbHotelCustomerCheckInOrder;
 import com.rose.data.to.request.CheckInDetailSearchRequest;
@@ -60,8 +61,50 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
             sql.append(" and order_status = ? ");
             paramList.add(param.getOrderStatus());
         }
+        if (StringUtil.isNotEmpty(param.getProfitStatisStartDate())) {
+            sql.append(" and lock_end_date >= ? ");
+            paramList.add(DateUtil.formatStrTime(param.getProfitStatisStartDate()));
+        }
+        if (StringUtil.isNotEmpty(param.getProfitStatisEndDate())) {
+            sql.append(" and lock_end_date <= ? ");
+            paramList.add(DateUtil.formatStrTime(param.getProfitStatisEndDate()));
+        }
         LinkedHashMap<String, String> sortMap = new LinkedHashMap<>();
         sortMap.put("lock_start_date", "desc");
         return queryPage(sql.toString(), TbHotelCustomerCheckInOrder.class, new PageUtil(param.getPage(), param.getRows()), sortMap, paramList.toArray());
+    }
+
+    @Override
+    public String getTotalRealCollectMoneyByCondition(CheckInDetailSearchRequest param) throws Exception {
+        StringBuilder sql = new StringBuilder();
+        List<Object> paramList = new ArrayList();
+        sql.append(" SELECT sum(real_collect_money) totalRealCollectMoney ");
+        sql.append(" FROM tb_hotel_customer_check_in_order ");
+        sql.append(" WHERE 1 = 1 ");
+        if (StringUtil.isNotEmpty(param.getRoomNo())) {
+            sql.append(" and room_no = ? ");
+            paramList.add(param.getRoomNo());
+        }
+        if (StringUtil.isNotEmpty(param.getCheckInCustomerName())) {
+            sql.append(" and instr(check_in_customer_name, ?) > 0 ");
+            paramList.add(param.getCheckInCustomerName());
+        }
+        if (StringUtil.isNotEmpty(param.getCheckInCustomerLinkPhone())) {
+            sql.append(" and instr(check_in_customer_link_phone, ?) > 0 ");
+            paramList.add(param.getCheckInCustomerLinkPhone());
+        }
+        if (param.getOrderStatus() != null) {
+            sql.append(" and order_status = ? ");
+            paramList.add(param.getOrderStatus());
+        }
+        if (StringUtil.isNotEmpty(param.getProfitStatisStartDate())) {
+            sql.append(" and lock_end_date >= ? ");
+            paramList.add(DateUtil.formatStrTime(param.getProfitStatisStartDate()));
+        }
+        if (StringUtil.isNotEmpty(param.getProfitStatisEndDate())) {
+            sql.append(" and lock_end_date <= ? ");
+            paramList.add(DateUtil.formatStrTime(param.getProfitStatisEndDate()));
+        }
+        return queryOneObjAttr(sql.toString(), paramList.toArray());
     }
 }

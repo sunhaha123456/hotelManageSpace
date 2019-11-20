@@ -9,4 +9,7 @@ public class CheckInDetailSearchRequest extends PageParam {
     private String checkInCustomerName;
     private String checkInCustomerLinkPhone;
     private Integer orderStatus;
+
+    private String profitStatisStartDate;
+    private String profitStatisEndDate;
 }

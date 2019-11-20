@@ -185,7 +185,8 @@
             }
         }
         function searchUser() {
-            var result = ajaxSynchPostJson("user/userManage/search", {"uname": $('#unameSearch').val(), "page":1, "rows":10});
+            var param = {"uname": $('#unameSearch').val(), "page":1, "rows":10};
+            var result = ajaxSynchPostJson("user/userManage/search", param);
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -262,7 +263,8 @@
                 pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/userManage/search", {"uname": $('#uname').val(), "page":pageNumber, "rows":pageSize});
+                    var param = {"uname": $('#unameSearch').val(), "page":pageNumber, "rows":pageSize};
+                    var result = ajaxSynchPostJson("user/userManage/search", param);
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }

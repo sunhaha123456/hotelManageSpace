@@ -123,7 +123,18 @@
                 pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", {"page":pageNumber, "rows":pageSize});
+                    var orderStatus = $('#searchOrderStatus').combobox('getValue');
+                    if (orderStatus == -1) {
+                        orderStatus = null;
+                    }
+                    var param = {
+                        "roomNo": $('#searchRoomNo').val(),
+                        "checkInCustomerName": $('#searchCheckInCustomerName').val(),
+                        "checkInCustomerLinkPhone": $('#searchCheckInCustomerLinkPhone').val(),
+                        "orderStatus": orderStatus,
+                        "page":pageNumber, "rows":pageSize
+                    };
+                    var result = ajaxSynchPostJson("user/checkInDetail/searchOrder", param);
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }

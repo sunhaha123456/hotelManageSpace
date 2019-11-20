@@ -58,8 +58,8 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
 
     @Override
     public PageList<TbHotelRoomDetail> searchByFloor(HotelRoomRequest param) throws Exception {
-        Date planCheckInDate = param.getPlanCheckInDate();
-        Date planCheckOutDate = param.getPlanCheckOutDate();
+        Date planCheckInDate = DateUtil.formatStr2Time(param.getPlanCheckInDate());
+        Date planCheckOutDate = DateUtil.formatStr2Time(param.getPlanCheckOutDate());
         if (planCheckInDate == null) {
             throw new BusinessException("请选择入住时间！");
         }
@@ -188,6 +188,16 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
     @Override
     public PageList<TbHotelCustomerCheckInOrder> searchOrder(CheckInDetailSearchRequest param) throws Exception {
         return hotelCustomerCheckInOrderRepositoryCustom.listByCondition(param);
+    }
+
+    @Override
+    public Map<String, Object> searchOrderForProfitStatis(CheckInDetailSearchRequest param) throws Exception {
+        Map<String, Object> res = new HashMap<String, Object>();
+        PageList<TbHotelCustomerCheckInOrder> page = hotelCustomerCheckInOrderRepositoryCustom.listByCondition(param);
+        String totalRealCollectMoney = hotelCustomerCheckInOrderRepositoryCustom.getTotalRealCollectMoneyByCondition(param);
+        res.put("pageData", page);
+        res.put("totalRealCollectMoney", totalRealCollectMoney);
+        return res;
     }
 
     @Override

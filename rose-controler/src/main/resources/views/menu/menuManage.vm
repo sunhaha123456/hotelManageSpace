@@ -171,7 +171,8 @@
                 pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/menuManage/searchRoot", {"page":pageNumber, "rows":pageSize});
+                    var params = {"uname": $('#unameSearch').val(), "page":pageNumber, "rows":pageSize};
+                    var result = ajaxSynchPostJson("user/menuManage/searchRoot", params);
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }

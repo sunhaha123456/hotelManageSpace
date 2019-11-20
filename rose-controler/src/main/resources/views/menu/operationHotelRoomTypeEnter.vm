@@ -130,7 +130,8 @@
             if (hotelId == -1) {
                 hotelId = null;
             }
-            var result = ajaxSynchPostJson("user/operationHotelRoomType/search", {"hotelId":hotelId, "page":1, "rows":10});
+            var param = {"hotelId":hotelId, "page":1, "rows":10};
+            var result = ajaxSynchPostJson("user/operationHotelRoomType/search", param);
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -149,7 +150,9 @@
                     if (hotelId == -1) {
                         hotelId = null;
                     }
-                    var result = ajaxSynchPostJson("user/operationHotelRoomType/search", {"hotelId":hotelId, "page":pageNumber, "rows":pageSize});
+                    var param = {"hotelId":hotelId, "page":pageNumber, "rows":pageSize};
+
+                    var result = ajaxSynchPostJson("user/operationHotelRoomType/search", param);
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }

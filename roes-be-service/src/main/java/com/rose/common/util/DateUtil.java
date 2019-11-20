@@ -29,6 +29,10 @@ public class DateUtil {
         return format(date, TIMEFORMAT);
     }
 
+    public static String formatStrTime(String date) {
+        return format(format(date, TIMEFORMAT), TIMEFORMAT);
+    }
+
     public static String format(Date date, String format) {
         if (date == null) {
             return "";

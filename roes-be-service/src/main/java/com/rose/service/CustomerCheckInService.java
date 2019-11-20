@@ -7,6 +7,7 @@ import com.rose.data.to.request.CheckInDetailSearchRequest;
 import com.rose.data.to.request.HotelRoomRequest;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能：客人入住 service
@@ -24,6 +25,8 @@ public interface CustomerCheckInService {
     void handleCustomerCheckIn(TbHotelCustomerCheckInOrder param);
 
     PageList<TbHotelCustomerCheckInOrder> searchOrder(CheckInDetailSearchRequest param) throws Exception;
+
+    Map<String, Object> searchOrderForProfitStatis(CheckInDetailSearchRequest param) throws Exception;
 
     TbHotelCustomerCheckInOrder getDetail(Long id);
 

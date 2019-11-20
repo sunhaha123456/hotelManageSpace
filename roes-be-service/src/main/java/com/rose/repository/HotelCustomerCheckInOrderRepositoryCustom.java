@@ -18,8 +18,14 @@ public interface HotelCustomerCheckInOrderRepositoryCustom extends BaseRepositor
     List<TbHotelCustomerCheckInOrder> listByHotelIdAndRoomId(Long hotelId, Long roomId);
 
     /**
-     * 功能：入住 条件查询
+     * 功能：入住 条件分页查询
      * @return
      */
     PageList<TbHotelCustomerCheckInOrder> listByCondition(CheckInDetailSearchRequest param) throws Exception;
+
+    /**
+     * 功能：查询营收金额
+     * @return
+     */
+    String getTotalRealCollectMoneyByCondition(CheckInDetailSearchRequest param) throws Exception;
 }

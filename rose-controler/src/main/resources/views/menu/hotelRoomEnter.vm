@@ -319,7 +319,9 @@
                 roomFloorNum = null;
             }
             var roomUpshelfState = $('#roomUpshelfStateForSearch').combobox('getValue');
-            var result = ajaxSynchPostJson("user/hotelRoomEnter/search", {"roomNo":roomNo, "roomTypeId":roomTypeId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":1, "rows":10});
+            var param = {"roomNo":roomNo, "roomTypeId":roomTypeId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":1, "rows":10};
+
+            var result = ajaxSynchPostJson("user/hotelRoomEnter/search", param);
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -334,7 +336,19 @@
                 pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var result = ajaxSynchPostJson("user/operationHotel/search", {"page":pageNumber, "rows":pageSize});
+                    var roomNo = $('#roomNoForSearch').val();
+                    var roomTypeId = $('#roomTypeIdForSearch').combobox('getValue');
+                    if (roomTypeId == -1) {
+                        roomTypeId = null;
+                    }
+                    var roomFloorNum = $('#roomFloorNumForSearch').combobox('getValue');
+                    if (roomFloorNum == -1) {
+                        roomFloorNum = null;
+                    }
+                    var roomUpshelfState = $('#roomUpshelfStateForSearch').combobox('getValue');
+                    var param = {"roomNo":roomNo, "roomTypeId":roomTypeId, "roomFloorNum":roomFloorNum, "roomUpshelfState":roomUpshelfState, "page":pageNumber, "rows":pageSize};
+
+                    var result = ajaxSynchPostJson("user/operationHotel/search", param);
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }
