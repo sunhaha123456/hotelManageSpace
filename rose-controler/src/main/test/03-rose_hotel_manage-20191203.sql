@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2019-12-03 14:52:46
+Date: 2019-12-03 15:47:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -136,18 +136,18 @@ CREATE TABLE `tb_menu` (
 -- ----------------------------
 -- Records of tb_menu
 -- ----------------------------
-INSERT INTO `tb_menu` VALUES ('1', '2019-11-20 14:46:44', '2019-11-20 14:46:47', '1', 'fa-folder', '用户管理', '0', '0', '1', null, null);
-INSERT INTO `tb_menu` VALUES ('2', '2019-11-20 14:47:58', '2019-11-20 14:48:00', '2', 'fa-circle-o', '用户管理', '0', '1', '3', 'user/userManage/toUserManage', null);
-INSERT INTO `tb_menu` VALUES ('3', '2019-11-20 14:48:20', '2019-11-20 14:48:57', '2', 'fa-circle-o', '角色管理', '0', '1', '2', 'user/roleManage/toRoleManage', null);
-INSERT INTO `tb_menu` VALUES ('4', '2019-11-20 14:49:04', '2019-11-20 14:49:44', '2', 'fa-circle-o', '菜单管理', '0', '1', '1', 'user/menuManage/toMenuManage', null);
+INSERT INTO `tb_menu` VALUES ('1', '2019-11-20 14:46:44', '2019-12-03 15:09:18', '1', 'fa-folder', '用户管理', '0', '0', '1', null, null);
+INSERT INTO `tb_menu` VALUES ('2', '2019-11-20 14:47:58', '2019-12-03 15:19:39', '2', 'fa-circle-o', '用户管理', '0', '1', '3', 'user/userManage/toUserManage', '/user/userManage/toUserManage|/user/userManage/opert|/user/userManage/getDetail|/user/userManage/add|/user/userManage/updateRole|/user/userManage/updateReleationHotelId|/user/userManage/updatePasswodAdmin|/user/userManage/updateUserNickName|/user/userManage/search|/user/roleManage/listForEnter|/user/operationHotel/listAll');
+INSERT INTO `tb_menu` VALUES ('3', '2019-11-20 14:48:20', '2019-12-03 15:23:20', '2', 'fa-circle-o', '角色管理', '0', '1', '2', 'user/roleManage/toRoleManage', '/user/roleManage/toRoleManage|/user/roleManage/getDetail|/user/roleManage/getMenuTreeByRoleId|/user/roleManage/add|/user/roleManage/update|/user/roleManage/menuSave|/user/roleManage/opert|/user/roleManage/listForEnter');
+INSERT INTO `tb_menu` VALUES ('4', '2019-11-20 14:49:04', '2019-12-03 15:27:26', '2', 'fa-circle-o', '菜单管理', '0', '1', '1', 'user/menuManage/toMenuManage', '/user/menuManage/toMenuManage|/user/menuManage/getDetail|/user/menuManage/getChild|/user/menuManage/save|/user/menuManage/searchRoot|/user/menuManage/searchRoot|/user/menuManage/getDetail');
 INSERT INTO `tb_menu` VALUES ('5', '2019-11-20 15:11:32', '2019-11-20 15:11:32', '1', 'fa-circle-o', '入住管理', '0', '0', '4', null, null);
-INSERT INTO `tb_menu` VALUES ('6', '2019-11-20 15:12:04', '2019-11-20 15:12:04', '2', 'fa-circle-o', '办理入住', '0', '5', '3', 'user/userManage/toHandleCheckIn', null);
-INSERT INTO `tb_menu` VALUES ('7', '2019-11-20 15:12:27', '2019-11-20 15:12:27', '2', 'fa-circle-o', '入住详情', '0', '5', '2', 'user/menuManage/toCheckInDeatil', null);
-INSERT INTO `tb_menu` VALUES ('8', '2019-11-20 15:12:45', '2019-11-20 15:12:45', '2', 'fa-circle-o', '营收统计', '0', '5', '1', 'user/menuManage/toProfitStatis', null);
+INSERT INTO `tb_menu` VALUES ('6', '2019-11-20 15:12:04', '2019-12-03 15:31:27', '2', 'fa-circle-o', '办理入住', '0', '5', '3', 'user/userManage/toHandleCheckIn', '/user/userManage/toHandleCheckIn|/user/handleCheckIn/searchByFloor|/user/handleCheckIn/searchByFloor|/user/handleCheckIn/getFloorList|/user/handleCheckIn/getRoomCheckInDetail|/user/handleCheckIn/handleCustomerCheckIn|/user/hotelRoomEnter/getDetail');
+INSERT INTO `tb_menu` VALUES ('7', '2019-11-20 15:12:27', '2019-12-03 15:36:37', '2', 'fa-circle-o', '入住详情', '0', '5', '2', 'user/menuManage/toCheckInDeatil', '/user/menuManage/toCheckInDeatil|/user/checkInDetail/searchOrder|/user/checkInDetail/getDetail|/user/checkInDetail/updateOrderInfo|/user/checkInDetail/checkInCheckOut|/user/checkInDetail/cancleOrder|/user/checkInDetail/reserveOrderCheckIn\r\n');
+INSERT INTO `tb_menu` VALUES ('8', '2019-11-20 15:12:45', '2019-12-03 15:39:23', '2', 'fa-circle-o', '营收统计', '0', '5', '1', 'user/menuManage/toProfitStatis', '/user/menuManage/toProfitStatis|/user/profitStatis/searchOrder|/user/profitStatis/getStatis|/user/profitStatis/searchOrder|/user/profitStatis/getDetail\r\n');
 INSERT INTO `tb_menu` VALUES ('9', '2019-11-20 15:13:25', '2019-11-20 15:13:25', '1', 'fa-folder', '房间管理', '0', '0', '3', null, null);
-INSERT INTO `tb_menu` VALUES ('10', '2019-11-20 15:14:07', '2019-11-20 15:14:07', '2', 'fa-circle-o', '房间录入', '0', '9', '1', 'user/menuManage/toHotelRoomEnter', null);
+INSERT INTO `tb_menu` VALUES ('10', '2019-11-20 15:14:07', '2019-12-03 15:43:35', '2', 'fa-circle-o', '房间录入', '0', '9', '1', 'user/menuManage/toHotelRoomEnter', '/user/menuManage/toHotelRoomEnter|/user/hotelRoomEnter/getDetail|/user/hotelRoomEnter/save|/user/hotelRoomEnter/opert|/user/hotelRoomEnter/search|/user/operationHotel/search|/user/hotelRoomEnter/listHotelRoomTypeByCurrentUserReleatHotel');
 INSERT INTO `tb_menu` VALUES ('11', '2019-11-20 15:14:45', '2019-11-20 15:14:45', '1', 'fa-folder', '运营管理', '0', '0', '2', null, null);
-INSERT INTO `tb_menu` VALUES ('12', '2019-11-20 15:15:11', '2019-11-20 15:15:11', '2', 'fa-circle-o', '酒店录入', '0', '11', '1', 'user/menuManage/toOperationHotelEnter', null);
+INSERT INTO `tb_menu` VALUES ('12', '2019-11-20 15:15:11', '2019-12-03 15:46:40', '2', 'fa-circle-o', '酒店录入', '0', '11', '1', 'user/menuManage/toOperationHotelEnter', '/user/menuManage/toOperationHotelEnter|/user/operationHotel/getDetail|/user/operationHotel/save|/user/operationHotel/opert|/user/operationHotel/search');
 
 -- ----------------------------
 -- Table structure for tb_menu_role_group_releation
