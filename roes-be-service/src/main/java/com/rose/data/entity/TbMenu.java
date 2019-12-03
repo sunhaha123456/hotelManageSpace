@@ -28,7 +28,7 @@ public class TbMenu extends BaseDataIdLong implements Comparable<TbMenu> {
     @Column(name = "url", columnDefinition = "varchar(255) COMMENT '跳转链接'")
     private String url;
 
-    @Column(name = "bg_url", columnDefinition = "varchar(800) COMMENT '菜单对应后台接口'")
+    @Column(name = "bg_url", columnDefinition = "varchar(2000) COMMENT '菜单对应后台接口'")
     private String bgUrl;
 
     // 0：无上级目录

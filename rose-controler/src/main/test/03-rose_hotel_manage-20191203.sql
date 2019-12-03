@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2019-12-03 13:38:35
+Date: 2019-12-03 14:52:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -129,7 +129,7 @@ CREATE TABLE `tb_menu` (
   `parent_id` int(20) DEFAULT NULL COMMENT '上级目录id',
   `sort` int(20) DEFAULT NULL COMMENT '排序',
   `url` varchar(255) DEFAULT NULL COMMENT '跳转链接',
-  `bg_url` varchar(800) DEFAULT NULL COMMENT '菜单对应后台接口',
+  `bg_url` varchar(2000) DEFAULT NULL COMMENT '菜单对应后台接口',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
