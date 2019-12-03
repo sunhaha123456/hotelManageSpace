@@ -88,9 +88,15 @@ public class LoginServiceImpl implements LoginService {
             throw new BusinessException("无后台访问权限！");
         }
         List<String> buUrlList = new ArrayList<>();
+        String[] urlArrTemp = null;
         for (TbMenu m : roleMenuList) {
             if (StringUtil.isNotEmpty(m.getBgUrl())) {
-                buUrlList.add(m.getBgUrl());
+                urlArrTemp = m.getBgUrl().split("|");
+                if (urlArrTemp != null && urlArrTemp.length > 0) {
+                    for (String u : urlArrTemp) {
+                        buUrlList.add(u);
+                    }
+                }
             }
         }
         if (buUrlList.size() == 0) {
