@@ -103,4 +103,13 @@ public class JumpControler {
     public String toProfitStatis() {
         return "menu/profitStatis";
     }
+
+    /**
+     * 功能：跳转员工录入页面
+     * @return
+     */
+    @GetMapping(value = "/user/menuManage/toEmployerEnter")
+    public String toEmployeeEnter() {
+        return "menu/employerEnter";
+    }
 }

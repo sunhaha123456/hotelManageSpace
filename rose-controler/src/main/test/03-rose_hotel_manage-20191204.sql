@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2019-12-03 15:47:00
+Date: 2019-12-04 10:47:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,7 +27,7 @@ CREATE TABLE `tb_hotel_customer_check_in_order` (
   `check_in_customer_link_phone` varchar(255) DEFAULT NULL COMMENT '入住客人联系手机号',
   `check_in_customer_name` varchar(255) DEFAULT NULL COMMENT '入住客人姓名',
   `check_out_desc` varchar(500) DEFAULT NULL COMMENT '退房规则描述',
-  `deposit_money` decimal(19,2) DEFAULT NULL,
+  `deposit_money` decimal(19,2) DEFAULT '0.00' COMMENT '实际收取押金',
   `hotel_id` int(20) DEFAULT NULL COMMENT '酒店id',
   `lock_end_date` datetime DEFAULT NULL COMMENT '房间锁定结束时间',
   `lock_start_date` datetime DEFAULT NULL COMMENT '房间锁定开始时间',
@@ -40,7 +40,7 @@ CREATE TABLE `tb_hotel_customer_check_in_order` (
   `room_no` varchar(255) DEFAULT NULL COMMENT '房间编号',
   `room_overall_desc` varchar(500) DEFAULT NULL COMMENT '房间整体描述',
   `room_type_name` varchar(255) DEFAULT NULL COMMENT '房间类型',
-  `sell_price` decimal(19,2) DEFAULT NULL,
+  `sell_price` decimal(19,2) DEFAULT '0.00' COMMENT '销售价',
   `sell_price_desc` varchar(255) DEFAULT NULL COMMENT '销售价描述',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -39,11 +39,11 @@ public class TbHotelCustomerCheckInOrder extends BaseDataIdLong {
     private String roomTypeName;
 
     // 销售价，单位：元
-    @Column(name = "sell_price")
+    @Column(name = "sell_price", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '销售价'")
     private BigDecimal sellPrice;
 
     // 实收到押金，单位：元
-    @Column(name = "deposit_money")
+    @Column(name = "deposit_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '实收到押金'")
     private BigDecimal depositMoney;
 
     // 销售价描述
