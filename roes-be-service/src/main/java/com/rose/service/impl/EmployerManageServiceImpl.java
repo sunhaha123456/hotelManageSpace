@@ -66,6 +66,7 @@ public class EmployerManageServiceImpl implements EmployerManageService {
             param.setCreateDate(now);
             param.setLastModified(now);
             param.setHotelId(user.getHotelId());
+            param.setEmployerState(0);
             param.setDelFlag(0);
         } else {
             TbEmployer old = employerRepository.findEmployer(user.getHotelId(), param.getId());

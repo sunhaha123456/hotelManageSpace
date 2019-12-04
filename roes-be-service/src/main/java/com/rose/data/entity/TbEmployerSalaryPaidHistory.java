@@ -45,6 +45,10 @@ public class TbEmployerSalaryPaidHistory extends BaseDataIdLongDelFlag implement
     @Transient
     private String phone;
 
+    // 职位
+    @Transient
+    private String position;
+
     // 0：在职 1：离职
     @Transient
     private Integer employerState;

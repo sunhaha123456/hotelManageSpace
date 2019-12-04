@@ -26,6 +26,10 @@ public class TbEmployer extends BaseDataIdLongDelFlag implements Serializable {
     @Column(name = "hotel_id", columnDefinition = "Int(20) COMMENT '酒店id'")
     private Long hotelId;
 
+    // 职位
+    @Column(name = "position", columnDefinition = "varchar(255) COMMENT '职位'")
+    private String position;
+
     // 0：在职 1：离职
     @Column(name = "employer_state", columnDefinition = "Int(1) default 0 COMMENT '用户状态'")
     private Integer employerState;

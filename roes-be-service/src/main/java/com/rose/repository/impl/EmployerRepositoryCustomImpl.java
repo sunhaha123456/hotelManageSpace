@@ -19,7 +19,7 @@ public class EmployerRepositoryCustomImpl extends BaseRepositoryImpl implements 
     public PageList<TbEmployer> list(Long hotelId, Integer employerState, Integer pageNo, Integer pageSize) throws Exception {
         StringBuilder sql = new StringBuilder();
         List<Object> paramList = new ArrayList();
-        sql.append(" SELECT id, create_date createDate, full_name fullName, phone, employer_state employerState ");
+        sql.append(" SELECT id, create_date createDate, full_name fullName, phone, position, employer_state employerState ");
         sql.append(" FROM tb_employer ");
         sql.append(" WHERE hotel_id = ? ");
         paramList.add(hotelId);
