@@ -105,11 +105,20 @@ public class JumpControler {
     }
 
     /**
-     * 功能：跳转员工录入页面
+     * 功能：跳转到 员工管理下 员工录入页面
      * @return
      */
     @GetMapping(value = "/user/menuManage/toEmployerEnter")
     public String toEmployeeEnter() {
         return "menu/employerEnter";
+    }
+
+    /**
+     * 功能：跳转到 员工管理下 发薪详情 页面
+     * @return
+     */
+    @GetMapping(value = "/user/menuManage/toEmployerSalaryPaidHistory")
+    public String toEmployerSalaryPaidHistory() {
+        return "menu/employerSalaryPaidHistory";
     }
 }
