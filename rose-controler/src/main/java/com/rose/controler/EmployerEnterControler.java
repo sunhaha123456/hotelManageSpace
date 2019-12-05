@@ -51,7 +51,7 @@ public class EmployerEnterControler {
 
     @PostMapping(value= "/paySalary")
     public void paySalary(@RequestBody TbEmployerSalaryPaidHistory param) throws Exception {
-        if (param == null || param.getEmployerId() == null || param.getSalaryDate() == null || param.getPaidMoney() == null) {
+        if (param == null || param.getEmployerId() == null || param.getPaidMoney() == null) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
         }
         employerManageService.paySalary(param);
