@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/static/easyui/themes/easy.common.css}"></link>
+    <script th:inline="javascript">
+        var contextPath = [[@{/}]];
+        var interceptorToken = [[${token}]];
+        var interceptorUserId = [[${userId}]];
+    </script>
+    <script th:src="@{/static/easyui/easy.common.js}"></script>
+    <script th:src="@{/static/myFun.js}"></script>
+    <script th:inline="javascript">
+        function searchEmployer() {
+            var employerState = $('#employerState').combobox('getValue');
+            if (employerState == -1) {
+                employerState = null;
+            }
+            var param = {"employerState": employerState, "page":1, "rows":10};
+            var result = ajaxSynchPostJson("user/employerEnter/search", param);
+            if (result.code == '200') {
+                dataGridPageInit();
+                $('#manager').datagrid('loadData', result.data);
+            } else {
+                alertWarn(result.msg);
+            }
+        }
+
+        function dataGridInit() {
+            $('#manager').datagrid({
+                //fit : true,
+                fitColumns : true,
+                striped : true,
+                rownumbers : true,
+                border : false,
+                pagination : true,
+                singleSelect:true,
+                toolbar : '#manager_tool',
+                columns : [[
+                    {
+                        field : 'id',
+                        width : 100,
+                        hidden : true
+                    },
+                    {
+                        field : 'fullName',
+                        title : '姓名',
+                        width : 100,
+                    },
+                    {
+                        field : 'phone',
+                        title : '手机号',
+                        width : 100,
+                    },
+                    {
+                        field : 'position',
+                        title : '职位',
+                        width : 100,
+                    },
+                    {
+                        field : 'employerState',
+                        title : '状态',
+                        width : 100,
+                        formatter: function(value,row,index){
+                            if (value == 0){
+                                return "正常在职";
+                            } else {
+                                return "已经离职";
+                            }
+                        }
+                    }
+                ]]
+            });
+        }
+
+        function dataGridPageInit() {
+            var p = $('#manager').datagrid('getPager');
+            $(p).pagination({
+                pageNumber : 1,
+                pageSize : 10,
+                pageList : [10, 20, 30, 40, 50],
+                onSelectPage:function(pageNumber, pageSize){
+                    var employerState = $('#employerState').combobox('getValue');
+                    if (employerState == -1) {
+                        employerState = null;
+                    }
+                    var param = {"employerState": employerState, "page":pageNumber, "rows":pageSize};
+                    var result = ajaxSynchPostJson("user/employerEnter/search", param);
+                    if (result.code == '200') {
+                        $('#manager').datagrid('loadData', result.data);
+                    }
+                },
+            });
+        }
+
+        function addEmployerShow() {
+            $('#manager_add').dialog('open');
+            $('#fullNameAdd').focus();
+        }
+
+        function addEmployerCommit() {
+            if ($('#manager_add').form('validate')) {
+                var fullName = $('#fullNameAdd').val();
+                var phone = $('#phoneAdd').val();
+                var position = $('#positionAdd').val();
+                var result = ajaxSynchPostJson("user/employerEnter/save", {"fullName":fullName, "phone":phone, "position":position})
+                if (result.code == '200') {
+                    alertSuccess();
+                    $('#manager_add').dialog('close');
+                    searchEmployer();
+                } else {
+                    alertWarn(result.msg);
+                }
+            }
+        }
+
+        function editEmployerShow() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                var result = ajaxSynchGet("user/employerEnter/getDetail", {"id":id});
+                if (result.code == '200') {
+                    var fullName = result.data.fullName;
+                    var phone = result.data.phone;
+                    var position = result.data.position;
+                    var employerState = result.data.employerState;
+                    $('#fullNameEdit').val(fullName);
+                    $('#phoneEdit').val(phone);
+                    $('#positionEdit').val(position);
+                    $('#employerStateEdit').combobox('setValue', employerState);
+                    $('#manager_edit').dialog('open');
+                } else {
+                    alertWarn(result.msg);
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+
+        function editEmployerCommit() {
+            if ($('#manager_edit').form('validate')) {
+                var rows = $('#manager').datagrid('getSelections');
+                if (rows.length > 0) {
+                    var id = rows[0].id;
+                    var fullName = $('#fullNameEdit').val();
+                    var phone = $('#phoneEdit').val();
+                    var position = $('#positionEdit').val();
+                    var employerState = $('#employerStateEdit').combobox('getValue');
+
+                    var param = {"id":id, "fullName":fullName, "phone":phone, "position":position, "employerState":employerState};
+
+                    var result = ajaxSynchPostJson("user/employerEnter/save", param);
+                    if (result.code == '200') {
+                        alertSuccess();
+                        $('#manager_edit').dialog('close');
+                        searchEmployer();
+                    } else {
+                        alertWarn(result.msg);
+                    }
+                }
+            }
+        }
+
+        function deleteEmployer() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                $.messager.confirm('确定操作', "将会删除该用户对应的发薪记录！", function (flag) {
+                    if (flag) {
+                        var id = rows[0].id;
+                        $('#manager').datagrid('loading');
+                        var result = ajaxSynchGet("user/employerEnter/delete", {"id": id});
+                        $('#manager').datagrid('loaded');
+                        alertInfo(result.msg);
+                        searchEmployer();
+                    }
+                });
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+
+        $(function () {
+            dataGridInit();
+            searchEmployer();
+        });
+    </script>
+</head>
+<body>
+<table id="manager">
+    <div id="manager_tool">
+        <div style="padding:0 0 0 7px;color:#333;">
+            员工状态：
+            <select class="easyui-combobox" id="employerState" style="width:100px;">
+                <option value="0" selected="-1">请选择</option>
+                <option value="0">正常在职</option>
+                <option value="1">已经离职</option>
+            </select>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchEmployer()">查询</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addEmployerShow()">新增</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editEmployerShow()">编辑</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="deleteEmployer()">删除</a>
+        </div>
+    </div>
+</table>
+
+<form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:150,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+       onClose:function () {
+            $('#manager_add').form('reset');
+       },
+		buttons:[{
+					text : '提交',
+					iconCls : 'icon-add-green',
+					handler : function () {
+                    addEmployerCommit();
+					}
+				},{
+					text:'关闭',
+					iconCls : 'icon-redo',
+					handler:function(){
+                    $('#manager_add').dialog('close');
+					}
+				}]">
+    <p>姓名：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入姓名',invalidMessage:'姓名长度至少为1位'," type="text" id="fullNameAdd" style="width:200px;" /></p>
+    <p>手机：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入手机号',invalidMessage:'手机号长度至少为1位'," type="text" id="phoneAdd" style="width:200px;" /></p>
+    <p>职位：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入职位',invalidMessage:'职位长度至少为1位'," type="text" id="positionAdd" style="width:200px;" /></p>
+</form>
+
+<form id="manager_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:150,width:320,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+       onClose:function () {
+            $('#manager_edit').form('reset');
+       },
+		buttons:[{
+					text : '提交',
+					iconCls : 'icon-add-green',
+					handler : function () {
+                    editEmployerCommit();
+					}
+				},{
+					text:'关闭',
+					iconCls : 'icon-redo',
+					handler:function(){
+                    $('#manager_edit').dialog('close');
+					}
+				}]">
+    <p>姓名：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入姓名',invalidMessage:'姓名长度至少为1位'," type="text" id="fullNameEdit" style="width:200px;" /></p>
+    <p>手机：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入手机号',invalidMessage:'手机号长度至少为1位'," type="text" id="phoneEdit" style="width:200px;" /></p>
+    <p>职位：<input class="easyui-validatebox" data-options="required:true,validType:'length[1,100]',missingMessage:'请输入职位',invalidMessage:'职位长度至少为1位'," type="text" id="positionEdit" style="width:200px;" /></p>
+    <p>状态：
+        <select class="easyui-combobox" id="employerStateEdit" style="width:100px;">
+            <option value="0" selected="true">正常在职</option>
+            <option value="1">已经离职</option>
+        </select>
+    </p>
+</form>
+</body>
+</html>

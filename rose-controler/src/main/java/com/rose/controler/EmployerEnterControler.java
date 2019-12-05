@@ -50,17 +50,4 @@ public class EmployerEnterControler {
     public void delete(@RequestParam Long id) throws Exception {
         employerManageService.deleteEmployer(id);
     }
-
-//    @PostMapping(value= "/paySalary")
-//    public void paySalary(@RequestBody TbEmployerSalaryPaidHistory param) throws Exception {
-//        if (param == null || param.getEmployerId() == null || param.getSalaryDate() == null || param.getPaidMoney() == null) {
-//            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
-//        }
-//        employerManageService.paySalary(param);
-//    }
-
-//    @GetMapping(value= "/getSalaryDetail")
-//    public List<TbEmployerSalaryPaidHistory> getSalaryDetail(@RequestParam Long employerId, @RequestParam String salaryDate) {
-//        return employerManageService.getSalaryDetail(employerId, salaryDate);
-//    }
 }

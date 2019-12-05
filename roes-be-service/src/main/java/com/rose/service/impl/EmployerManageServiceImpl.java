@@ -4,6 +4,7 @@ import com.rose.common.data.base.PageList;
 import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
 import com.rose.common.util.DateUtil;
+import com.rose.common.util.StringUtil;
 import com.rose.common.util.ValueHolder;
 import com.rose.data.entity.TbEmployer;
 import com.rose.data.entity.TbEmployerSalaryPaidHistory;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -43,30 +46,27 @@ public class EmployerManageServiceImpl implements EmployerManageService {
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
-        return employerRepositoryCustom.list(user.getHotelId(), param.getEmployerState(), param.getPage(), param.getRows());
-//        PageList<TbEmployer> page = employerRepositoryCustom.list(user.getHotelId(), param.getEmployerState(), param.getPage(), param.getRows());
-//        if (page != null) {
-//            List<TbEmployer> list = page.getRows();
-//            if (list != null && list.size() > 0) {
-//                Set<Long> employerIdSet = list.stream().map(TbEmployer::getId).collect(Collectors.toSet());
-//                List<TbEmployerSalaryPaidHistory> paidHistoryList = employerSalaryPaidHistoryRepository.findEmployerSalary(employerIdSet, DateUtil.format(param.getSalaryDate(), DateUtil.YYYYMM));
-//                if (paidHistoryList == null || paidHistoryList.size() == 0) {
-//                    for (TbEmployer e : list) {
-//                        e.setDoSalaryState(0);
-//                    }
-//                } else {
-//                    Set<Long> salaryEmployerIdSet = paidHistoryList.stream().map(TbEmployerSalaryPaidHistory::getEmployerId).collect(Collectors.toSet());
-//                    for (TbEmployer e : list) {
-//                        if (salaryEmployerIdSet.contains(e.getId())) {
-//                            e.setDoSalaryState(1);
-//                        } else {
-//                            e.setDoSalaryState(0);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return page;
+        PageList<TbEmployer> page = employerRepositoryCustom.list(user.getHotelId(), param.getFullName(), param.getPhone(), param.getEmployerState(), param.getPage(), param.getRows());
+        if (StringUtil.isNotEmpty(param.getSalaryDate())) {
+            if (page != null) {
+                List<TbEmployer> list = page.getRows();
+                if (list != null && list.size() > 0) {
+                    Set<Long> employerIdSet = list.stream().map(TbEmployer::getId).collect(Collectors.toSet());
+                    List<TbEmployerSalaryPaidHistory> paidHistoryList = employerSalaryPaidHistoryRepository.findEmployerSalary(employerIdSet, DateUtil.format(param.getSalaryDate(), DateUtil.YYYYMM));
+                    if (paidHistoryList != null && paidHistoryList.size() > 0) {
+                        Set<Long> salaryEmployerIdSet = paidHistoryList.stream().map(TbEmployerSalaryPaidHistory::getEmployerId).collect(Collectors.toSet());
+                        for (TbEmployer e : list) {
+                            if (salaryEmployerIdSet.contains(e.getId())) {
+                                e.setDoSalaryState(1);
+                            } else {
+                                e.setDoSalaryState(0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return page;
     }
 
     @Override
@@ -175,7 +175,7 @@ public class EmployerManageServiceImpl implements EmployerManageService {
     }
 
     @Override
-    public List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, String salaryDate) {
+    public List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, Date salaryDate) {
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
@@ -187,6 +187,6 @@ public class EmployerManageServiceImpl implements EmployerManageService {
         if (!user.getHotelId().equals(employer.getHotelId())) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
         }
-        return employerSalaryPaidHistoryRepository.findEmployerSalary(employerId, DateUtil.format(salaryDate, DateUtil.YYYYMM));
+        return employerSalaryPaidHistoryRepository.findEmployerSalary(employerId, salaryDate);
     }
 }

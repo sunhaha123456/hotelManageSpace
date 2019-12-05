@@ -24,10 +24,12 @@ public class TbEmployerSalaryPaidHistory extends BaseDataIdLongDelFlag implement
     private Long hotelId;
 
     // 薪资月份，比如 2019-12，表示是19年12月薪资
-    @JsonFormat(pattern = "yyyy-MM", timezone = "GMT+8")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "salary_date", columnDefinition = "datetime COMMENT '薪资月份'")
     private Date salaryDate;
+
+    @Transient
+    private String salaryDateStr;
 
     // 支付金额，单位：元
     @Column(name = "paid_money", columnDefinition = "decimal(19,2) NOT NULL DEFAULT 0.00 COMMENT '支付金额'")

@@ -6,6 +6,7 @@ import com.rose.data.entity.TbEmployerSalaryPaidHistory;
 import com.rose.data.to.request.EmployerSalaryPaidHistorySearchRequest;
 import com.rose.data.to.request.EmployerSearchRequest;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,5 +30,5 @@ public interface EmployerManageService {
 
     PageList<TbEmployerSalaryPaidHistory> searchEmployerPaidHistory(EmployerSalaryPaidHistorySearchRequest param) throws Exception;
 
-    List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, String salaryDate);
+    List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, Date salaryDate);
 }

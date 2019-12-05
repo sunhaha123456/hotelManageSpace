@@ -114,11 +114,20 @@ public class JumpControler {
     }
 
     /**
-     * 功能：跳转到 员工管理下 发放薪资 页面
+     * 功能：跳转到 员工管理下 进行发薪 页面
      * @return
      */
     @GetMapping(value = "/user/menuManage/toDoEmployerSalary")
-    public String toEmployerSalaryPaidHistory() {
+    public String toDoEmployerSalary() {
         return "menu/doEmployerSalary";
+    }
+
+    /**
+     * 功能：跳转到 员工管理下 发薪流水 页面
+     * @return
+     */
+    @GetMapping(value = "/user/menuManage/toEmployerSalaryHistory")
+    public String toEmployerSalaryHistory() {
+        return "menu/employerSalaryHistory";
     }
 }
