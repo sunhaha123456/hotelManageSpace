@@ -5,7 +5,6 @@ import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
 import com.rose.common.util.StringUtil;
 import com.rose.data.entity.TbEmployer;
-import com.rose.data.entity.TbEmployerSalaryPaidHistory;
 import com.rose.data.to.request.EmployerSearchRequest;
 import com.rose.service.EmployerManageService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +27,9 @@ public class EmployerEnterControler {
 
     @PostMapping(value= "/search")
     public PageList<TbEmployer> search(@RequestBody EmployerSearchRequest param) throws Exception {
+        if (param == null) {
+            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+        }
         return employerManageService.searchEmployer(param);
     }
 
@@ -49,11 +51,16 @@ public class EmployerEnterControler {
         employerManageService.deleteEmployer(id);
     }
 
-    @PostMapping(value= "/paySalary")
-    public void paySalary(@RequestBody TbEmployerSalaryPaidHistory param) throws Exception {
-        if (param == null || param.getEmployerId() == null || param.getPaidMoney() == null) {
-            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
-        }
-        employerManageService.paySalary(param);
-    }
+//    @PostMapping(value= "/paySalary")
+//    public void paySalary(@RequestBody TbEmployerSalaryPaidHistory param) throws Exception {
+//        if (param == null || param.getEmployerId() == null || param.getSalaryDate() == null || param.getPaidMoney() == null) {
+//            throw new BusinessException(ResponseResultCode.PARAM_ERROR);
+//        }
+//        employerManageService.paySalary(param);
+//    }
+
+//    @GetMapping(value= "/getSalaryDetail")
+//    public List<TbEmployerSalaryPaidHistory> getSalaryDetail(@RequestParam Long employerId, @RequestParam String salaryDate) {
+//        return employerManageService.getSalaryDetail(employerId, salaryDate);
+//    }
 }

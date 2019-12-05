@@ -6,6 +6,8 @@ import com.rose.data.entity.TbEmployerSalaryPaidHistory;
 import com.rose.data.to.request.EmployerSalaryPaidHistorySearchRequest;
 import com.rose.data.to.request.EmployerSearchRequest;
 
+import java.util.List;
+
 /**
  * 功能：员工管理 service
  * @author sunpeng
@@ -26,4 +28,6 @@ public interface EmployerManageService {
     void deleteEmployerPaidHistory(Long id);
 
     PageList<TbEmployerSalaryPaidHistory> searchEmployerPaidHistory(EmployerSalaryPaidHistorySearchRequest param) throws Exception;
+
+    List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, String salaryDate);
 }

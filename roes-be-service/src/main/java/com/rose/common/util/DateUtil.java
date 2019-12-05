@@ -8,6 +8,7 @@ public class DateUtil {
 
     public final static String DATEFORMAT = "yyyy-MM-dd";
     public final static String TIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
+    public final static String YYYYMM = "yyyy-MM";
 
     public static String getCurrentDate() {
         return format(new Date(), DATEFORMAT);

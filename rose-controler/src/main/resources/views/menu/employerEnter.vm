@@ -107,7 +107,7 @@
                 if (result.code == '200') {
                     alertSuccess();
                     $('#manager_add').dialog('close');
-                    searchUser();
+                    searchEmployer();
                 } else {
                     alertWarn(result.msg);
                 }
@@ -153,22 +153,12 @@
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
-                        searchUser();
+                        searchEmployer();
                     } else {
                         alertWarn(result.msg);
                     }
                 }
             }
-        }
-
-        function doSalaryShow() {
-
-
-
-        }
-
-        function doSalaryCommit() {
-
         }
 
         function deleteEmployer() {
@@ -204,11 +194,10 @@
                 <option value="0" selected="-1">请选择</option>
                 <option value="0">正常在职</option>
                 <option value="1">已经离职</option>
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchEmployer()">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addEmployerShow()">新增</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editEmployerShow()">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="doSalaryShow()">进行发薪</a>
+            </select>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchEmployer()">查询</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addEmployerShow()">新增</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editEmployerShow()">编辑</a>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="deleteEmployer()">删除</a>
         </div>
     </div>

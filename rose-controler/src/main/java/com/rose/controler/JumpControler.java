@@ -117,8 +117,8 @@ public class JumpControler {
      * 功能：跳转到 员工管理下 发薪详情 页面
      * @return
      */
-    @GetMapping(value = "/user/menuManage/toEmployerSalaryPaidHistory")
+    @GetMapping(value = "/user/menuManage/toEmployerSalaryPaidDetail")
     public String toEmployerSalaryPaidHistory() {
-        return "menu/employerSalaryPaidHistory";
+        return "menu/employerSalaryPaidDetail";
     }
 }
