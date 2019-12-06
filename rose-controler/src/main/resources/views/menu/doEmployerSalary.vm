@@ -130,11 +130,36 @@
         }
 
         function doSalaryShow() {
-
+            $('#manager_add').dialog('open');
+            $('#salaryDateAdd').focus();
         }
 
         function doSalaryCommit() {
+            var rows = $('#manager').datagrid('getSelections');
+            if (rows.length > 0) {
+                if ($('#manager_add').form('validate')) {
+                    var employerId = rows[0].id;
+                    var salaryDateStr = $('#salaryDateAdd').val();
+                    var paidMoney = $('#paidMoneyAdd').val();
+                    var remark = $('#remarkAdd').val();
 
+                    var param = {
+                        "employerId":employerId, "salaryDateStr":salaryDateStr,
+                        "paidMoney":paidMoney, "remark":remark
+                    };
+
+                    var result = ajaxSynchPostJson("user/doEmployerSalary/paySalary", param)
+                    if (result.code == '200') {
+                        alertSuccess();
+                        $('#manager_add').dialog('close');
+                        searchEmployer();
+                    } else {
+                        alertWarn(result.msg);
+                    }
+                }
+            } else {
+                alertWarn("请先选择记录！");
+            }
         }
 
         $(function () {
@@ -179,5 +204,28 @@
         </thead>
     </table>
 </div>
+
+<form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
+      data-options="top:150,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+       onClose:function () {
+            $('#manager_add').form('reset');
+       },
+		buttons:[{
+					text : '提交',
+					iconCls : 'icon-add-green',
+					handler : function () {
+                    doSalaryCommit();
+					}
+				},{
+					text:'关闭',
+					iconCls : 'icon-redo',
+					handler:function(){
+                    $('#manager_add').dialog('close');
+					}
+				}]">
+    <p>工资月份：<input id="salaryDateAdd" class="easyui-validatebox" data-options="required:true,validType:'length[8,8]',missingMessage:'格式例如2019-01',invalidMessage:'格式错误'," type="text" style="width:200px;" /></p>
+    <p>支付金额：<input id="paidMoneyAdd" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'只能是数字'" type="text" style="width:200px;" /></p>
+    <p>发放备注：<input id="remarkAdd" class="easyui-validatebox" type="text" style="width:200px;" /></p>
+</form>
 </body>
 </html>
