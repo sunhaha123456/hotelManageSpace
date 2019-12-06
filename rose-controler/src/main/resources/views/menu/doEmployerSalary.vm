@@ -162,6 +162,26 @@
             }
         }
 
+        function deleteSalary() {
+            var rows = $('#manager_listSalary_datagrid').datagrid('getSelections');
+            if (rows.length > 0) {
+                var id = rows[0].id;
+                $.messager.confirm('确定操作', "确认删除吗！", function (flag) {
+                    if (flag) {
+                        var id = rows[0].id;
+                        $('#manager_listSalary').datagrid('loading');
+                        var result = ajaxSynchGet("user/doEmployerSalary/deleteSalary", {"id": id});
+                        $('#manager_listSalary').datagrid('loaded');
+                        $('#manager_listSalary').dialog('close');
+                        alertInfo(result.msg);
+                        searchEmployer();
+                    }
+                });
+            } else {
+                alertWarn("请先选择记录！");
+            }
+        }
+
         $(function () {
             dataGridInit();
             searchEmployer();
@@ -192,6 +212,11 @@
     onClose:function () {
         $('#manager_listSalary').form('reset');
     }">
+    <div id="manager_listSalary_tool">
+        <div style="margin-bottom:5px;">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="deleteSalary()">删除</a>
+        </div>
+    </div>
     <table id="manager_listSalary_datagrid" class="easyui-datagrid" data-options="fit:false,fitColumns:true,striped:true,rownumbers:true,border:false,singleSelect:true,pagination:false">
         <thead>
         <tr>

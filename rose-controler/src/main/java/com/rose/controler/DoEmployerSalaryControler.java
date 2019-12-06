@@ -57,4 +57,9 @@ public class DoEmployerSalaryControler {
         }
         employerManageService.paySalary(param);
     }
+
+    @GetMapping(value= "/deleteSalary")
+    public void deleteSalary(@RequestParam Long id) throws Exception {
+        employerManageService.deleteEmployerPaidHistory(id);
+    }
 }

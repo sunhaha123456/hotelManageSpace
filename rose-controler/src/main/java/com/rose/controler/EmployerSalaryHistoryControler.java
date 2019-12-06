@@ -3,9 +3,8 @@ package com.rose.controler;
 import com.rose.common.data.base.PageList;
 import com.rose.common.data.response.ResponseResultCode;
 import com.rose.common.exception.BusinessException;
-import com.rose.common.util.StringUtil;
-import com.rose.data.entity.TbEmployer;
-import com.rose.data.to.request.EmployerSearchRequest;
+import com.rose.data.entity.TbEmployerSalaryPaidHistory;
+import com.rose.data.to.request.EmployerSalaryPaidHistorySearchRequest;
 import com.rose.service.EmployerManageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -26,15 +25,15 @@ public class EmployerSalaryHistoryControler {
     private EmployerManageService employerManageService;
 
     @PostMapping(value= "/search")
-    public PageList<TbEmployer> search(@RequestBody EmployerSearchRequest param) throws Exception {
+    public PageList<TbEmployerSalaryPaidHistory> search(@RequestBody EmployerSalaryPaidHistorySearchRequest param) throws Exception {
         if (param == null) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
         }
-        return employerManageService.searchEmployer(param);
+        return employerManageService.searchEmployerPaidHistory(param);
     }
 
     @GetMapping(value= "/delete")
     public void delete(@RequestParam Long id) throws Exception {
-        employerManageService.deleteEmployer(id);
+        employerManageService.deleteEmployerPaidHistory(id);
     }
 }
