@@ -118,7 +118,8 @@ public class JumpControler {
      * @return
      */
     @GetMapping(value = "/user/menuManage/toDoEmployerSalary")
-    public String toDoEmployerSalary() {
+    public String toDoEmployerSalary(HttpServletRequest request) {
+        request.setAttribute("salaryDate", DateUtil.format(new Date(), DateUtil.YYYYMM));
         return "menu/doEmployerSalary";
     }
 
