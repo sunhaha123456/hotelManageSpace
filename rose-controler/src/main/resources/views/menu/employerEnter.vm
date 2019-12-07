@@ -12,7 +12,7 @@
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
         function searchEmployer() {
-            var employerState = $('#employerState').combobox('getValue');
+            var employerState = $('#employerStateSearch').combobox('getValue');
             if (employerState == -1) {
                 employerState = null;
             }
@@ -80,7 +80,7 @@
                 pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var employerState = $('#employerState').combobox('getValue');
+                    var employerState = $('#employerStateSearch').combobox('getValue');
                     if (employerState == -1) {
                         employerState = null;
                     }
@@ -164,7 +164,7 @@
         function deleteEmployer() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
-                $.messager.confirm('确定操作', "将会删除该用户对应的发薪记录！", function (flag) {
+                $.messager.confirm('确定操作', "将会删除用户所有的工资发放记录！", function (flag) {
                     if (flag) {
                         var id = rows[0].id;
                         $('#manager').datagrid('loading');
@@ -190,15 +190,15 @@
     <div id="manager_tool">
         <div style="padding:0 0 0 7px;color:#333;">
             员工状态：
-            <select class="easyui-combobox" id="employerState" style="width:100px;">
-                <option value="0" selected="-1">请选择</option>
+            <select class="easyui-combobox" id="employerStateSearch" style="width:100px;">
+                <option value="-1" selected="true">请选择</option>
                 <option value="0">正常在职</option>
                 <option value="1">已经离职</option>
             </select>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchEmployer()">查询</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" onclick="addEmployerShow()">新增</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" onclick="editEmployerShow()">编辑</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="deleteEmployer()">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="searchEmployer()">查询</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addEmployerShow()">新增</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editEmployerShow()">编辑</a>&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="deleteEmployer()">删除</a>
         </div>
     </div>
 </table>

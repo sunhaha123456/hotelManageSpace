@@ -22,7 +22,7 @@ public class EmployerRepositoryCustomImpl extends BaseRepositoryImpl implements 
         List<Object> paramList = new ArrayList();
         sql.append(" SELECT id, create_date createDate, full_name fullName, phone, position, employer_state employerState ");
         sql.append(" FROM tb_employer ");
-        sql.append(" WHERE hotel_id = ? ");
+        sql.append(" WHERE del_flag = 0 and hotel_id = ? ");
         paramList.add(hotelId);
         if (employerState != null) {
             sql.append(" AND employer_state = ? ");
@@ -36,7 +36,6 @@ public class EmployerRepositoryCustomImpl extends BaseRepositoryImpl implements 
             sql.append(" AND instr(phone, ?) > 0 ");
             paramList.add(phone);
         }
-        sql.append(" del_flag = 0 ");
         return queryPage(sql.toString(), TbEmployer.class, new PageUtil(pageNo, pageSize), null, paramList.toArray());
     }
 }

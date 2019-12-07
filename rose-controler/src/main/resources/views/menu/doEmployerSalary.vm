@@ -117,7 +117,7 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/doEmployerSalary/getSalaryDetail", {"id": id});
+                var result = ajaxSynchGet("user/doEmployerSalary/getSalaryPaidHistory", {"employerId": id, "salaryDate":$('#salaryDateSearch').val()});
                 if (result.code == '200') {
                     $('#manager_listSalary_datagrid').datagrid('loadData', result.data);
                     $('#manager_listSalary').dialog('open');
@@ -206,9 +206,9 @@
                 <option value="0">正常在职</option>
                 <option value="1">已经离职</option>
             </select>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchEmployer()">查询</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="doSalaryDetailShow()">发薪详情</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" onclick="doSalaryShow()">进行发薪</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="searchEmployer()">查询</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="doSalaryDetailShow()">发薪详情</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="doSalaryShow()">进行发薪</a>
         </div>
     </div>
 </table>
@@ -253,8 +253,8 @@
                     $('#manager_add').dialog('close');
 					}
 				}]">
-    <p>工资月份：<input id="salaryDateAdd" class="easyui-validatebox" data-options="required:true,validType:'length[8,8]',missingMessage:'格式例如2019-01',invalidMessage:'格式错误'," type="text" style="width:200px;" /></p>
-    <p>支付金额：<input id="paidMoneyAdd" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'只能是数字'" type="text" style="width:200px;" /></p>
+    <p>工资月份：<input id="salaryDateAdd" class="easyui-validatebox" data-options="required:true,validType:'length[7,7]',missingMessage:'如2019-01',invalidMessage:'格式错误'," type="text" style="width:200px;" /></p>
+    <p>支付金额：<input id="paidMoneyAdd" class="easyui-validatebox" data-options="required:true,min:0,precision:2,missingMessage:'支付金额只能是数字'" type="text" style="width:200px;" /></p>
     <p>发放备注：<input id="remarkAdd" class="easyui-validatebox" type="text" style="width:200px;" /></p>
 </form>
 </body>
