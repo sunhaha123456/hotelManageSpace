@@ -131,6 +131,7 @@
 
         function doSalaryShow() {
             $('#manager_add').dialog('open');
+            $('#salaryDateAdd').val($('#salaryDateSearch').val());
             $('#salaryDateAdd').focus();
         }
 
@@ -165,14 +166,10 @@
         function deleteSalary() {
             var rows = $('#manager_listSalary_datagrid').datagrid('getSelections');
             if (rows.length > 0) {
-                var id = rows[0].id;
                 $.messager.confirm('确定操作', "确认删除吗！", function (flag) {
                     if (flag) {
                         var id = rows[0].id;
-                        $('#manager_listSalary').datagrid('loading');
                         var result = ajaxSynchGet("user/doEmployerSalary/deleteSalary", {"id": id});
-                        $('#manager_listSalary').datagrid('loaded');
-                        $('#manager_listSalary').dialog('close');
                         alertInfo(result.msg);
                         searchEmployer();
                     }
@@ -202,24 +199,24 @@
             工资年月（如2019-01）：<input type="text" class="textbox" id="salaryDateSearch" style="width:110px" />
             员工状态：
             <select class="easyui-combobox" id="employerStateSearch" style="width:100px;">
-                <option value="0" selected="-1">请选择</option>
+                <option value="-1" selected="true">请选择</option>
                 <option value="0">正常在职</option>
                 <option value="1">已经离职</option>
             </select>
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="searchEmployer()">查询</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="doSalaryDetailShow()">发薪详情</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="doSalaryShow()">进行发薪</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="doSalaryDetailShow()">本月发薪详情</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="doSalaryShow()">进行发薪</a>
         </div>
     </div>
 </table>
 
-<div id="manager_listSalary" class="easyui-window" style="background-color:#F4F4F4;" data-options="top:150,width:1100,title:'查看',modal:true,closed:true,iconCls:'icon-user-add',cache:false,collapsible:false,minimizable:false,maximizable:false,
+<div id="manager_listSalary" class="easyui-window" style="background-color:#F4F4F4;" data-options="top:150,width:1100,title:'本月发薪详情',modal:true,closed:true,iconCls:'icon-tip',cache:false,collapsible:false,minimizable:false,maximizable:false,
     onClose:function () {
         $('#manager_listSalary').form('reset');
     }">
     <div id="manager_listSalary_tool">
         <div style="margin-bottom:5px;">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="deleteSalary()">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="deleteSalary()">删除</a>
         </div>
     </div>
     <table id="manager_listSalary_datagrid" class="easyui-datagrid" data-options="fit:false,fitColumns:true,striped:true,rownumbers:true,border:false,singleSelect:true,pagination:false">
@@ -236,7 +233,7 @@
 </div>
 
 <form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:150,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:150,width:320,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-add',
        onClose:function () {
             $('#manager_add').form('reset');
        },

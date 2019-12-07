@@ -52,7 +52,7 @@ public class EmployerManageServiceImpl implements EmployerManageService {
                 List<TbEmployer> list = page.getRows();
                 if (list != null && list.size() > 0) {
                     Set<Long> employerIdSet = list.stream().map(TbEmployer::getId).collect(Collectors.toSet());
-                    List<TbEmployerSalaryPaidHistory> paidHistoryList = employerSalaryPaidHistoryRepository.findEmployerSalary(employerIdSet, DateUtil.format(param.getSalaryDate(), DateUtil.YYYYMM));
+                    List<TbEmployerSalaryPaidHistory> paidHistoryList = employerSalaryPaidHistoryRepository.findEmployerSalary(employerIdSet, param.getSalaryDate());
                     if (paidHistoryList != null && paidHistoryList.size() > 0) {
                         Set<Long> salaryEmployerIdSet = paidHistoryList.stream().map(TbEmployerSalaryPaidHistory::getEmployerId).collect(Collectors.toSet());
                         for (TbEmployer e : list) {
