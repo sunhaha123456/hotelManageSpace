@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2019-12-06 18:28:40
+Date: 2019-12-07 19:59:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,7 +49,7 @@ CREATE TABLE `tb_employer_salary_paid_history` (
   `hotel_id` int(20) DEFAULT NULL COMMENT '酒店id',
   `paid_money` decimal(19,2) NOT NULL DEFAULT '0.00' COMMENT '支付金额',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  `salary_date` datetime DEFAULT NULL COMMENT '薪资月份',
+  `salary_date` varchar(255) DEFAULT NULL COMMENT '薪资月份',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

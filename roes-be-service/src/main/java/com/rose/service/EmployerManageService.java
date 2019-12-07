@@ -30,5 +30,5 @@ public interface EmployerManageService {
 
     PageList<TbEmployerSalaryPaidHistory> searchEmployerPaidHistory(EmployerSalaryPaidHistorySearchRequest param) throws Exception;
 
-    List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, Date salaryDate);
+    List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, String salaryDate);
 }

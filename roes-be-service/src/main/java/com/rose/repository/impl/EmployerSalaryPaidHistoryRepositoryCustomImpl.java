@@ -20,7 +20,7 @@ public class EmployerSalaryPaidHistoryRepositoryCustomImpl extends BaseRepositor
     public PageList<TbEmployerSalaryPaidHistory> list(Long hotelId, String employerFullName, String employerPhone, Integer pageNo, Integer pageSize) throws Exception {
         StringBuilder sql = new StringBuilder();
         List<Object> paramList = new ArrayList();
-        sql.append(" SELECT a.full_name fullName, a.phone, a.position, a.employer_state employerState, b.paid_money paidMoney, b.remark ");
+        sql.append(" SELECT b.id, b.salary_date salaryDate, b.paid_money paidMoney, b.remark, a.full_name fullName, a.phone, a.position, a.employer_state employerState ");
         sql.append(" FROM tb_employer a join tb_employer_salary_paid_history b on a.id = b.employer_id and a.del_flag = 0 and b.del_flag = 0 ");
         sql.append(" WHERE a.hotel_id = ? ");
         paramList.add(hotelId);

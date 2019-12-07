@@ -13,7 +13,7 @@
     <script th:inline="javascript">
         function searchEmployerSalaryHistory() {
             var param = {"employerFullName": $("#fullNameSearch").val(), "employerPhone": $("#phoneSearch").val(), "page":1, "rows":10};
-            var result = ajaxSynchPostJson("user/employerEnter/search", param);
+            var result = ajaxSynchPostJson("user/employerSalaryHistory/search", param);
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -64,6 +64,21 @@
                                 return "已经离职";
                             }
                         }
+                    },
+                    {
+                        field : 'salaryDate',
+                        title : '发薪月份',
+                        width : 50,
+                    },
+                    {
+                        field : 'paidMoney',
+                        title : '支付金额',
+                        width : 50,
+                    },
+                    {
+                        field : 'remark',
+                        title : '备注',
+                        width : 300,
                     }
                 ]]
             });

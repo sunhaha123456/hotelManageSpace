@@ -24,5 +24,5 @@ public interface EmployerSalaryPaidHistoryRepository extends CrudRepository<TbEm
     List<TbEmployerSalaryPaidHistory> findEmployerSalary(@Param(value = "employerIdSet") Set<Long> employerIdSet, @Param(value = "salaryDate") Date salaryDate);
 
     @Query(value = "select * from tb_employer_salary_paid_history where employer_id = :employerId and salary_date = :salaryDate and del_flag = 0 order by salary_date asc", nativeQuery = true)
-    List<TbEmployerSalaryPaidHistory> findEmployerSalary(@Param(value = "employerId") Long employerId, @Param(value = "salaryDate") Date salaryDate);
+    List<TbEmployerSalaryPaidHistory> findEmployerSalary(@Param(value = "employerId") Long employerId, @Param(value = "salaryDate") String salaryDate);
 }

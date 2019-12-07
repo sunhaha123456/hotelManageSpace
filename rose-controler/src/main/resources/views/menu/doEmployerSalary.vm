@@ -139,12 +139,12 @@
             if (rows.length > 0) {
                 if ($('#manager_add').form('validate')) {
                     var employerId = rows[0].id;
-                    var salaryDateStr = $('#salaryDateAdd').val();
+                    var salaryDate = $('#salaryDateAdd').val();
                     var paidMoney = $('#paidMoneyAdd').val();
                     var remark = $('#remarkAdd').val();
 
                     var param = {
-                        "employerId":employerId, "salaryDateStr":salaryDateStr,
+                        "employerId":employerId, "salaryDate":salaryDate,
                         "paidMoney":paidMoney, "remark":remark
                     };
 

@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ public class DoEmployerSalaryControler {
 
     @PostMapping(value= "/search")
     public PageList<TbEmployer> search(@RequestBody EmployerSearchRequest param) throws Exception {
-        if (param == null || DateUtil.format(param.getSalaryDate(), DateUtil.YYYYMM) == null) {
+        if (StringUtil.isEmpty(param.getSalaryDate()) || param.getSalaryDate().length() != 7  || DateUtil.format(param.getSalaryDate(), DateUtil.YYYYMM) == null) {
             throw new BusinessException("工资年月时间格式错误！");
         }
         return employerManageService.searchEmployer(param);
@@ -39,11 +38,10 @@ public class DoEmployerSalaryControler {
 
     @GetMapping(value= "/getSalaryPaidHistory")
     public List<TbEmployerSalaryPaidHistory> getSalaryDetail(@RequestParam Long employerId, @RequestParam(defaultValue = "") String salaryDate) {
-        Date formatSalaryDate = DateUtil.format(salaryDate, DateUtil.YYYYMM);
-        if (formatSalaryDate == null) {
+        if (StringUtil.isEmpty(salaryDate) || salaryDate.length() != 7  || DateUtil.format(salaryDate, DateUtil.YYYYMM) == null) {
             throw new BusinessException("工资年月时间格式错误！");
         }
-        return employerManageService.getSalaryDetail(employerId, formatSalaryDate);
+        return employerManageService.getSalaryDetail(employerId, salaryDate);
     }
 
     @PostMapping(value= "/paySalary")
@@ -51,8 +49,7 @@ public class DoEmployerSalaryControler {
         if (param == null || param.getEmployerId() == null || param.getPaidMoney() == null) {
             throw new BusinessException(ResponseResultCode.PARAM_ERROR);
         }
-        param.setSalaryDate(DateUtil.format(param.getSalaryDateStr(), DateUtil.YYYYMM));
-        if (param.getSalaryDate() ==  null) {
+        if (StringUtil.isEmpty(param.getSalaryDate()) || param.getSalaryDate().length() != 7  || DateUtil.format(param.getSalaryDate(), DateUtil.YYYYMM) == null) {
             throw new BusinessException("工资年月时间格式错误！");
         }
         employerManageService.paySalary(param);

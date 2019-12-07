@@ -175,7 +175,7 @@ public class EmployerManageServiceImpl implements EmployerManageService {
     }
 
     @Override
-    public List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, Date salaryDate) {
+    public List<TbEmployerSalaryPaidHistory> getSalaryDetail(Long employerId, String salaryDate) {
         TbSysUser user = sysUserRepository.findOne(valueHolder.getUserIdHolder());
         if (user == null || user.getHotelId() == null) {
             throw new BusinessException(ResponseResultCode.NO_AUTH_ERROR);
