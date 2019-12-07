@@ -113,10 +113,10 @@
 <table id="manager">
     <div id="manager_tool">
         <div style="padding:0 0 0 7px;color:#333;">
-            姓名：<input type="text" class="textbox" id="fullNameSearch" style="width:110px" />&nbsp;&nbsp;
-            手机：<input type="text" class="textbox" id="phoneSearch" style="width:110px" />&nbsp;&nbsp;
+            员工姓名：<input type="text" class="textbox" id="fullNameSearch" style="width:110px" />&nbsp;&nbsp;
+            手机号码：<input type="text" class="textbox" id="phoneSearch" style="width:110px" />&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchEmployerSalaryHistory()">查询</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="deleteEmployer()">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="deleteEmployer()">删除</a>
         </div>
     </div>
 </table>

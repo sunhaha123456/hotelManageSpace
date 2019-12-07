@@ -43,6 +43,15 @@ public class LoginServiceImpl implements LoginService {
     @Inject
     private ValueHolder valueHolder;
 
+    // 不需要进行后台bgUrl 校验的后台接口列表
+    private static List<String> notValidateBgUrlList = Arrays.asList(
+            "/login/toLogin",
+            "/login/toSuccess",
+            "/login/toSuccess/out",
+            "/login/toSuccess/verify",
+            "/user/menuManage/getUserMenu"
+    );
+
     @Override
     public Map<String, Object> verify(UserLoginRequest user) throws Exception {
         // 校验验证码
@@ -91,7 +100,7 @@ public class LoginServiceImpl implements LoginService {
         String[] urlArrTemp = null;
         for (TbMenu m : roleMenuList) {
             if (StringUtil.isNotEmpty(m.getBgUrl())) {
-                urlArrTemp = m.getBgUrl().split("|");
+                urlArrTemp = m.getBgUrl().split("\\|");
                 if (urlArrTemp != null && urlArrTemp.length > 0) {
                     for (String u : urlArrTemp) {
                         buUrlList.add(u);
@@ -143,7 +152,7 @@ public class LoginServiceImpl implements LoginService {
         if (StringUtil.isEmpty(userId)) {
             userId = request.getParameter(SystemConstant.SYSTEM_USER_ID);
         }
-        String url = request.getServletPath().toLowerCase();
+        String url = request.getServletPath();
         if (StringUtil.isEmpty(token) || token.length() != 64 || StringUtil.isEmpty(userId)) {
             log.error("Request url：{}，method：{}，userId：{}，token：{}，拦截此请求：001-请求不合法！", url, method, userId, token);
             return false;
@@ -158,7 +167,7 @@ public class LoginServiceImpl implements LoginService {
             return false;
         }
         List<String> bgUrlList = userRedis.getBgUrlList();
-        if (bgUrlList == null || !bgUrlList.contains(url)) {
+        if (!notValidateBgUrlList.contains(url) && (bgUrlList == null || !bgUrlList.contains(url))) {
             log.error("Request url：{}，method：{}，userId：{}，token：{}，拦截此请求：004-redis中userId对应redis中用户信息的bgUrlList，不包含正请求的地址！", url, method, userId, token);
             return false;
         }

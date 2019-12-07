@@ -12,7 +12,7 @@
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
         function searchEmployer() {
-            var employerState = $('#employerState').combobox('getValue');
+            var employerState = $('#employerStateSearch').combobox('getValue');
             if (employerState == -1) {
                 employerState = null;
             }
@@ -197,18 +197,18 @@
 <table id="manager">
     <div id="manager_tool">
         <div style="padding:0 0 0 7px;color:#333;">
-            姓名：<input type="text" class="textbox" id="fullNameSearch" style="width:110px" />&nbsp;&nbsp;
-            手机号：<input type="text" class="textbox" id="phoneSearch" style="width:110px" />&nbsp;&nbsp;
-            工资年月（格式如2019-01）：<input type="text" class="textbox" id="salaryDateSearch" style="width:110px" />&nbsp;&nbsp;
+            员工姓名：<input type="text" class="textbox" id="fullNameSearch" style="width:110px" />
+            手机号码：<input type="text" class="textbox" id="phoneSearch" style="width:110px" />
+            工资年月（如2019-01）：<input type="text" class="textbox" id="salaryDateSearch" style="width:110px" />
             员工状态：
             <select class="easyui-combobox" id="employerStateSearch" style="width:100px;">
                 <option value="0" selected="-1">请选择</option>
                 <option value="0">正常在职</option>
                 <option value="1">已经离职</option>
-            </select>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchEmployer()">查询</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" onclick="doSalaryDetailShow()">发薪详情</a>&nbsp;&nbsp;
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" onclick="doSalaryShow()">进行发薪</a>&nbsp;&nbsp;
+            </select>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchEmployer()">查询</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="doSalaryDetailShow()">发薪详情</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" onclick="doSalaryShow()">进行发薪</a>
         </div>
     </div>
 </table>

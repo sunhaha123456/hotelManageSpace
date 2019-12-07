@@ -3,7 +3,6 @@ package com.rose.interceptor;
 import com.alibaba.fastjson.JSONObject;
 import com.rose.common.data.response.ResponseResult;
 import com.rose.common.data.response.ResponseResultCode;
-import com.rose.common.util.StringUtil;
 import com.rose.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
