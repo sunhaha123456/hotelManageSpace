@@ -142,7 +142,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         List<TbHotelCustomerCheckInOrder> orderList = hotelCustomerCheckInOrderRepository.listByCheckInOutDate(room.getHotelId(), Arrays.asList(room.getId()), planCheckInDate, planCheckOutDate);
         if (orderList != null && orderList.size() > 0) {
             if (room.getCalcCheckInNumBedFlag() == 0) { // 不是根据床位计算可入住人数
-                throw new BusinessException("所选住宿时间段已被他人预留！");
+                throw new BusinessException("所选住宿时间段已被他人预定！");
             } else { // 是根据床位计算可入住人数
                 if ((orderList.size() + 1) > room.getBedNum()) {
                     throw new BusinessException("所选住宿时间段床位已满！");
@@ -258,7 +258,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
             if (orderList != null && orderList.size() > 0) {
                 if (room.getCalcCheckInNumBedFlag() == 0) { // 不是根据床位计算可入住人数
                     throw new BusinessException("所选住宿时间段已被他人预留！");
-                } else { // 是根据床位计算可入住人数
+                } else { // 根据床位计算可入住人数
                     if ((orderList.size() + 1) > room.getBedNum()) {
                         throw new BusinessException("所选住宿时间段已被他人预留！");
                     }
@@ -393,7 +393,7 @@ public class CustomerCheckInServiceImpl implements CustomerCheckInService {
         if (checkInDate.getTime() <= todayMinDate.getTime()) {
             throw new BusinessException("入住时间必须是今天及以后时间！");
         }
-        if (checkOutDate.getTime() <= new Date().getTime()) {
+        if (checkOutDate.getTime() < new Date().getTime()) {
             throw new BusinessException("退房时间必须晚于当前时间！");
         }
         if (checkOutDate.getTime() <= checkInDate.getTime()) {

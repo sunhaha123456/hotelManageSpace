@@ -205,12 +205,12 @@
                         striped : true,
                         border : false,
                         columns:[[
-                            {field:'roomNo',title:'房间编号',width:100},
+                            {field:'roomNo',title:'房间编号',width:80},
                             {field:'orderNo',title:'订单编号',width:170},
                             {
                                 field:'orderStatus',
                                 title:'订单状态',
-                                width:100,
+                                width:70,
                                 formatter: function(value,row,index){
                                     if (value == 0) {
                                         return "已入住";
@@ -219,10 +219,11 @@
                                     }
                                 }
                             },
-                            {field:'sellPrice',title:'销售价',width:100},
-                            {field:'depositMoney',title:'实收押金',width:100},
-                            {field:'checkInCustomerName',title:'客人姓名',width:120},
-                            {field:'checkInCustomerLinkPhone',title:'客人手机',width:100},
+                            {field:'sellPrice',title:'销售价',width:70},
+                            {field:'depositMoney',title:'实收押金',width:70},
+                            {field:'realCollectMoney',title:'实收金额',width:80},
+                            {field:'checkInCustomerName',title:'客人姓名',width:110},
+                            {field:'checkInCustomerLinkPhone',title:'客人手机',width:110},
                             {field:'lockStartDate',title:'开始时间',width:150},
                             {field:'lockEndDate',title:'结束时间',width:150}
                         ]]
@@ -306,9 +307,9 @@
                         $("#detailRoomWindowFlag").val('有海景窗户');
                     }
                     if (data.roomWcFlag == 0) {
-                        $("#detailRoomWcFlag").val('有');
-                    } else {
                         $("#detailRoomWcFlag").val('无');
+                    } else {
+                        $("#detailRoomWcFlag").val('有');
                     }
                     if (data.hourRoomFlag == 0) {
                         $("#detailHourRoomFlag").val('否');
@@ -320,11 +321,6 @@
                         $("#detailCalcCheckInNumBedFlag").val('否');
                     } else {
                         $("#detailCalcCheckInNumBedFlag").val('是');
-                    }
-                    if (data.calcCheckInNumBedFlag == 0) {
-                        $("#detailRoomWcFlag").val('是');
-                    } else {
-                        $("#detailRoomWcFlag").val('否');
                     }
                     $("#detailSellPriceDesc").val(data.sellPriceDesc);
                     $("#detailCheckOutDesc").val(data.checkOutDesc);
@@ -372,7 +368,7 @@
     </div>
 </table>
 
-<div id="roomCheckInDeatilWindow" class="easyui-window" title="房间入住详情" data-options="modal:true,closed:true,minimizable:false,maximizable:false,iconCls:'icon-nav'" style="width:990px;height:450px;padding:10px;">
+<div id="roomCheckInDeatilWindow" class="easyui-window" title="房间入住详情" data-options="modal:true,closed:true,minimizable:false,maximizable:false,iconCls:'icon-nav'" style="width:990px;height:450px;padding:20px;">
     <table id="roomCheckInDeatilDataGrid" style="width:950px;"></table>
 </div>
 
@@ -404,7 +400,7 @@
     <p>
         入住类别：
         <select class="easyui-combobox" id="handleOrderType" style="width:200px;">
-            <option value="0" selected="true">已来到店办理入住</option>
+            <option value="0" selected="true">已到店办理入住</option>
             <option value="1">未到店办理预定</option>
         </select>
     </p>

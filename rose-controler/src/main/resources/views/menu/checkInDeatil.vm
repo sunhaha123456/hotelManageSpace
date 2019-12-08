@@ -30,27 +30,32 @@
                     {
                         field : 'orderNo',
                         title : '订单编号',
-                        width : 170
+                        width : 120
                     },
                     {
                         field : 'roomNo',
                         title : '房间编号',
-                        width : 100
+                        width : 55
+                    },
+                    {
+                        field : 'roomTypeName',
+                        title : '房间类别',
+                        width : 110
                     },
                     {
                         field : 'checkInCustomerName',
                         title : '客人姓名',
-                        width : 100
+                        width : 80
                     },
                     {
                         field : 'checkInCustomerLinkPhone',
                         title : '联系手机',
-                        width : 100
+                        width : 80
                     },
                     {
                         field : 'orderStatus',
                         title : '入住状态',
-                        width : 100,
+                        width : 50,
                         formatter: function(value,row,index){
                             if (value == 0) {
                                 return "已入住";
@@ -64,34 +69,29 @@
                         }
                     },
                     {
-                        field : 'lockStartDate',
-                        title : '入住开始时间',
-                        width : 100
-                    },
-                    {
-                        field : 'lockEndDate',
-                        title : '入住结束时间',
-                        width : 100
-                    },
-                    {
-                        field : 'roomTypeName',
-                        title : '房间类别',
-                        width : 100
-                    },
-                    {
                         field : 'sellPrice',
                         title : '销售价',
-                        width : 100
-                    },
-                    {
-                        field : 'realCollectMoney',
-                        title : '实收金额',
-                        width : 100
+                        width : 45
                     },
                     {
                         field : 'depositMoney',
                         title : '实收押金',
-                        width : 100
+                        width : 60
+                    },
+                    {
+                        field : 'realCollectMoney',
+                        title : '实收金额',
+                        width : 55
+                    },
+                    {
+                        field : 'lockStartDate',
+                        title : '入住开始时间',
+                        width : 115
+                    },
+                    {
+                        field : 'lockEndDate',
+                        title : '入住结束时间',
+                        width : 115
                     }
                 ]]
             });
@@ -208,10 +208,10 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var param = {
-                    "id": id,
-                    "checkInCustomerName": $('#updateCheckInCustomerName').datetimebox('getValue'),
-                    "checkInCustomerLinkPhone": $('#updateCheckInCustomerLinkPhone').datetimebox('getValue'),
-                    "checkInCustomerIdNo": $('#updateCheckInCustomerIdNo').datetimebox('getValue'),
+                    "id": rows[0].id,
+                    "checkInCustomerName": $('#updateCheckInCustomerName').val(),
+                    "checkInCustomerLinkPhone": $('#updateCheckInCustomerLinkPhone').val(),
+                    "checkInCustomerIdNo": $('#updateCheckInCustomerIdNo').val(),
                     "lockStartDate": $('#updateLockStartDate').datetimebox('getValue'),
                     "lockEndDate": $('#updateLockEndDate').datetimebox('getValue'),
                     "depositMoney": $('#updateDepositMoney').val(),
@@ -220,6 +220,7 @@
                 };
                 var result = ajaxSynchPostJson("user/checkInDetail/updateOrderInfo", param);
                 if (result.code == '200') {
+                    alertSuccess();
                     searchOrder();
                     $('#manager_update').dialog('close');
                 } else {
@@ -258,10 +259,10 @@
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var param = {
-                    "id": id,
-                    "checkInCustomerName": $('#checkInCheckOutCheckInCustomerName').datetimebox('getValue'),
-                    "checkInCustomerLinkPhone": $('#checkInCheckOutCheckInCustomerLinkPhone').datetimebox('getValue'),
-                    "checkInCustomerIdNo": $('#checkInCheckOutCheckInCustomerIdNo').datetimebox('getValue'),
+                    "id": rows[0].id,
+                    "checkInCustomerName": $('#checkInCheckOutCheckInCustomerName').val(),
+                    "checkInCustomerLinkPhone": $('#checkInCheckOutCheckInCustomerLinkPhone').val(),
+                    "checkInCustomerIdNo": $('#checkInCheckOutCheckInCustomerIdNo').val(),
                     "lockStartDate": $('#checkInCheckOutLockStartDate').datetimebox('getValue'),
                     "lockEndDate": $('#checkInCheckOutLockEndDate').datetimebox('getValue'),
                     "depositMoney": $('#checkInCheckOutRealCollectMoney').val(),
@@ -270,6 +271,7 @@
                 };
                 var result = ajaxSynchPostJson("user/checkInDetail/checkInCheckOut", param);
                 if (result.code == '200') {
+                    alertSuccess();
                     searchOrder();
                     $('#manager_check_in_check_out').dialog('close');
                 } else {
@@ -290,8 +292,8 @@
                     $("#cancelCheckInCustomerName").val(data.checkInCustomerName);
                     $("#cancelCheckInCustomerLinkPhone").val(data.checkInCustomerLinkPhone);
                     $("#cancelInCheckOutCheckInCustomerIdNo").val(data.checkInCustomerIdNo);
-                    $("#cancelLockStartDate").val(data.lockStartDate);
-                    $("#cancelLockEndDate").val(data.lockEndDate);
+                    $('#cancelLockStartDate').datetimebox('setValue', data.lockStartDate);
+                    $('#cancelLockEndDate').datetimebox('setValue', data.lockEndDate);
                     $("#cancelDepositMoney").val(data.depositMoney);
                     $("#cancelRealCollectMoney").val(data.realCollectMoney);
                     $("#cancelMerchOrderRemark").val(data.merchOrderRemark);
@@ -310,9 +312,9 @@
                 var id = rows[0].id;
                 var param = {
                     "id": id,
-                    "checkInCustomerName": $('#cancelCheckInCustomerName').datetimebox('getValue'),
-                    "checkInCustomerLinkPhone": $('#cancelCheckInCustomerLinkPhone').datetimebox('getValue'),
-                    "checkInCustomerIdNo": $('#cancelInCheckOutCheckInCustomerIdNo').datetimebox('getValue'),
+                    "checkInCustomerName": $('#cancelCheckInCustomerName').val(),
+                    "checkInCustomerLinkPhone": $('#cancelCheckInCustomerLinkPhone').val(),
+                    "checkInCustomerIdNo": $('#cancelInCheckOutCheckInCustomerIdNo').val(),
                     "lockStartDate": $('#cancelLockStartDate').datetimebox('getValue'),
                     "lockEndDate": $('#cancelLockEndDate').datetimebox('getValue'),
                     "depositMoney": $('#cancelDepositMoney').val(),
@@ -321,6 +323,8 @@
                 };
                 var result = ajaxSynchPostJson("user/checkInDetail/cancleOrder", param);
                 if (result.code == '200') {
+                    alertSuccess();
+                    searchOrder();
                     $('#manager_cancel').dialog('close');
                 } else {
                     alertWarn(result.msg);
@@ -360,9 +364,9 @@
                 var id = rows[0].id;
                 var param = {
                     "id": id,
-                    "checkInCustomerName": $('#reserveCheckInCustomerName').datetimebox('getValue'),
-                    "checkInCustomerLinkPhone": $('#reserveCheckInCustomerLinkPhone').datetimebox('getValue'),
-                    "checkInCustomerIdNo": $('#reserveCheckInCustomerIdNo').datetimebox('getValue'),
+                    "checkInCustomerName": $('#reserveCheckInCustomerName').val(),
+                    "checkInCustomerLinkPhone": $('#reserveCheckInCustomerLinkPhone').val(),
+                    "checkInCustomerIdNo": $('#reserveCheckInCustomerIdNo').val(),
                     "lockStartDate": $('#reserveLockStartDate').datetimebox('getValue'),
                     "lockEndDate": $('#reserveLockEndDate').datetimebox('getValue'),
                     "depositMoney": $('#reserveDepositMoney').val(),
@@ -371,7 +375,9 @@
                 };
                 var result = ajaxSynchPostJson("user/checkInDetail/reserveOrderCheckIn", param);
                 if (result.code == '200') {
-                    $('#manager_cancel').dialog('close');
+                    alertSuccess();
+                    searchOrder();
+                    $('#manager_reserve_check_in').dialog('close');
                 } else {
                     alertWarn(result.msg);
                 }

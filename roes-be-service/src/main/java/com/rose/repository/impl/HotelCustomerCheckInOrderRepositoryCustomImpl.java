@@ -25,8 +25,8 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
         List<Object> paramList = new ArrayList();
         sql.append(" SELECT id, order_no orderNo, room_no roomNo, sell_price sellPrice, deposit_money depositMoney, ");
         sql.append(" check_in_customer_name checkInCustomerName, check_in_customer_link_phone checkInCustomerLinkPhone, ");
-        sql.append(" order_type orderType, order_status orderStatus, ");
-        sql.append(" lock_start_date lockStartDate, create_date createDate ");
+        sql.append(" order_type orderType, order_status orderStatus, real_collect_money realCollectMoney, ");
+        sql.append(" lock_start_date lockStartDate, lock_end_date lockEndDate, create_date createDate ");
         sql.append(" FROM tb_hotel_customer_check_in_order ");
         sql.append(" WHERE order_status in(0,2) and hotel_id = ? and room_id = ? ");
         sql.append(" order by lock_start_date asc ");
@@ -41,8 +41,8 @@ public class HotelCustomerCheckInOrderRepositoryCustomImpl extends BaseRepositor
         List<Object> paramList = new ArrayList();
         sql.append(" SELECT id, order_no orderNo, room_no roomNo, sell_price sellPrice, deposit_money depositMoney, ");
         sql.append(" check_in_customer_name checkInCustomerName, check_in_customer_link_phone checkInCustomerLinkPhone, ");
-        sql.append(" order_type orderType, order_status orderStatus, lock_start_date lockStartDate, real_collect_money realCollectMoney, ");
-        sql.append(" create_date createDate ");
+        sql.append(" order_type orderType, order_status orderStatus, lock_start_date lockStartDate, lock_end_date lockEndDate, ");
+        sql.append(" real_collect_money realCollectMoney, create_date createDate ");
         sql.append(" FROM tb_hotel_customer_check_in_order ");
         sql.append(" WHERE 1 = 1 ");
         if (param.getHotelId() != null) {
