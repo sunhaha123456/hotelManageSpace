@@ -12,19 +12,15 @@
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
         function addHotelRoomTypeShow() {
-            var hotelId = $('#hotelList').combobox('getValue');
-            if (hotelId == -1) {
-                alertWarn("请先选择酒店！");
-            } else {
-                $('#manager_add').dialog('open');
-                $('#hotelRoomTypeNameAdd').focus();
-            }
+            $('#manager_add').dialog('open');
+            $('#hotelRoomTypeNameAdd').focus();
         }
+
         function editHotelRoomTypeShow() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
                 var id = rows[0].id;
-                var result = ajaxSynchGet("user/operationHotelRoomType/getDetail", {"id":id});
+                var result = ajaxSynchGet("user/hotelRoomType/getDetail", {"id":id});
                 if (result.code == '200') {
                     var hotelRoomTypeName = result.data.roomTypeName;
                     var hotelRoomTypeRemark = result.data.remark;
@@ -38,15 +34,12 @@
                 alertWarn("请先选择记录！");
             }
         }
+
         function addHotelRoomTypeCommit() {
             if ($('#manager_add').form('validate')) {
-                var hotelId = $('#hotelList').combobox('getValue');
-                if (hotelId == -1) {
-                    hotelId = null;
-                }
                 var roomTypeName = $('#hotelRoomTypeNameAdd').val();
                 var remark = $('#hotelRoomTypeRemarkAdd').val();
-                var result = ajaxSynchPostJson("user/operationHotelRoomType/save", {"hotelId":hotelId, "roomTypeName":roomTypeName, "remark":remark});
+                var result = ajaxSynchPostJson("user/hotelRoomType/save", {"roomTypeName":roomTypeName, "remark":remark});
                 if (result.code == '200') {
                     alertSuccess();
                     $('#manager_add').dialog('close');
@@ -56,6 +49,7 @@
                 }
             }
         }
+
         function editHotelRoomTypeCommit() {
             if ($('#manager_edit').form('validate')) {
                 var rows = $('#manager').datagrid('getSelections');
@@ -63,7 +57,7 @@
                     var id = rows[0].id;
                     var hotelRoomTypeName = $('#hotelRoomTypeNameEdit').val();
                     var hotelRoomTypeRemark = $('#hotelRoomTypeRemarkEdit').val();
-                    var result = ajaxSynchPostJson("user/operationHotelRoomType/save", {"id":id, "roomTypeName": hotelRoomTypeName, "remark": hotelRoomTypeRemark})
+                    var result = ajaxSynchPostJson("user/hotelRoomType/save", {"id":id, "roomTypeName": hotelRoomTypeName, "remark": hotelRoomTypeRemark});
                     if (result.code == '200') {
                         alertSuccess();
                         $('#manager_edit').dialog('close');
@@ -74,14 +68,15 @@
                 }
             }
         }
+
         function deleteHotelRoomType() {
             var rows = $('#manager').datagrid('getSelections');
             if (rows.length > 0) {
-                $.messager.confirm('确定操作', "确定删除吗？删除后，相关联酒店房间的类别都将重置为空！", function (flag) {
+                $.messager.confirm('确定操作', "相关联酒店房间的类别都将重置为空！", function (flag) {
                     if (flag) {
                         var id = rows[0].id;
                         $('#manager').datagrid('loading');
-                        var result = ajaxSynchGet("user/operationHotelRoomType/delete", {"id": id});
+                        var result = ajaxSynchGet("user/hotelRoomType/delete", {"id": id});
                         $('#manager').datagrid('loaded');
                         searchHotelRoomType();
                         alertInfo(result.msg);
@@ -91,6 +86,7 @@
                 alertWarn("请先选择记录！");
             }
         }
+
         function dataGridInit() {
             $('#manager').datagrid({
                 //fit : true,
@@ -125,13 +121,10 @@
                 ]]
             });
         }
+
         function searchHotelRoomType() {
-            var hotelId = $('#hotelList').combobox('getValue');
-            if (hotelId == -1) {
-                hotelId = null;
-            }
-            var param = {"hotelId":hotelId, "page":1, "rows":10};
-            var result = ajaxSynchPostJson("user/operationHotelRoomType/search", param);
+            var param = {"page":1, "rows":10};
+            var result = ajaxSynchPostJson("user/hotelRoomType/search", param);
             if (result.code == '200') {
                 dataGridPageInit();
                 $('#manager').datagrid('loadData', result.data);
@@ -139,6 +132,7 @@
                 alertWarn(result.msg);
             }
         }
+
         function dataGridPageInit() {
             var p = $('#manager').datagrid('getPager');
             $(p).pagination({
@@ -146,30 +140,17 @@
                 pageSize : 10,
                 pageList : [10, 20, 30, 40, 50],
                 onSelectPage:function(pageNumber, pageSize){
-                    var hotelId = $('#hotelList').combobox('getValue');
-                    if (hotelId == -1) {
-                        hotelId = null;
-                    }
-                    var param = {"hotelId":hotelId, "page":pageNumber, "rows":pageSize};
-
-                    var result = ajaxSynchPostJson("user/operationHotelRoomType/search", param);
+                    var param = {"page":pageNumber, "rows":pageSize};
+                    var result = ajaxSynchPostJson("user/hotelRoomType/search", param);
                     if (result.code == '200') {
                         $('#manager').datagrid('loadData', result.data);
                     }
                 },
             });
         }
-        function webPageInit() {
-            var result = ajaxSynchGet("user/operationHotel/listAll", null);
-            if (result.code == '200') {
-                $('#hotelList').combobox('loadData', result.data);
-                $('#hotelList').combobox('setValue', -1);
-            }
-        }
         $(function () {
             dataGridInit();
             searchHotelRoomType();
-            webPageInit();
         });
     </script>
 </head>
@@ -179,11 +160,8 @@
         <div style="margin-bottom:5px;">
             <a href="#" class="easyui-linkbutton" iconCls="icon-add-green" plain="true" onclick="addHotelRoomTypeShow()">新增</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit-yellow" plain="true" onclick="editHotelRoomTypeShow()">编辑</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="deleteHotelRoomType()">删除</a>
-        </div>
-        <div style="padding:0 0 0 7px;color:#333;">
-            选择酒店：<select class="easyui-combobox" id="hotelList" style="width:155px;" data-options="valueField:'id',textField:'hotelName'"></select>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchHotelRoomType()">查询</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="deleteHotelRoomType()">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="searchHotelRoomType()">查询</a>
         </div>
     </div>
 </table>

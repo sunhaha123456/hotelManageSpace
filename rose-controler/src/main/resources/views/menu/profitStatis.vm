@@ -199,8 +199,8 @@
         </div>
         <div style="margin-bottom:5px;">
             &nbsp;&nbsp;&nbsp;
-            订单总数：<span id="totalOrderCount" style="padding-right: 135px"></span>
-            营收总额：<span id="totalRealCollectMoney"></span>
+            已退房订单总数：<span id="totalOrderCount" style="padding-right: 115px"></span>
+            已退房营收总额：<span id="totalRealCollectMoney"></span>
         </div>
     </div>
 </table>

@@ -81,7 +81,7 @@ public class HotelRoomEnterControler {
      * @return
      */
     @GetMapping(value= "/listHotelRoomTypeByCurrentUserReleatHotel")
-    public List<TbHotelRoomType> listHotelRoomType() {
+    public List<TbHotelRoomType> listHotelRoomTypeByCurrentUserReleatHotel() {
         return hotelRoomDetailService.listHotelRoomTypeByCurrentUserReleatHotel();
     }
 }

@@ -5,5 +5,5 @@ import lombok.Data;
 
 @Data
 public class HotelRoomTypeSearchRequest extends PageParam {
-    private Long hotelId;
+
 }

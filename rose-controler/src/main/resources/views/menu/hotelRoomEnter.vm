@@ -59,10 +59,10 @@
                     } else {
                         $("#detailCalcCheckInNumBedFlag").val('是');
                     }
-                    if (data.calcCheckInNumBedFlag == 0) {
-                        $("#detailRoomWcFlag").val('是');
+                    if (data.roomWcFlag == 0) {
+                        $("#detailRoomWcFlag").val('无');
                     } else {
-                        $("#detailRoomWcFlag").val('否');
+                        $("#detailRoomWcFlag").val('有');
                     }
                     $("#detailSellPriceDesc").val(data.sellPriceDesc);
                     $("#detailCheckOutDesc").val(data.checkOutDesc);
@@ -240,39 +240,22 @@
                     {
                         field : 'roomNo',
                         title : '房间编号',
-                        width : 100,
+                        width : 60,
                     },
                     {
                         field : 'roomFloorNum',
                         title : '房间楼层',
-                        width : 100,
+                        width : 60,
                     },
                     {
                         field : 'sellPrice',
                         title : '售价',
-                        width : 100,
-                    },
-                    {
-                        field : 'hourRoomFlag',
-                        title : '是否钟点房',
-                        width : 100,
-                        formatter: function(value,row,index){
-                            if (value == 0) {
-                                return "否";
-                            } else {
-                                return "是";
-                            }
-                        }
-                    },
-                    {
-                        field : 'roomTypeName',
-                        title : '类别名称',
-                        width : 100,
+                        width : 60,
                     },
                     {
                         field : 'roomWindowFlag',
                         title : '窗户',
-                        width : 100,
+                        width : 70,
                         formatter: function(value,row,index){
                             if (value == 0) {
                                 return "无";
@@ -284,14 +267,55 @@
                         }
                     },
                     {
+                        field : 'roomWcFlag',
+                        title : '卫生间',
+                        width : 70,
+                        formatter: function(value,row,index){
+                            if (value == 0) {
+                                return "无";
+                            } else {
+                                return "有";
+                            }
+                        }
+                    },
+                    {
                         field : 'bedNum',
                         title : '床数',
+                        width : 50,
+                    },
+                    {
+                        field : 'roomTypeName',
+                        title : '类别名称',
                         width : 100,
+                    },
+                    {
+                        field : 'hourRoomFlag',
+                        title : '是否钟点房',
+                        width : 70,
+                        formatter: function(value,row,index){
+                            if (value == 0) {
+                                return "否";
+                            } else {
+                                return "是";
+                            }
+                        }
+                    },
+                    {
+                        field : 'calcCheckInNumBedFlag',
+                        title : '床位=入住人数',
+                        width : 70,
+                        formatter: function(value,row,index){
+                            if (value == 0) {
+                                return "否";
+                            } else {
+                                return "是";
+                            }
+                        }
                     },
                     {
                         field : 'roomUpshelfState',
                         title : '状态',
-                        width : 100,
+                        width : 50,
                         formatter: function(value,row,index){
                             if (value == 0){
                                 return "上架";
@@ -303,7 +327,7 @@
                     {
                         field : 'createDate',
                         title : '创建日期',
-                        width : 100,
+                        width : 120,
                     }
                 ]]
             });
@@ -419,7 +443,7 @@
 </table>
 
 <form id="manager_detail" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:25,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:25,width:560,title:'查看详情',modal:true,closed:true,cache:false,iconCls:'icon-nav',
        onClose:function () {
             $('#manager_detail').form('reset');
        }">
@@ -471,7 +495,7 @@
 </form>
 
 <form id="manager_add" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:25,width:560,title:'新增管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:25,width:560,title:'新增房间',modal:true,closed:true,cache:false,iconCls:'icon-nav',
        onClose:function () {
             $('#manager_add').form('reset');
        },
@@ -535,8 +559,8 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         钟点房：
         <select class="easyui-combobox" id="addHourRoomFlag" style="width:100px;">
-            <option value="0" selected="true">是</option>
-            <option value="1">否</option>
+            <option value="0" selected="true">否</option>
+            <option value="1">是</option>
         </select>
     </p>
     <p>
@@ -544,8 +568,8 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         床位=可入住人数：
         <select class="easyui-combobox" id="addCalcCheckInNumBedFlag" style="width:100px;">
-            <option value="1" selected="true">否</option>
-            <option value="0">是</option>
+            <option value="0" selected="true">否</option>
+            <option value="1">是</option>
         </select>
     </p>
     <p>销售价格描述：
@@ -563,7 +587,7 @@
 </form>
 
 <form id="manager_edit" class="easyui-dialog" style="margin:0;padding:5px 0 0 25px;color:#333;"
-      data-options="top:25,width:560,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-user-add',
+      data-options="top:25,width:560,title:'编辑管理',modal:true,closed:true,cache:false,iconCls:'icon-nav',
        onClose:function () {
             $('#manager_edit').form('reset');
        },
@@ -627,8 +651,8 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         钟点房：
         <select class="easyui-combobox" id="editHourRoomFlag" style="width:100px;">
-            <option value="0" selected="true">是</option>
-            <option value="1">否</option>
+            <option value="0" selected="true">否</option>
+            <option value="1">是</option>
         </select>
     </p>
     <p>
@@ -636,8 +660,8 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         床位=可入住人数：
         <select class="easyui-combobox" id="editCalcCheckInNumBedFlag" style="width:100px;">
-            <option value="1" selected="true">否</option>
-            <option value="0">是</option>
+            <option value="0" selected="true">否</option>
+            <option value="1">是</option>
         </select>
     </p>
     <p>销售价格描述：

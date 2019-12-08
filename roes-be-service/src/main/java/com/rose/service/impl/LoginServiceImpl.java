@@ -18,8 +18,11 @@ import com.rose.repository.SysUserRepository;
 import com.rose.service.LoginService;
 import com.rose.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -42,6 +45,23 @@ public class LoginServiceImpl implements LoginService {
     private UserService userService;
     @Inject
     private ValueHolder valueHolder;
+    @Inject
+    private Environment env;
+
+    private List<String> systemAdministratorList = new ArrayList<>();
+
+    @PostConstruct
+    void init() {
+        String systemAdministrators = env.getProperty("system.administrators");
+        if (StringUtil.isNotEmpty(systemAdministrators)) {
+            String[] arr = systemAdministrators.split(",");
+            if (arr != null && arr.length > 0) {
+                for (String u : arr) {
+                    systemAdministratorList.add(u);
+                }
+            }
+        }
+    }
 
     // 不需要进行后台bgUrl 校验的后台接口列表
     private static List<String> notValidateBgUrlList = Arrays.asList(
@@ -88,7 +108,9 @@ public class LoginServiceImpl implements LoginService {
         if (sysUser.getHotelId() != null) {
             TbHotelDetail hotel = hotelDetailRepository.findOne(sysUser.getHotelId());
             if (hotel == null || hotel.getHotelState() == 1) {
-                throw new BusinessException("用户所属酒店已被下架！");
+                if (!systemAdministratorList.contains(sysUser.getUname())) {
+                    throw new BusinessException("用户所属酒店已被下架！");
+                }
             }
         }
         // 进行后台可访问路径校验
