@@ -69,7 +69,8 @@ public class LoginServiceImpl implements LoginService {
             "/login/toSuccess",
             "/login/toSuccess/out",
             "/login/toSuccess/verify",
-            "/user/menuManage/getUserMenu"
+            "/user/menuManage/getUserMenu",
+            "/user/userManage/updatePasswodSelf"
     );
 
     @Override
