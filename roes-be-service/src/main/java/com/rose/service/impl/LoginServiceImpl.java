@@ -67,8 +67,8 @@ public class LoginServiceImpl implements LoginService {
     private static List<String> notValidateBgUrlList = Arrays.asList(
             "/login/toLogin",
             "/login/toSuccess",
-            "/login/toSuccess/out",
-            "/login/toSuccess/verify",
+            "/login/out",
+            "/login/verify",
             "/user/menuManage/getUserMenu",
             "/user/userManage/updatePasswodSelf"
     );

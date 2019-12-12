@@ -89,12 +89,12 @@
             </tr>
             <tr>
                 <td align="right" valign="middle"></td>
-                <td align="left"><input name="uname" type="text" id="uname" size="30" placeholder="用户名" value="superAdmin" /></td>
+                <td align="left"><input name="uname" type="text" id="uname" size="30" placeholder="用户名" /></td>
                 <td><div id="unameTip"></div></td>
             </tr>
             <tr>
                 <td align="right" valign="middle"></td>
-                <td align="left"><input name="upwd" type="password" id="upwd" size="30" placeholder="密码" value="123456" /></td>
+                <td align="left"><input name="upwd" type="password" id="upwd" size="30" placeholder="密码" /></td>
                 <td><div id="upwdTip"></div></td>
             </tr>
             <tr>
