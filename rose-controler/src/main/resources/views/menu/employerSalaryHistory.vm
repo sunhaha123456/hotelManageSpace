@@ -9,6 +9,7 @@
         var interceptorUserId = [[${userId}]];
     </script>
     <script th:src="@{/static/easyui/easy.common.js}"></script>
+    <script th:src="@{/static/easyuiMask.js}"></script>
     <script th:src="@{/static/myFun.js}"></script>
     <script th:inline="javascript">
         function searchEmployerSalaryHistory() {
